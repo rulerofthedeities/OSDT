@@ -1,0 +1,24 @@
+{
+  "name": "osdt",
+  "version": "0.0.1",
+  "description": "Open Source Donation Tracker",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "osdt"
+  },
+  "keywords": [
+    "donations"
+  ],
+  "author": "Kristiaan Van Ermengem",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "express-handlebars": "^2.0.1"
+  }
+}
