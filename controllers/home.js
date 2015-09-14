@@ -1,5 +1,22 @@
 module.exports = {
 	index: function(request, response) {
-		response.send('ODST - Open Source Donation Tracker');
+		var viewModel = {name: "test"};
+		response.render('index', viewModel);
 	}
 };
+
+
+
+
+'use strict';
+
+var express = require('express'),
+	app = express();
+
+app.get('/', function (req, res) {
+	res.send('hello');
+});
+
+app.listen(3000, function () {
+	console.log('express-handlebars example server listening on: 3000');
+});

@@ -4,14 +4,14 @@ var express = require('express'),
 	bodyParser = require('body-parser');
 
 module.exports = function(app) {
-	
 	//register handlebars as view rendering engine
-	app.engine('handlebars', exphbs.create({
+	app.engine('.hbs', exphbs.create({
 		defaultLayout: 'main',
+    	extname      : '.hbs',
 		layoutsDir: app.get('views') + '/layouts',
 		partialsDir: [app.get('views') + '/partials']
 	}).engine);
-	app.set('view engine', 'handlebars');
+	app.set('view engine', '.hbs');
 
 	app.use(bodyParser.urlencoded({ extended: false }));
 	routes.initialize(app, express.Router());
