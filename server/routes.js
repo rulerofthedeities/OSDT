@@ -3,7 +3,7 @@ var home = require('../controllers/home'),
 
 module.exports.initialize = function(app, router) {
 	router.get('/', home.index);
-	router.post('/comment', donation.add);
+	router.post('/add', donation.add);
 
 	app.use(router);
 };

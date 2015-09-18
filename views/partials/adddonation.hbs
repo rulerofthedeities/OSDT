@@ -1,3 +1,52 @@
-<button type="submit" id="donation-btn" class="btn btn-success" type="button">
-	<i class="fa fa-plus-circle"></i> Add donation
-</button>
+<div ng-app="donationApp" ng-controller="formController as ctrl">
+	<form name="donationForm" class="form-horizontal" ng-submit="donationForm.$valid && ctrl.submitDonation(ctrl.donation)" novalidate>
+
+        <div class="form-group">
+			<label class="control-label col-xs-2" for="name">Name</label>
+        	<div class="col-xs-10">
+        		<input type="text" id="name" class="form-control" ng-model="ctrl.donation.name" placeholder="Software/program name" required>
+        	</div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="amount">Amount</label>
+            <div class="col-xs-10">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <select ng-model="ctrl.donation.currency" ng-init="ctrl.donation.currency='{{defaultCurrency}}'">
+                            {{#each currencies}}
+                            <option ng-selected="ctrl.defaultCurrency == '{{id}}'" value="{{id}}">{{label}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <input type="text" id="amount" class="form-control" ng-model="ctrl.donation.amount" placeholder="Amount paid" pattern="^\d{1,5}$" required>
+                    <span class="input-group-addon">.00</span>
+                </div>
+            </div>
+        </div>
+	
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+	       	<button type="submit" id="donation-btn" class="btn btn-primary">
+			<i class="fa fa-plus-circle"></i> Add donation</button>
+			</div>
+		</div>
+    </form>
+</div>
+<script>
+var app = angular.module('donationApp', []);
+app.config(function($interpolateProvider) {
+  $interpolateProvider.startSymbol('{[{');
+  $interpolateProvider.endSymbol('}]}');
+});
+app.controller("formController", function(){
+    this.clr = function(){
+        this.donation.name = "";
+        this.donation.amount = "";
+    };
+    this.submitDonation = function(donation){
+        console.log(this.donation);
+        this.clr();
+    };
+});
+</script>
