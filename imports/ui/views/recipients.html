@@ -1,0 +1,12 @@
+<template name="viewRecipients">
+	Recipientlist
+	<ul>
+	{{#each recipients}}
+		<li>{{> recipient}}</li>
+	{{/each}}
+	</ul>
+</template>
+
+<template name="recipient">
+	{{name}} {{#if category}}({{category}}){{/if}}
+</template>

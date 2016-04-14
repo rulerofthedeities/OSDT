@@ -1,0 +1,38 @@
+<template name="index">
+  <body>
+  	<div class="container">
+	  	<header>
+	  		{{> yield "nav"}}
+	  	</header>
+	    {{> yield}}
+    </div>
+  </body>
+</template>
+
+<template name="home">
+	<h1>{{title}}</h1>
+	<h1>{{ > nav}}</h1>
+</template>
+
+<template name="nav">
+	<ul>
+		<li><a href="/">Home</a></li>
+		<li><a href="donations">Donations</a></li>
+		<li><a href="recipients">Recipients</a></li>
+	</ul>
+</template>
+
+<template name="donations">
+    <header>
+      <h1>Open Source Donations</h1>
+	 {{> formDonation}}
+    </header>
+    {{> viewTransactions}}
+</template>
+
+<template name="recipients">
+	<h1>Recipients</h1>
+	{{> formRecipient}}
+	{{> viewRecipients}}
+</template>
+

@@ -1,0 +1,14 @@
+<template name="formDonation">
+	<form class="new-donation">
+    	<input list="recipients" name="recipient" placeholder="Recipient" required autocomplete="off" />
+		<datalist id="recipients">
+			{{#each recipients}}
+				{{ > donationsRecipient}}
+			{{/each}}
+		</datalist>
+	</form>
+</template>
+
+<template name="donationsRecipient">
+	<option value="{{name}}">{{name}}</option>
+</template>
