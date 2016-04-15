@@ -1,17 +1,17 @@
 <template name="index">
-  <body>
-  	<div class="container">
-	  	<header>
-	  		{{> yield "nav"}}
-	  	</header>
-	    {{> yield}}
-    </div>
-  </body>
+	<body>
+		<div class="container">
+			<header>
+				{{> yield "nav"}}
+			</header>
+			{{> yield}}
+		</div>
+	</body>
 </template>
 
 <template name="home">
 	<h1>{{title}}</h1>
-	<h1>{{ > nav}}</h1>
+	<h1>{{> nav}}</h1>
 </template>
 
 <template name="nav">
@@ -23,11 +23,11 @@
 </template>
 
 <template name="donations">
-    <header>
-      <h1>Open Source Donations</h1>
-	 {{> formDonation}}
-    </header>
-    {{> viewTransactions}}
+	<header>
+		<h1>Open Source Donations</h1>
+		{{> formDonation}}
+	</header>
+	{{> viewTransactions}}
 </template>
 
 <template name="recipients">

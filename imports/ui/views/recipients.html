@@ -1,12 +1,28 @@
 <template name="viewRecipients">
-	Recipientlist
 	<ul>
 	{{#each recipients}}
-		<li>{{> recipient}}</li>
+		<li>
+		{{#if editMode}}
+			{{> editRecipient}}
+		{{else}}
+			{{> readRecipient}}
+		{{/if}}
+		</li>
+	{{else}}
+		There are no recipients yet.
 	{{/each}}
 	</ul>
 </template>
 
-<template name="recipient">
+<template name="readRecipient">
 	{{name}} {{#if category}}({{category}}){{/if}}
+	<button type="button" class="edit-recipient">Edit</button>
+</template>
+
+<template name="editRecipient">
+	<form class="edit-form">
+		<input type="text" name="name" placeholder="Name of recipient" value="{{name}}" required>
+		<input type="text" name="category" value="{{category}}" placeholder="Category" />
+		<button type="submit">Update</button>
+	</form>
 </template>

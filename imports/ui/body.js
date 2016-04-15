@@ -5,4 +5,3 @@ import './views/transactions.js';
 import './views/recipients.js';
 import './forms/donation.js';
 import './forms/recipient.js';
-
