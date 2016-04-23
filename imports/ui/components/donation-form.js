@@ -1,6 +1,6 @@
 import {Donations} from '../../api/donations.js';
 import {Recipients} from '../../api/recipients.js';
-import './donation.html';
+import './donation-form.html';
 
 Template.formDonation.events({
   'submit .new-donation'(event) {

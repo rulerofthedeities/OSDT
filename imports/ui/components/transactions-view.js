@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
 import { Donations } from '../../api/donations.js';
-import './transactions.html';
+import './transactions-view.html';
 
 Template.viewTransactions.helpers({
 

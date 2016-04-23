@@ -1,5 +1,5 @@
 import {Recipients} from '../../api/recipients.js';
-import './recipient.html';
+import './recipient-form.html';
 
 Template.formRecipient.events({
 	'submit .new-recipient'(event){

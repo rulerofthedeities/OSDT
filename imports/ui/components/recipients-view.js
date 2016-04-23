@@ -1,5 +1,5 @@
 import { Recipients } from '../../api/recipients.js';
-import './recipients.html';
+import './recipients-view.html';
 
 Template.viewRecipients.helpers({
 
