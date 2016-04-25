@@ -1,7 +1,13 @@
-<template name="nav">
-	<ul>
-		<li><a href="/">Home</a></li>
-		<li><a href="donations">Donations</a></li>
-		<li><a href="recipients">Recipients</a></li>
+ <template name="nav">
+	<ul class="mainnav">
+		{{#each pages}}
+			{{> page}}
+		{{/each}}
 	</ul>
+</template>
+
+<template name="page">
+	<li class="{{active}}">
+		<a href="{{url}}">{{name}}</a>
+	</li>
 </template>

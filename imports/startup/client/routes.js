@@ -3,11 +3,12 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
 import '../../ui/layouts/body.js';
 import '../../ui/pages/app-home.js';
+import '../../ui/pages/app-notfound.js';
 import '../../ui/pages/recipients.js';
 import '../../ui/pages/donations.js';
 
 FlowRouter.route('/', {
-	name: 'App.home',
+	name: 'Home',
 	action(){
 		BlazeLayout.render('App_body', {main: 'home'});
 	},
@@ -26,3 +27,10 @@ FlowRouter.route('/donations', {
     BlazeLayout.render('App_body', {main: 'donations_page'});
   },
 });
+
+// Not Found
+FlowRouter.notFound = {
+  action() {
+    BlazeLayout.render('App_body', { content: 'App_notFound' });
+  },
+};
