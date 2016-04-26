@@ -1,6 +1,9 @@
-import { Template } from 'meteor/templating';
 import { Donations } from '../../api/donations.js';
 import './transactions-view.html';
+
+Template.viewTransactions.onCreated(function viewTransactionsOnCreated() {
+    this.subscribe('donations');
+});
 
 Template.viewTransactions.helpers({
 
