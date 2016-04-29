@@ -8,12 +8,21 @@ Template.formRecipient.events({
 		const name = target.recipientName.value;
 		const category = target.category.value;
 
-		Recipients.insert({
+		const newRecipient = {
 			name,
 			category,
-			createdAt: new Date(),
+		};
+
+		Recipients.insert(newRecipient, (error, result) => {
+			if (error){
+				console.log(error.invalidKeys);
+				
+				// = Recipients.simpleSchema().namedContext().invalidKeys()
+			} else {
+				console.log("validation ok");
+			};
 		});
 		target.recipientName.value = '';
 		target.category.value = '';
 	},
-})
+});
