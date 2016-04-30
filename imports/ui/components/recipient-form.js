@@ -15,9 +15,7 @@ Template.formRecipient.events({
 
 		Recipients.insert(newRecipient, (error, result) => {
 			if (error){
-				console.log(error.invalidKeys);
-				
-				// = Recipients.simpleSchema().namedContext().invalidKeys()
+				console.log(error.message);
 			} else {
 				console.log("validation ok");
 			};
@@ -26,3 +24,18 @@ Template.formRecipient.events({
 		target.category.value = '';
 	},
 });
+
+Template.formRecipient.helpers({
+	errormessage:function(key){
+		const validationContext = Recipients.simpleSchema().namedContext();
+		const msg = validationContext.keyErrorMessage(key);
+		if (!Session.get('errormessages')){
+			Session.set('errormessages', msg);
+		}
+		return msg;
+	},
+	firsterrormessage:function(){
+		const validationContext = Recipients.simpleSchema().namedContext();
+		return Session.get('errormessages');
+	},
+})

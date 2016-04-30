@@ -1,7 +1,11 @@
 <template name="formRecipient">
 	<form class="new-recipient">
-		<input type="text" name="recipientName" placeholder="Name of recipient" required><br>
-		<input type="text" name="category" placeholder="Category" />
-		<button type="submit">Add</button>
+		<label>Name: </label><input type="text" name="recipientName" placeholder="Name of recipient">
+		<span class="error">{{errormessage "name"}}</span><br>
+		<label>Category: </label><input type="text" name="category" placeholder="Category" />
+		<span class="error">{{errormessage "category"}}</span>
+		<button type="submit">Add</button><br>
+		<span class="error">{{firsterrormessage}}</span>
 	</form>
+	
 </template>
