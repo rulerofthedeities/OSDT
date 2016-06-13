@@ -9,7 +9,7 @@ Template.viewRecipients.onCreated(function viewRecipientsOnCreated() {
 
 Template.viewRecipients.helpers({
 	recipients() {
-		return Recipients.find({}, {sort: {'name': 1}});
+		return Recipients.find({}, {sort: {'name_sort': 1}});
 	},
 	editMode: function() {
 		const editId = Session.get('selectedRow');

@@ -2,6 +2,19 @@ import {Donations} from '../../api/donations.js';
 import {Recipients} from '../../api/recipients.js';
 import './donation-form.html';
 
+Template.formDonation.onCreated(function formDonationOnCreated() {
+  //this.autorun(() => {
+      this.subscribe('recipients');
+    //});
+});
+
+Template.formDonation.helpers({
+  recipients() {
+    return Recipients.find({}, {sort: {'name_sort': 1}});
+  },
+
+});
+
 Template.formDonation.events({
   'submit .new-donation'(event) {
     event.preventDefault();
@@ -24,12 +37,4 @@ Template.formDonation.events({
     target.recipient.value = '';
 
   },
-});
-
-Template.formDonation.helpers({
-
-  recipients() {
-    return Recipients.find({}, {sort: {'name': 1}});
-  },
-
 });

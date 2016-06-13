@@ -1,6 +1,6 @@
 <template name="formDonation">
 	<form class="new-donation">
-    	<input list="recipients" name="recipient" placeholder="Recipient" required autocomplete="off" />
+    	<input type="text" list="recipients" name="recipient" placeholder="Recipient" required autocomplete="off" />
 		<datalist id="recipients">
 			{{#each recipients}}
 				{{ > donationsRecipient}}

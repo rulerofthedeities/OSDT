@@ -22,5 +22,6 @@ session
 kadira:flow-router
 kadira:blaze-layout
 aldeed:simple-schema
-check
 aldeed:collection2
+meteortoys:allthings
+check
