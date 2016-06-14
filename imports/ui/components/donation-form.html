@@ -1,11 +1,30 @@
 <template name="formDonation">
 	<form class="new-donation">
-    	<input type="text" list="recipients" name="recipient" placeholder="Recipient" required autocomplete="off" />
+    	<label for="recipient">Recipient</label>
+    	<input type="text" list="recipients" id="recipient" name="recipient" placeholder="Recipient" autocomplete="off" />
 		<datalist id="recipients">
 			{{#each recipients}}
 				{{ > donationsRecipient}}
 			{{/each}}
 		</datalist>
+		<span class="error">{{errormessage "recipient"}}</span><br>
+		<label for="amount">Amount</label>
+		<input type="number" id="amount" placeholder="Amount" step="0.5" autocomplete="off" />
+		<span class="error">{{errormessage "amount"}}</span><br>
+		<label for="currency"></label>
+		<select id="currency">
+			<option value="EUR">EUR</option>
+			<option value="USD">USD</option>
+		</select>
+		<label for="dt">Date</label>
+		<input type="text" placeholder="dd/mm/yyyy" id="dt" autocomplete="off" />
+		<span class="error">{{errormessage "dt"}}</span><br>
+		<label for="paymentType">Payment Type</label>
+		<input type="text" id="paymentType" />
+		<label for="exchangeRate">Exchange Rate</label>
+		<input type="text" id="exchangeRate" autocomplete="off" />
+		<button type="submit">Submit</button><br>
+		<span class="error">{{firsterrormessage}}</span>
 	</form>
 </template>
 

@@ -18,10 +18,10 @@ Template.formRecipient.events({
 				console.log(error.message);
 			} else {
 				console.log("validation ok");
+				target.recipientName.value = '';
+				target.category.value = '';
 			};
 		});
-		target.recipientName.value = '';
-		target.category.value = '';
 	},
 });
 

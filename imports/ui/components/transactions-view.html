@@ -1,11 +1,16 @@
 <template name="viewTransactions">
 	<ul>
-	{{#each donations}}
-		<li>{{@index}}: {{> donation}}</li>
-	{{/each}}
+	{{#if Template.subscriptionsReady}}
+		{{#each donations}}
+			<li>{{@index}}: {{> donation}}</li>
+		{{/each}}
+	{{else}}
+		<p>Loading</p>
+	{{/if}}
 	</ul>
 </template>
 
 <template name="donation">
-	{{recipient.name}}
+	{{recipient}}
 </template>
+

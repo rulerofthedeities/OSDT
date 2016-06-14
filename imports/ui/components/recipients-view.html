@@ -1,16 +1,20 @@
 <template name="viewRecipients">
 	<ul>
-	{{#each recipients}}
-		<li>
-		{{#if editMode}}
-			{{> editRecipient}}
+	{{#if Template.subscriptionsReady}}
+		{{#each recipients}}
+			<li>
+			{{#if editMode}}
+				{{> editRecipient}}
+			{{else}}
+				{{> readRecipient}}
+			{{/if}}
+			</li>
 		{{else}}
-			{{> readRecipient}}
-		{{/if}}
-		</li>
+			There are no recipients yet.
+		{{/each}}
 	{{else}}
-		There are no recipients yet.
-	{{/each}}
+		<p>Loading</p>
+	{{/if}}
 	</ul>
 </template>
 
