@@ -4,6 +4,7 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import '../../ui/layouts/body.js';
 import '../../ui/pages/app-home.js';
 import '../../ui/pages/app-notfound.js';
+import '../../ui/pages/settings.js';
 import '../../ui/pages/recipients.js';
 import '../../ui/pages/donations.js';
 
@@ -12,6 +13,13 @@ FlowRouter.route('/', {
 	action(){
 		BlazeLayout.render('App_body', {main: 'home'});
 	},
+});
+
+FlowRouter.route('/settings', {
+  name: 'Settings',
+  action(){
+    BlazeLayout.render('App_body', {main: 'settings_page'});
+  },
 });
 
 FlowRouter.route('/recipients', {

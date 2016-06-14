@@ -2,7 +2,6 @@ import { Mongo } from 'meteor/mongo';
 
 export const Donations = new Mongo.Collection('donations');
 
-
 Donations.schema = new SimpleSchema({
   recipient: {
     type: String,
