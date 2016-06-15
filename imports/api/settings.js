@@ -8,12 +8,13 @@ Settings.schema = new SimpleSchema({
     label: 'Default Currency',
     allowedValues: ['EUR', 'USD'],
   },
-  exchange_rate: {
+  exchangeRate: {
     type: Number,
     min: 0,
+    decimal: true,
     label: 'Exchange Rate',
   },
-  createdAt: {
+  dt: {
     type: Date,
     defaultValue: new Date(),
     denyUpdate: true,

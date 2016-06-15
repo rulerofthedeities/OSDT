@@ -15,9 +15,8 @@ Template.formRecipient.events({
 
 		Recipients.insert(newRecipient, (error, result) => {
 			if (error){
-				console.log(error.message);
+				//console.log(error.message);
 			} else {
-				console.log("validation ok");
 				target.recipientName.value = '';
 				target.category.value = '';
 			};
