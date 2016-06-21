@@ -10,7 +10,10 @@
 		<input type="text" id="exchangeRate" placeholder="Exchange Rate" value="{{settings.exchangeRate}}" /> {{toggleCurrency getCurrentCurrency}}
 		<span class="error">{{errormessage "exchangeRate"}}</span>
 		<button type="submit">Update</button><br>
-		<span class="error">{{firsterrormessage}}</span>
+		<span class="error">{{inserterrormessage}}</span>
+		{{#if inserted}}
+			<span class="msg">Settings updated</span>
+		{{/if}}
 	</form>
 </template>
 

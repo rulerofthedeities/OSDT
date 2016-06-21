@@ -32,3 +32,23 @@ Recipients.schema = new SimpleSchema({
 });
 
 Recipients.attachSchema(Recipients.schema);
+
+Meteor.methods({
+  'recipient.getByName'(name) {
+    const recipientDoc = Recipients.findOne(
+      {name: {$regex: '^' + name + '$', $options: 'i'}}
+    );
+    if(recipientDoc) {
+      return recipientDoc.name;
+    }
+  },
+  'recipient.insert'(doc) {
+    Recipients.insert(doc);
+  },
+  'recipient.update'(doc) {
+    Recipients.update(
+      {_id: doc.id},
+      {$set: {name: doc.name, category: doc.category}}
+    );
+  },
+});

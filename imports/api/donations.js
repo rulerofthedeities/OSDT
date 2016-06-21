@@ -45,8 +45,14 @@ Donations.schema = new SimpleSchema({
       }
     },
     denyInsert: true,
-    optional: true
+    optional: true,
   },
 });
 
 Donations.attachSchema(Donations.schema);
+
+Meteor.methods({
+  'donations.insert'(newDonation) {
+    Donations.insert(newDonation);
+  },
+});

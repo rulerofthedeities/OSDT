@@ -1,10 +1,9 @@
 <template name="formRecipient">
 	<form class="new-recipient">
-		<label for="name">Description: </label><input type="text" id="name" name="recipientName" placeholder="Name of program" required>
+		<label for="name">Description: </label><input type="text" id="name" name="recipientName" placeholder="Name of program">
 		<span class="error">{{errormessage "name"}}</span><br>
 		<label for="cat">Category: </label><input type="text" id="cat" name="category" placeholder="Category" />
 		<span class="error">{{errormessage "category"}}</span>
 		<button type="submit">Add</button><br>
-		<span class="error">{{firsterrormessage}}</span>
 	</form>
 </template> 

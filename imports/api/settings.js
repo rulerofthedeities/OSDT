@@ -17,8 +17,17 @@ Settings.schema = new SimpleSchema({
   dt: {
     type: Date,
     defaultValue: new Date(),
-    denyUpdate: true,
   },
 });
 
 Settings.attachSchema(Settings.schema);
+
+
+Meteor.methods({
+  'settings.insert'(newSetting) {
+    //check(newSetting, {currency: String, exchangeRate: Number});
+    const id = Settings.insert(newSetting);
+    //throw new Meteor.Error('not-authorized');
+    return id;
+  },
+});
