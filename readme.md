@@ -1,2 +1,2 @@
 # OSDT
-Open Source Donation Tracker
+Open Source Donations Tracker
