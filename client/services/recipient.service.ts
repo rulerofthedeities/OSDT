@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
-import {CurrencyModel} from '../models/currency.model';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
-export class CurrencyService {
+export class RecipientService {
 
   constructor(private _http: Http) {}
 
-  getCurrencies() {
-    return this._http.get('/api/currencies')
+  getRecipients() {
+    return this._http.get('/api/recipients')
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }

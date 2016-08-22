@@ -9,29 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var currency_service_1 = require('../services/currency.service');
+var recipient_service_1 = require('../services/recipient.service');
 var error_service_1 = require('../services/error.service');
-var Currency = (function () {
-    function Currency(currencyService, errorService) {
-        this.currencyService = currencyService;
+var Recipient = (function () {
+    function Recipient(recipientService, errorService) {
+        this.recipientService = recipientService;
         this.errorService = errorService;
-        this.currencies = [];
+        this.recipients = [];
     }
-    Currency.prototype.ngOnInit = function () {
+    Recipient.prototype.ngOnInit = function () {
         this.getCurrencies();
     };
-    Currency.prototype.getCurrencies = function () {
+    Recipient.prototype.getCurrencies = function () {
         var _this = this;
-        this.currencyService.getCurrencies()
-            .subscribe(function (currencies) { _this.currencies = currencies; }, function (error) { return _this.errorService.handleError(error); });
+        this.recipientService.getRecipients()
+            .subscribe(function (recipients) { _this.recipients = recipients; }, function (error) { return _this.errorService.handleError(error); });
     };
-    Currency = __decorate([
+    Recipient = __decorate([
         core_1.Component({
-            template: "\n    <div>Currencies</div>\n\n    <ul>\n      <li *ngFor=\"let currency of currencies\">\n        {{currency.name}}\n      </li>\n    </ul>\n  "
+            template: "\n    <div>Recipients</div>\n\n    <ul>\n      <li *ngFor=\"let recipient of recipients\">\n        {{recipient.name}}\n      </li>\n    </ul>\n  "
         }), 
-        __metadata('design:paramtypes', [currency_service_1.CurrencyService, error_service_1.ErrorService])
-    ], Currency);
-    return Currency;
+        __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService])
+    ], Recipient);
+    return Recipient;
 }());
-exports.Currency = Currency;
-//# sourceMappingURL=currency.component.js.map
+exports.Recipient = Recipient;
+//# sourceMappingURL=recipient.component.js.map

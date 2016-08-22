@@ -9,8 +9,10 @@ import {routing} from './routes';
 import {AppComponent} from './components/app.component';
 import {ErrorMessage} from './components/common/error-message.component';
 import {Currency} from './components/currency.component';
+import {Recipient} from './components/recipient.component';
 
 import {CurrencyService} from './services/currency.service';
+import {RecipientService} from './services/recipient.service';
 import {ErrorService} from './services/error.service';
 
 
@@ -24,13 +26,15 @@ import {ErrorService} from './services/error.service';
   ],
   providers: [
     CurrencyService,
+    RecipientService,
     ErrorService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   declarations: [
     AppComponent,
     ErrorMessage,
-    Currency
+    Currency,
+    Recipient
   ],
   bootstrap: [ AppComponent ]
 })

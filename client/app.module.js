@@ -17,7 +17,9 @@ var routes_1 = require('./routes');
 var app_component_1 = require('./components/app.component');
 var error_message_component_1 = require('./components/common/error-message.component');
 var currency_component_1 = require('./components/currency.component');
+var recipient_component_1 = require('./components/recipient.component');
 var currency_service_1 = require('./services/currency.service');
+var recipient_service_1 = require('./services/recipient.service');
 var error_service_1 = require('./services/error.service');
 var AppModule = (function () {
     function AppModule() {
@@ -33,13 +35,15 @@ var AppModule = (function () {
             ],
             providers: [
                 currency_service_1.CurrencyService,
+                recipient_service_1.RecipientService,
                 error_service_1.ErrorService,
                 { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }
             ],
             declarations: [
                 app_component_1.AppComponent,
                 error_message_component_1.ErrorMessage,
-                currency_component_1.Currency
+                currency_component_1.Currency,
+                recipient_component_1.Recipient
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

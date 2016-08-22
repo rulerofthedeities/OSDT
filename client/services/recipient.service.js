@@ -12,20 +12,20 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/Rx');
 var Observable_1 = require('rxjs/Observable');
-var CurrencyService = (function () {
-    function CurrencyService(_http) {
+var RecipientService = (function () {
+    function RecipientService(_http) {
         this._http = _http;
     }
-    CurrencyService.prototype.getCurrencies = function () {
-        return this._http.get('/api/currencies')
+    RecipientService.prototype.getRecipients = function () {
+        return this._http.get('/api/recipients')
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
-    CurrencyService = __decorate([
+    RecipientService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], CurrencyService);
-    return CurrencyService;
+    ], RecipientService);
+    return RecipientService;
 }());
-exports.CurrencyService = CurrencyService;
-//# sourceMappingURL=currency.service.js.map
+exports.RecipientService = RecipientService;
+//# sourceMappingURL=recipient.service.js.map

@@ -1,5 +1,6 @@
 var path = require("path"),
-    currencies = require("./controllers/currencies");
+    currencies = require("./controllers/currencies"),
+    recipients = require("./controllers/recipients");
 
 module.exports.initialize = function(app, router) {
   var home = path.resolve(__dirname + '/../public/index.html');
@@ -9,6 +10,7 @@ module.exports.initialize = function(app, router) {
   });
 
   router.get('/currencies', currencies.load);
+  router.get('/recipients', recipients.load);
 
   app.use('/api/', router);
 

@@ -30,10 +30,7 @@ export class Currency implements OnInit {
   getCurrencies() {
     this.currencyService.getCurrencies()
       .subscribe(
-        currencies => {
-            console.log('currencies', currencies);
-            this.currencies = currencies;
-        },
+        currencies => {this.currencies = currencies;},
         error => this.errorService.handleError(error)
       );
   }
