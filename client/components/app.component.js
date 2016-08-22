@@ -14,8 +14,8 @@ var AppComponent = (function () {
     }
     AppComponent = __decorate([
         core_1.Component({
-            selector: 'mean2-app',
-            template: "\n    <h2>MEAN2 STARTER</h2>\n    <router-outlet></router-outlet>\n  "
+            selector: 'osdt',
+            template: "\n    <h2>OSDT</h2>\n    <router-outlet></router-outlet>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);

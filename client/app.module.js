@@ -15,7 +15,8 @@ var common_1 = require('@angular/common');
 var http_1 = require('@angular/http');
 var routes_1 = require('./routes');
 var app_component_1 = require('./components/app.component');
-var demo_component_1 = require('./components/demo.component');
+var currency_component_1 = require('./components/currency.component');
+var currency_service_1 = require('./services/currency.service');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -29,11 +30,12 @@ var AppModule = (function () {
                 routes_1.routing
             ],
             providers: [
+                currency_service_1.CurrencyService,
                 { provide: common_1.LocationStrategy, useClass: common_1.HashLocationStrategy }
             ],
             declarations: [
                 app_component_1.AppComponent,
-                demo_component_1.Demo
+                currency_component_1.Currency
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

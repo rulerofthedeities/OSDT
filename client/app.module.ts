@@ -7,7 +7,9 @@ import {HttpModule} from '@angular/http';
 import {routing} from './routes';
 
 import {AppComponent} from './components/app.component';
-import {Demo} from './components/demo.component';
+import {Currency} from './components/currency.component';
+
+import {CurrencyService} from './services/currency.service';
 
 
 @NgModule({
@@ -19,11 +21,12 @@ import {Demo} from './components/demo.component';
     routing
   ],
   providers: [
+    CurrencyService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   declarations: [
     AppComponent,
-    Demo
+    Currency
   ],
   bootstrap: [ AppComponent ]
 })

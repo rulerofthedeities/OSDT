@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'mean2-app',
+  selector: 'osdt',
   template: `
-    <h2>MEAN2 STARTER</h2>
+    <h2>OSDT</h2>
     <router-outlet></router-outlet>
   `
 })

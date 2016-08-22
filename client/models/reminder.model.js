@@ -1,7 +1,6 @@
 "use strict";
 var ReminderModel = (function () {
-    function ReminderModel(lastSent) {
-        this.lastSent = lastSent;
+    function ReminderModel() {
     }
     return ReminderModel;
 }());

@@ -1,8 +1,8 @@
 import {Routes, RouterModule} from '@angular/router';
-import {Demo} from './components/demo.component';
+import {Currency} from './components/currency.component';
 
 const routes: Routes = [
-  {path: '', component: Demo}
+  {path: '', component: Currency}
 ];
 
 export const routing = RouterModule.forRoot(routes);

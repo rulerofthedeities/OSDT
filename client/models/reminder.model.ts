@@ -1,5 +1,4 @@
 export class ReminderModel {
-  constructor(
-    public lastSent: Date
-  ) {}
+  public lastSent: Date;
+  constructor() {}
 }
