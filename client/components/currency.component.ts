@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CurrencyService} from '../services/currency.service';
+import {ErrorService} from '../services/error.service';
 import {CurrencyModel} from '../models/currency.model';
 
 @Component({
@@ -18,21 +19,22 @@ export class Currency implements OnInit {
   currencies:CurrencyModel[] = [];
 
   constructor(
-    private _currencyService: CurrencyService
+    private currencyService: CurrencyService,
+    private errorService: ErrorService
   ) {}
 
   ngOnInit() {
-    this._getCurrencies();
+    this.getCurrencies();
   }
 
-  private _getCurrencies() {
-    this._currencyService.getCurrencies()
+  getCurrencies() {
+    this.currencyService.getCurrencies()
       .subscribe(
         currencies => {
             console.log('currencies', currencies);
             this.currencies = currencies;
         },
-        error => {;}//this.errorService.handleError(error)
+        error => this.errorService.handleError(error)
       );
   }
 }

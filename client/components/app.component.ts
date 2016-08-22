@@ -5,6 +5,7 @@ import {Component} from '@angular/core';
   template: `
     <h2>OSDT</h2>
     <router-outlet></router-outlet>
+    <error-msg></error-msg>
   `
 })
 

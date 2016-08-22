@@ -10,29 +10,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var currency_service_1 = require('../services/currency.service');
+var error_service_1 = require('../services/error.service');
 var Currency = (function () {
-    function Currency(_currencyService) {
-        this._currencyService = _currencyService;
+    function Currency(currencyService, errorService) {
+        this.currencyService = currencyService;
+        this.errorService = errorService;
         this.currencies = [];
     }
     Currency.prototype.ngOnInit = function () {
-        this._getCurrencies();
+        this.getCurrencies();
     };
-    Currency.prototype._getCurrencies = function () {
+    Currency.prototype.getCurrencies = function () {
         var _this = this;
-        this._currencyService.getCurrencies()
+        this.currencyService.getCurrencies()
             .subscribe(function (currencies) {
             console.log('currencies', currencies);
             _this.currencies = currencies;
-        }, function (error) { ; } //this.errorService.handleError(error)
-         //this.errorService.handleError(error)
-        );
+        }, function (error) { return _this.errorService.handleError(error); });
     };
     Currency = __decorate([
         core_1.Component({
             template: "\n    <div>Currencies</div>\n\n    <ul>\n      <li *ngFor=\"let currency of currencies\">\n        {{currency.name}}\n      </li>\n    </ul>\n  "
         }), 
-        __metadata('design:paramtypes', [currency_service_1.CurrencyService])
+        __metadata('design:paramtypes', [currency_service_1.CurrencyService, error_service_1.ErrorService])
     ], Currency);
     return Currency;
 }());

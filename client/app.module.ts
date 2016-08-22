@@ -7,9 +7,11 @@ import {HttpModule} from '@angular/http';
 import {routing} from './routes';
 
 import {AppComponent} from './components/app.component';
+import {ErrorMessage} from './components/common/error-message.component';
 import {Currency} from './components/currency.component';
 
 import {CurrencyService} from './services/currency.service';
+import {ErrorService} from './services/error.service';
 
 
 @NgModule({
@@ -22,10 +24,12 @@ import {CurrencyService} from './services/currency.service';
   ],
   providers: [
     CurrencyService,
+    ErrorService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   declarations: [
     AppComponent,
+    ErrorMessage,
     Currency
   ],
   bootstrap: [ AppComponent ]

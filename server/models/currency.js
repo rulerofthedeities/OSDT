@@ -7,7 +7,7 @@ var schema = new Schema(
     code: {type: String, required: true},
     symbol: {type: String, required: true},
     isDefault: {type: Boolean, default: false}
-  }, 
+  },
   {
     collection: 'currencies'
   }
