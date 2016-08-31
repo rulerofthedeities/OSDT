@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {RouterModule} from '@angular/router';
 import {HttpModule} from '@angular/http';
 
-import {routing} from './routes';
+import {routes} from './routes';
 
 import {AppComponent} from './components/app.component';
 import {ErrorMessage} from './components/common/error-message.component';
@@ -22,13 +22,12 @@ import {ErrorService} from './services/error.service';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    routing
+    RouterModule.forRoot(routes)
   ],
   providers: [
     CurrencyService,
     RecipientService,
-    ErrorService,
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    ErrorService
   ],
   declarations: [
     AppComponent,
