@@ -12,7 +12,6 @@ module.exports = {
     ];
     Recipient
       .aggregate(pipeline, function(err, donations) {
-        console.log("resulting donations", donations);
         response.handleError(err, res, 500, 'Error loading donations', function(){
           response.handleSuccess(res, donations, 200, 'Loaded donations');
         });

@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {HttpModule} from '@angular/http';
+import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
 
 import {routes} from './routes';
 
@@ -33,6 +34,7 @@ import {LogOut} from './components/auth/log-out.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    Ng2BootstrapModule,
     RouterModule.forRoot(routes)
   ],
   providers: [

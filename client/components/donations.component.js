@@ -26,7 +26,7 @@ var Donations = (function () {
     };
     Donations = __decorate([
         core_1.Component({
-            template: "\n    <div>Donations</div>\n\n    <ul>\n      <li *ngFor=\"let donation of donations\">\n        <pre>{{donation|json}}</pre>\n      </li>\n    </ul>\n  "
+            template: "\n    <div>Donations</div>\n\n    <ul>\n      <li *ngFor=\"let donation of donations\">\n        <pre>{{donation|json}}</pre>\n      </li>\n    </ul>\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService])
     ], Donations);

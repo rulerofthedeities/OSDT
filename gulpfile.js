@@ -10,7 +10,7 @@ var gulp = require('gulp'),
   },
 
   vendorCSS   = [
-    //config.dir + 'bootstrap/dist/css/bootstrap.min.css',
+    config.dir + 'bootstrap/dist/css/bootstrap.min.css',
     config.dir + 'font-awesome/css/font-awesome.min.css',
     ],
 
@@ -23,7 +23,7 @@ var gulp = require('gulp'),
 
   vendorFonts = [
     config.dir + 'font-awesome/fonts/**.*',
-  //  config.dir + 'bootstrap/fonts/**.*'
+    config.dir + 'bootstrap/fonts/**.*'
   ];
 
 gulp.task('vendor_styles', function() {

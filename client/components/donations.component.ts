@@ -12,6 +12,7 @@ import {Donation} from '../models/donation.model';
         <pre>{{donation|json}}</pre>
       </li>
     </ul>
+    <alert type="info">ng2-bootstrap hello world!</alert>
   `
 })
 
