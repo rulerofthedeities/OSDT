@@ -1,13 +1,13 @@
 "use strict";
-var CurrencyModel = (function () {
-    function CurrencyModel(_id, name, code, symbol) {
+var Currency = (function () {
+    function Currency(_id, name, code, symbol) {
         this._id = _id;
         this.name = name;
         this.code = code;
         this.symbol = symbol;
         this.isDefault = false;
     }
-    return CurrencyModel;
+    return Currency;
 }());
-exports.CurrencyModel = CurrencyModel;
+exports.Currency = Currency;
 //# sourceMappingURL=currency.model.js.map

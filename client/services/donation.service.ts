@@ -4,12 +4,12 @@ import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
-export class CurrencyService {
+export class DonationService {
 
   constructor(private _http: Http) {}
 
-  getCurrencies() {
-    return this._http.get('/api/currencies')
+  getDonations() {
+    return this._http.get('/api/donations')
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }

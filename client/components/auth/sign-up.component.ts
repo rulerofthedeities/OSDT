@@ -114,12 +114,7 @@ export class SignUp implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.user = {
-      userName: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    };
+    this.user = new User('', '');
   }
 
   onSubmit(user:User, isValid:boolean) {

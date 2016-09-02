@@ -1,11 +1,11 @@
-import {ReminderModel} from './reminder.model';
-import {DonationModel} from './donation.model';
+import {Reminder} from './reminder.model';
+import {Donation} from './donation.model';
 
-export class RecipientModel {
+export class Recipient {
   public description: string;
   public categories: string[];
-  public reminder: ReminderModel[];
-  public donations: DonationModel[];
+  public reminder: Reminder[];
+  public donations: Donation[];
 
   constructor(
     public userId: string,

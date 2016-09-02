@@ -11,18 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var auth_service_1 = require('../../services/auth.service');
 var error_service_1 = require('../../services/error.service');
+var user_model_1 = require('../../models/user.model');
 var SignUp = (function () {
     function SignUp(authService, errorService) {
         this.authService = authService;
         this.errorService = errorService;
     }
     SignUp.prototype.ngOnInit = function () {
-        this.user = {
-            userName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        };
+        this.user = new user_model_1.User('', '');
     };
     SignUp.prototype.onSubmit = function (user, isValid) {
         var _this = this;

@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var auth_service_1 = require('../../services/auth.service');
 var error_service_1 = require('../../services/error.service');
+var user_model_1 = require('../../models/user.model');
 var SignIn = (function () {
     function SignIn(authService, router, errorService) {
         this.authService = authService;
@@ -19,12 +20,7 @@ var SignIn = (function () {
         this.errorService = errorService;
     }
     SignIn.prototype.ngOnInit = function () {
-        this.user = {
-            userName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        };
+        this.user = new user_model_1.User('', '');
     };
     SignIn.prototype.onSubmit = function (user, isValid) {
         var _this = this;

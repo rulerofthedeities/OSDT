@@ -1,8 +1,8 @@
-import {CurrencyModel} from './currency.model';
+import {Currency} from './currency.model';
 
-export class DonationModel {
+export class Donation {
   constructor(
-    public currency: CurrencyModel,
+    public currency: Currency,
     public amount: number,
     public paymentType: string,
     public dt: Date,

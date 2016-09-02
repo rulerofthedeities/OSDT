@@ -17,13 +17,15 @@ var routes_1 = require('./routes');
 var auth_service_1 = require('./services/auth.service');
 var currency_service_1 = require('./services/currency.service');
 var recipient_service_1 = require('./services/recipient.service');
+var donation_service_1 = require('./services/donation.service');
 var error_service_1 = require('./services/error.service');
 var equal_validator_directive_1 = require('./directives/equal-validator.directive');
 var email_validator_directive_1 = require('./directives/email-validator.directive');
 var app_component_1 = require('./components/app.component');
 var error_message_component_1 = require('./components/common/error-message.component');
-var currency_component_1 = require('./components/currency.component');
-var recipient_component_1 = require('./components/recipient.component');
+var currencies_component_1 = require('./components/currencies.component');
+var recipients_component_1 = require('./components/recipients.component');
+var donations_component_1 = require('./components/donations.component');
 var auth_menu_component_1 = require('./components/auth/auth-menu.component');
 var sign_up_component_1 = require('./components/auth/sign-up.component');
 var sign_in_component_1 = require('./components/auth/sign-in.component');
@@ -43,14 +45,16 @@ var AppModule = (function () {
             providers: [
                 currency_service_1.CurrencyService,
                 recipient_service_1.RecipientService,
+                donation_service_1.DonationService,
                 error_service_1.ErrorService,
                 auth_service_1.AuthService
             ],
             declarations: [
                 app_component_1.AppComponent,
                 error_message_component_1.ErrorMessage,
-                currency_component_1.Currency,
-                recipient_component_1.Recipient,
+                currencies_component_1.Currencies,
+                recipients_component_1.Recipients,
+                donations_component_1.Donations,
                 equal_validator_directive_1.EqualValidator,
                 email_validator_directive_1.EmailValidator,
                 auth_menu_component_1.AuthMenu,

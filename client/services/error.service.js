@@ -6,9 +6,14 @@ var ErrorService = (function () {
         this.errorOccurred = new core_1.EventEmitter();
     }
     ErrorService.prototype.handleError = function (error) {
-        var errMsg = JSON.parse(error._body);
-        var errorData = new error_model_1.Error(errMsg.title, errMsg.error.message);
-        this.errorOccurred.emit(errorData);
+        console.log('error', error);
+        var msg = 'unknown error message';
+        var err = 'unknown error';
+        if (error.error) {
+            msg = error.error.message;
+            err = error.error;
+            this.errorOccurred.emit(new error_model_1.Error(error.title, msg, err));
+        }
     };
     return ErrorService;
 }());

@@ -5,8 +5,13 @@ export class ErrorService {
   errorOccurred = new EventEmitter<Error>();
 
   handleError(error: any) {
-    const errMsg = JSON.parse(error._body);
-    const errorData = new Error(errMsg.title, errMsg.error.message);
-    this.errorOccurred.emit(errorData);
+    console.log('error', error);
+    var msg = 'unknown error message';
+    var err = 'unknown error';
+    if (error.error) {
+      msg = error.error.message;
+      err = error.error;
+      this.errorOccurred.emit(new Error(error.title, msg, err));
+    }
   }
 }

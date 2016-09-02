@@ -1,8 +1,8 @@
 "use strict";
-var ReminderModel = (function () {
-    function ReminderModel() {
+var Reminder = (function () {
+    function Reminder() {
     }
-    return ReminderModel;
+    return Reminder;
 }());
-exports.ReminderModel = ReminderModel;
+exports.Reminder = Reminder;
 //# sourceMappingURL=reminder.model.js.map

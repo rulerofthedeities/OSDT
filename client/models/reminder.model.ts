@@ -1,4 +1,4 @@
-export class ReminderModel {
+export class Reminder {
   public lastSent: Date;
   constructor() {}
 }

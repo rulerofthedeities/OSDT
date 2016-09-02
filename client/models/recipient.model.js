@@ -1,10 +1,10 @@
 "use strict";
-var RecipientModel = (function () {
-    function RecipientModel(userId, name) {
+var Recipient = (function () {
+    function Recipient(userId, name) {
         this.userId = userId;
         this.name = name;
     }
-    return RecipientModel;
+    return Recipient;
 }());
-exports.RecipientModel = RecipientModel;
+exports.Recipient = Recipient;
 //# sourceMappingURL=recipient.model.js.map
