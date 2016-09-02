@@ -9,7 +9,7 @@ import {Donation} from '../models/donation.model';
 
     <ul>
       <li *ngFor="let donation of donations">
-        <pre>{{donations|json}}</pre>
+        <pre>{{donation|json}}</pre>
       </li>
     </ul>
   `

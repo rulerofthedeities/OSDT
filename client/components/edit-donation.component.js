@@ -9,28 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var donation_model_1 = require('../models/donation.model');
 var donation_service_1 = require('../services/donation.service');
 var error_service_1 = require('../services/error.service');
-var Donations = (function () {
-    function Donations(donationService, errorService) {
+var EditDonation = (function () {
+    function EditDonation(donationService, errorService) {
         this.donationService = donationService;
         this.errorService = errorService;
     }
-    Donations.prototype.ngOnInit = function () {
-        this.getDonations();
-    };
-    Donations.prototype.getDonations = function () {
+    EditDonation.prototype.onSubmit = function () {
         var _this = this;
-        this.donationService.getDonations()
-            .subscribe(function (donations) { _this.donations = donations; }, function (error) { return _this.errorService.handleError(error); });
+        console.log('test adding donation');
+        var donation = new donation_model_1.Donation('EUR', 20, 'credit card', new Date(), 'test2', '57bb3aa95b315169c0c5cb49');
+        this.donationService.addDonation(donation)
+            .subscribe(function (data) { console.log('added donation', data); }, function (error) { return _this.errorService.handleError(error); });
     };
-    Donations = __decorate([
+    EditDonation = __decorate([
         core_1.Component({
-            template: "\n    <div>Donations</div>\n\n    <ul>\n      <li *ngFor=\"let donation of donations\">\n        <pre>{{donation|json}}</pre>\n      </li>\n    </ul>\n  "
+            selector: 'donation',
+            template: "\n  NEW DONATION\n  <form (ngSubmit)=\"onSubmit()\">\n    <button type=\"submit\" class=\"btn btn-success\">Save</button>\n  </form>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService])
-    ], Donations);
-    return Donations;
+    ], EditDonation);
+    return EditDonation;
 }());
-exports.Donations = Donations;
-//# sourceMappingURL=donations.component.js.map
+exports.EditDonation = EditDonation;
+//# sourceMappingURL=edit-donation.component.js.map

@@ -3,10 +3,11 @@ var mongoose = require('mongoose'),
 
 var donationSchema = new Schema(
   { 
+    currency: {type: String, required: true},
     amount: {type: Number, required: true},
-    name: {type: String, required: true, index: {unique: true}},
+    paymentType: String,
     dtPaid: {type: Date, required: true},
-    currency: {type: String, required: true}
+    note: String
   }
 );
 

@@ -26,6 +26,7 @@ var error_message_component_1 = require('./components/common/error-message.compo
 var currencies_component_1 = require('./components/currencies.component');
 var recipients_component_1 = require('./components/recipients.component');
 var donations_component_1 = require('./components/donations.component');
+var edit_donation_component_1 = require('./components/edit-donation.component');
 var auth_menu_component_1 = require('./components/auth/auth-menu.component');
 var sign_up_component_1 = require('./components/auth/sign-up.component');
 var sign_in_component_1 = require('./components/auth/sign-in.component');
@@ -55,6 +56,7 @@ var AppModule = (function () {
                 currencies_component_1.Currencies,
                 recipients_component_1.Recipients,
                 donations_component_1.Donations,
+                edit_donation_component_1.EditDonation,
                 equal_validator_directive_1.EqualValidator,
                 email_validator_directive_1.EmailValidator,
                 auth_menu_component_1.AuthMenu,

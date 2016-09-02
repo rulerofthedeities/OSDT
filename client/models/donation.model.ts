@@ -1,11 +1,10 @@
-import {Currency} from './currency.model';
-
 export class Donation {
   constructor(
-    public currency: Currency,
+    public currency: string,
     public amount: number,
     public paymentType: string,
-    public dt: Date,
-    public note: string
+    public dtPaid: Date,
+    public note: string,
+    public recipientId: string
   ) {}
 }
