@@ -12,11 +12,16 @@ var core_1 = require('@angular/core');
 var donation_model_1 = require('../models/donation.model');
 var donation_service_1 = require('../services/donation.service');
 var error_service_1 = require('../services/error.service');
+var fields_service_1 = require('../services/fields.service');
 var EditDonation = (function () {
-    function EditDonation(donationService, errorService) {
+    function EditDonation(donationService, errorService, fieldsService) {
         this.donationService = donationService;
         this.errorService = errorService;
+        this.fieldsService = fieldsService;
     }
+    EditDonation.prototype.ngOnInit = function () {
+        this.fields = this.fieldsService.getDonationFields();
+    };
     EditDonation.prototype.onSubmit = function () {
         var _this = this;
         console.log('test adding donation');
@@ -27,9 +32,9 @@ var EditDonation = (function () {
     EditDonation = __decorate([
         core_1.Component({
             selector: 'donation',
-            template: "\n  NEW DONATION\n  <form (ngSubmit)=\"onSubmit()\">\n    <button type=\"submit\" class=\"btn btn-success\">Save</button>\n  </form>\n  "
+            template: "\n  NEW DONATION\n  <auto-form [fields]=\"fields\">\n  </auto-form>\n  "
         }), 
-        __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService])
+        __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService, fields_service_1.FieldsService])
     ], EditDonation);
     return EditDonation;
 }());

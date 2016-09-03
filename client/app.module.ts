@@ -12,12 +12,16 @@ import {CurrencyService} from './services/currency.service';
 import {RecipientService} from './services/recipient.service';
 import {DonationService} from './services/donation.service';
 import {ErrorService} from './services/error.service';
+import {FieldControlService} from './services/field-control.service';
+import {FieldsService} from './services/fields.service';
 
 import {EqualValidator} from './directives/equal-validator.directive';
 import {EmailValidator} from './directives/email-validator.directive';
 
 import {AppComponent} from './components/app.component';
 import {ErrorMessage} from './components/common/error-message.component';
+import {AutoForm} from './components/common/auto-form.component';
+import {AutoFormField} from './components/common/auto-form-field.component';
 import {Currencies} from './components/currencies.component';
 import {Recipients} from './components/recipients.component';
 import {Donations} from './components/donations.component';
@@ -42,7 +46,9 @@ import {LogOut} from './components/auth/log-out.component';
     RecipientService,
     DonationService,
     ErrorService,
-    AuthService
+    AuthService,
+    FieldControlService,
+    FieldsService
   ],
   declarations: [
     AppComponent,
@@ -56,7 +62,9 @@ import {LogOut} from './components/auth/log-out.component';
     AuthMenu,
     SignUp,
     SignIn,
-    LogOut
+    LogOut,
+    AutoForm,
+    AutoFormField
   ],
   bootstrap: [ AppComponent ]
 })

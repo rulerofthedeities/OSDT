@@ -20,10 +20,14 @@ var currency_service_1 = require('./services/currency.service');
 var recipient_service_1 = require('./services/recipient.service');
 var donation_service_1 = require('./services/donation.service');
 var error_service_1 = require('./services/error.service');
+var field_control_service_1 = require('./services/field-control.service');
+var fields_service_1 = require('./services/fields.service');
 var equal_validator_directive_1 = require('./directives/equal-validator.directive');
 var email_validator_directive_1 = require('./directives/email-validator.directive');
 var app_component_1 = require('./components/app.component');
 var error_message_component_1 = require('./components/common/error-message.component');
+var auto_form_component_1 = require('./components/common/auto-form.component');
+var auto_form_field_component_1 = require('./components/common/auto-form-field.component');
 var currencies_component_1 = require('./components/currencies.component');
 var recipients_component_1 = require('./components/recipients.component');
 var donations_component_1 = require('./components/donations.component');
@@ -50,7 +54,9 @@ var AppModule = (function () {
                 recipient_service_1.RecipientService,
                 donation_service_1.DonationService,
                 error_service_1.ErrorService,
-                auth_service_1.AuthService
+                auth_service_1.AuthService,
+                field_control_service_1.FieldControlService,
+                fields_service_1.FieldsService
             ],
             declarations: [
                 app_component_1.AppComponent,
@@ -64,7 +70,9 @@ var AppModule = (function () {
                 auth_menu_component_1.AuthMenu,
                 sign_up_component_1.SignUp,
                 sign_in_component_1.SignIn,
-                log_out_component_1.LogOut
+                log_out_component_1.LogOut,
+                auto_form_component_1.AutoForm,
+                auto_form_field_component_1.AutoFormField
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
