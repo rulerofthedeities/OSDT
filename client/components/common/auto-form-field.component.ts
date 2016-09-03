@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {Field} from '../../models/field.model';
+import {Field} from '../../models/fields/field.model';
 
 @Component({
   selector: 'auto-field',
@@ -14,9 +14,21 @@ import {Field} from '../../models/field.model';
       <div [ngSwitch]="field.controlType">
         <input 
           *ngSwitchCase="'textbox'" 
+          [placeholder]="field.placeholder"
+          [readonly]="field.readonly"
           [formControlName]="field.key"
           [id]="field.key"
           [type]="field.type">
+
+        <textarea 
+          *ngSwitchCase="'textarea'" 
+          [placeholder]="field.placeholder"
+          [readonly]="field.readonly"
+          [rows]="field.rows"
+          [cols]="field.cols"
+          [formControlName]="field.key"
+          [id]="field.key">
+        </textarea>
 
         <select 
           [id]="field.key" 

@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Field} from '../models/field.model';
-import {TextboxField} from '../models/field-textbox.model';
-import {DropdownField} from '../models/field-dropdown.model';
-import {RadioField} from '../models/field-radio.model';
+import {Field} from '../models/fields/field.model';
+import {TextboxField} from '../models/fields/field-textbox.model';
+import {TextareaField} from '../models/fields/field-textarea.model';
+import {DropdownField} from '../models/fields/field-dropdown.model';
+import {RadioField} from '../models/fields/field-radio.model';
 
 @Injectable()
 export class FieldsService {
@@ -20,6 +21,7 @@ export class FieldsService {
           {key: 'paypal', display: 'Paypal'},
           {key: 'cash', display: 'Cash'}
         ],
+        value: 'creditcard',
         order: 3
       }),
 
@@ -42,10 +44,11 @@ export class FieldsService {
         order: 1
       }),
 
-      new TextboxField({
+      new TextareaField({
         key: 'note',
-        label: 'Note',
-        type: 'text',
+        label: 'Notes',
+        rows: 6,
+        cols: 20,
         order: 4
       })
     ];

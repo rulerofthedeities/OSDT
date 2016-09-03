@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var forms_1 = require('@angular/forms');
 var FieldControlService = (function () {
     function FieldControlService() {
+        this.dataSubmitted = new core_1.EventEmitter();
     }
     FieldControlService.prototype.toFormGroup = function (fields) {
         var group = {};
@@ -20,6 +21,9 @@ var FieldControlService = (function () {
                 : new forms_1.FormControl(field.value || '');
         });
         return new forms_1.FormGroup(group);
+    };
+    FieldControlService.prototype.onDataSubmitted = function (data) {
+        this.dataSubmitted.emit(data);
     };
     FieldControlService = __decorate([
         core_1.Injectable(), 

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {Field} from '../../models/field.model';
+import {Field} from '../../models/fields/field.model';
 import {FieldControlService} from '../../services/field-control.service';
 
 @Component({
@@ -39,5 +39,6 @@ export class AutoForm implements OnInit {
 
   onSubmit() {
     this.submitted = JSON.stringify(this.form.value);
+    this.fieldControlService.onDataSubmitted(this.form.value);
   }
 }

@@ -21,6 +21,7 @@ var AutoForm = (function () {
     };
     AutoForm.prototype.onSubmit = function () {
         this.submitted = JSON.stringify(this.form.value);
+        this.fieldControlService.onDataSubmitted(this.form.value);
     };
     __decorate([
         core_1.Input(), 

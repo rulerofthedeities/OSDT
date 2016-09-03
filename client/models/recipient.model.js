@@ -3,6 +3,7 @@ var Recipient = (function () {
     function Recipient(userId, name) {
         this.userId = userId;
         this.name = name;
+        this.isActive = true;
     }
     return Recipient;
 }());

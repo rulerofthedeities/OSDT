@@ -9,23 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var donation_model_1 = require('../models/donation.model');
 var donation_service_1 = require('../services/donation.service');
 var error_service_1 = require('../services/error.service');
+var field_control_service_1 = require('../services/field-control.service');
 var fields_service_1 = require('../services/fields.service');
 var EditDonation = (function () {
-    function EditDonation(donationService, errorService, fieldsService) {
+    function EditDonation(donationService, errorService, fieldControlService, fieldsService) {
         this.donationService = donationService;
         this.errorService = errorService;
+        this.fieldControlService = fieldControlService;
         this.fieldsService = fieldsService;
     }
     EditDonation.prototype.ngOnInit = function () {
-        this.fields = this.fieldsService.getDonationFields();
-    };
-    EditDonation.prototype.onSubmit = function () {
         var _this = this;
-        console.log('test adding donation');
-        var donation = new donation_model_1.Donation('EUR', 20, 'credit card', new Date(), 'test2', '57bb3aa95b315169c0c5cb49');
+        this.fields = this.fieldsService.getDonationFields();
+        this.fieldControlService.dataSubmitted.subscribe(function (formData) { _this.submitForm(formData); });
+    };
+    EditDonation.prototype.submitForm = function (donation) {
+        var _this = this;
+        donation.dtPaid = new Date();
+        donation.recipientId = '57bb3aa95b315169c0c5cb49';
         this.donationService.addDonation(donation)
             .subscribe(function (data) { console.log('added donation', data); }, function (error) { return _this.errorService.handleError(error); });
     };
@@ -34,7 +37,7 @@ var EditDonation = (function () {
             selector: 'donation',
             template: "\n  NEW DONATION\n  <auto-form [fields]=\"fields\">\n  </auto-form>\n  "
         }), 
-        __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService, fields_service_1.FieldsService])
+        __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService, field_control_service_1.FieldControlService, fields_service_1.FieldsService])
     ], EditDonation);
     return EditDonation;
 }());

@@ -1,9 +1,10 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Field} from '../models/field.model';
+import {Field} from '../models/fields/field.model';
 
 @Injectable()
 export class FieldControlService {
+  dataSubmitted = new EventEmitter<any>();
 
   toFormGroup(fields: Field<any>[] ) {
     let group: any = {};
@@ -13,5 +14,9 @@ export class FieldControlService {
                                         : new FormControl(field.value || '');
     });
     return new FormGroup(group);
+  }
+
+  onDataSubmitted(data: any) {
+    this.dataSubmitted.emit(data);
   }
 }

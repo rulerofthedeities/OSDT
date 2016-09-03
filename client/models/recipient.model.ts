@@ -6,6 +6,7 @@ export class Recipient {
   public categories: string[];
   public reminder: Reminder[];
   public donations: Donation[];
+  public isActive = true;
 
   constructor(
     public userId: string,
