@@ -15,7 +15,8 @@ module.exports.initialize = function(app, router) {
   router.get('/recipients', recipients.load);
   router.get('/donations', donations.load);
 
-  router.post('/donations/add', donations.add);
+  router.post('/donations', donations.add);
+  router.put('/donations', donations.update);
 
   router.post('/user/signin', users.signin);
   router.post('/user/signup', users.signup);

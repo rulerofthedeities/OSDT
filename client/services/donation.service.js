@@ -15,17 +15,36 @@ var Observable_1 = require('rxjs/Observable');
 var DonationService = (function () {
     function DonationService(_http) {
         this._http = _http;
+        this.added = new core_1.EventEmitter();
     }
     DonationService.prototype.getDonations = function () {
         return this._http.get('/api/donations')
-            .map(function (response) { return response.json().obj; })
+            .map(function (response) { return response.json().obj.map(function (donation) {
+            //donation.donation.recipientId = donation.recipientId;
+            return donation.donation;
+        }); })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService.prototype.addDonation = function (donation) {
+        var _this = this;
         var body = JSON.stringify(donation);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.post('/api/donations/add', body, { headers: headers })
-            .map(function (response) { return response.json(); })
+        return this._http.post('/api/donations', body, { headers: headers })
+            .map(function (response) {
+            _this.added.emit(response.json().obj);
+            return response.json();
+        })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    DonationService.prototype.updateDonation = function (donation) {
+        var body = JSON.stringify(donation);
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        return this._http.put('/api/donations', body, { headers: headers })
+            .map(function (response) {
+            console.log('response', response.json().obj);
+            //this.updated.emit(response.json().obj);
+            return response.json();
+        })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService = __decorate([

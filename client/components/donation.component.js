@@ -32,18 +32,19 @@ var EditDonation = (function () {
         this.donationFields = this.fieldsService.getDonationFields();
     };
     EditDonation.prototype.submitForm = function (donation) {
-        /*donation.dtPaid = new Date();
-        donation.recipientId = '57bb3aa95b315169c0c5cb49';
-        */
-        console.log('submit donation', JSON.stringify(this.donationForm.value));
+        var _this = this;
+        console.log('submit donation', donation);
+        donation._id = this.donation._id;
+        //donation.dtPaid = new Date();
+        this.donationService.updateDonation(donation)
+            .subscribe(function (data) { console.log('updated donation', data); }, function (error) { return _this.errorService.handleError(error); });
         /*
-            this.donationService.addDonation(donation)
-              .subscribe(
-                  data => {console.log('added donation', data);},
-                  error => this.errorService.handleError(error)
-              );
-          }
-          */
+        this.donationService.addDonation(donation)
+          .subscribe(
+              data => {console.log('added donation', data);},
+              error => this.errorService.handleError(error)
+          );
+        */
     };
     __decorate([
         core_1.Input(), 
@@ -56,7 +57,7 @@ var EditDonation = (function () {
     EditDonation = __decorate([
         core_1.Component({
             selector: 'donation',
-            template: "\n  NEW DONATION\n  <form \n    [formGroup]=\"donationForm\" \n    class=\"form-horizontal\" \n    (submit)=\"submitForm()\">\n\n    <pre>{{donation|json}}</pre>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['paymentType']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['amount']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['currency']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['note']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n  <button \n    type=\"submit\"\n    [disabled]=\"!donationForm.valid\" \n    class=\"btn btn-primary\">\n    Save\n  </button>\n\n  </form>\n\n\n  "
+            template: "\n  NEW DONATION\n  <form \n    [formGroup]=\"donationForm\" \n    class=\"form-horizontal\" \n    (submit)=\"submitForm(donationForm.value)\">\n\n    <pre>{{donation|json}}</pre>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['paymentType']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['amount']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['currency']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['note']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n  <button \n    type=\"submit\"\n    [disabled]=\"!donationForm.valid\" \n    class=\"btn btn-primary\">\n    Save\n  </button>\n\n  </form>\n\n\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder])
     ], EditDonation);

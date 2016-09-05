@@ -6,7 +6,6 @@ import {ErrorService} from '../services/error.service';
 import {FieldsService} from '../services/fields.service';
 import {Field} from '../models/fields/field.model';
 
-
 @Component({
   selector: 'donation',
   template: `
@@ -14,7 +13,7 @@ import {Field} from '../models/fields/field.model';
   <form 
     [formGroup]="donationForm" 
     class="form-horizontal" 
-    (submit)="submitForm()">
+    (submit)="submitForm(donationForm.value)">
 
     <pre>{{donation|json}}</pre>
 
@@ -89,17 +88,23 @@ export class EditDonation implements OnInit {
   }
 
   submitForm(donation: Donation) {
-    /*donation.dtPaid = new Date();
-    donation.recipientId = '57bb3aa95b315169c0c5cb49';
-    */
 
-    console.log('submit donation', JSON.stringify(this.donationForm.value));
-/*
+    console.log('submit donation',donation);
+    donation._id = this.donation._id;
+    //donation.dtPaid = new Date();
+
+    this.donationService.updateDonation(donation)
+      .subscribe(
+          data => {console.log('updated donation', data);},
+          error => this.errorService.handleError(error)
+      );
+    /*
     this.donationService.addDonation(donation)
       .subscribe(
           data => {console.log('added donation', data);},
           error => this.errorService.handleError(error)
       );
+    */
   }
-  */
+
 }

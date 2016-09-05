@@ -9,8 +9,8 @@ import {Donation} from '../models/donation.model';
 
     <ul>
       <li *ngFor="let donation of donations"
-        (click)="selectDonation(donation?.donation)"> 
-        {{donation?.donation?.note}}
+        (click)="selectDonation(donation)"> 
+        {{donation.note}}
         <!-- <pre>{{donation|json}}</pre> -->
       </li>
     </ul>
@@ -35,6 +35,12 @@ export class Donations implements OnInit {
 
   ngOnInit() {
     this.getDonations();
+    this.donationService.added.subscribe(
+      addedDonation => {
+        this.currentDonation = null;
+        this.donations.push(addedDonation);
+      }
+    );
   }
 
   getDonations() {

@@ -18,7 +18,12 @@ var Donations = (function () {
         this.currentDonation = null;
     }
     Donations.prototype.ngOnInit = function () {
+        var _this = this;
         this.getDonations();
+        this.donationService.added.subscribe(function (addedDonation) {
+            _this.currentDonation = null;
+            _this.donations.push(addedDonation);
+        });
     };
     Donations.prototype.getDonations = function () {
         var _this = this;
@@ -30,7 +35,7 @@ var Donations = (function () {
     };
     Donations = __decorate([
         core_1.Component({
-            template: "\n    <div>Donations</div>\n\n    <ul>\n      <li *ngFor=\"let donation of donations\"\n        (click)=\"selectDonation(donation?.donation)\"> \n        {{donation?.donation?.note}}\n        <!-- <pre>{{donation|json}}</pre> -->\n      </li>\n    </ul>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      editMode=false>\n    </donation>\n\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
+            template: "\n    <div>Donations</div>\n\n    <ul>\n      <li *ngFor=\"let donation of donations\"\n        (click)=\"selectDonation(donation)\"> \n        {{donation.note}}\n        <!-- <pre>{{donation|json}}</pre> -->\n      </li>\n    </ul>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      editMode=false>\n    </donation>\n\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService])
     ], Donations);
