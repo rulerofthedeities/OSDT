@@ -15,6 +15,7 @@ var Donations = (function () {
     function Donations(donationService, errorService) {
         this.donationService = donationService;
         this.errorService = errorService;
+        this.currentDonation = null;
     }
     Donations.prototype.ngOnInit = function () {
         this.getDonations();
@@ -24,9 +25,12 @@ var Donations = (function () {
         this.donationService.getDonations()
             .subscribe(function (donations) { _this.donations = donations; }, function (error) { return _this.errorService.handleError(error); });
     };
+    Donations.prototype.selectDonation = function (donation) {
+        this.currentDonation = donation;
+    };
     Donations = __decorate([
         core_1.Component({
-            template: "\n    <div>Donations</div>\n\n    <ul>\n      <li *ngFor=\"let donation of donations\">\n        <pre>{{donation|json}}</pre>\n      </li>\n    </ul>\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
+            template: "\n    <div>Donations</div>\n\n    <ul>\n      <li *ngFor=\"let donation of donations\"\n        (click)=\"selectDonation(donation?.donation)\"> \n        {{donation?.donation?.note}}\n        <!-- <pre>{{donation|json}}</pre> -->\n      </li>\n    </ul>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      editMode=false>\n    </donation>\n\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService])
     ], Donations);

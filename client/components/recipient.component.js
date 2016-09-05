@@ -9,17 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
+var recipient_model_1 = require('../models/recipient.model');
+var EditRecipient = (function () {
+    function EditRecipient() {
     }
-    AppComponent = __decorate([
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', recipient_model_1.Recipient)
+    ], EditRecipient.prototype, "recipient", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], EditRecipient.prototype, "editMode", void 0);
+    EditRecipient = __decorate([
         core_1.Component({
-            selector: 'osdt',
-            template: "\n    <div class=\"container\">\n      <h2>OSDT</h2>\n      <router-outlet></router-outlet>\n      <error-msg></error-msg>\n    </div>\n  "
+            selector: 'recipient',
+            template: "Recipient\n    <pre>{{recipient|json}}</pre>\n  "
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], EditRecipient);
+    return EditRecipient;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.EditRecipient = EditRecipient;
+//# sourceMappingURL=recipient.component.js.map

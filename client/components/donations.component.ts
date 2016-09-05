@@ -8,16 +8,25 @@ import {Donation} from '../models/donation.model';
     <div>Donations</div>
 
     <ul>
-      <li *ngFor="let donation of donations">
-        <pre>{{donation|json}}</pre>
+      <li *ngFor="let donation of donations"
+        (click)="selectDonation(donation?.donation)"> 
+        {{donation?.donation?.note}}
+        <!-- <pre>{{donation|json}}</pre> -->
       </li>
     </ul>
+
+    <donation *ngIf="currentDonation"
+      [donation]="currentDonation"
+      editMode=false>
+    </donation>
+
     <alert type="info">ng2-bootstrap hello world!</alert>
   `
 })
 
 export class Donations implements OnInit {
-  donations:Donation[];
+  donations: Donation[];
+  currentDonation: Donation = null;
 
   constructor(
     private donationService: DonationService,
@@ -34,5 +43,9 @@ export class Donations implements OnInit {
         donations => {this.donations = donations;},
         error => this.errorService.handleError(error)
       );
+  }
+
+  selectDonation(donation) {
+    this.currentDonation = donation;
   }
 }

@@ -16,18 +16,23 @@ var Recipients = (function () {
         this.recipientService = recipientService;
         this.errorService = errorService;
         this.recipients = [];
+        this.currentRecipient = null;
     }
     Recipients.prototype.ngOnInit = function () {
-        this.getCurrencies();
+        this.getRecipients();
     };
-    Recipients.prototype.getCurrencies = function () {
+    Recipients.prototype.getRecipients = function () {
         var _this = this;
         this.recipientService.getRecipients()
             .subscribe(function (recipients) { _this.recipients = recipients; }, function (error) { return _this.errorService.handleError(error); });
     };
+    Recipients.prototype.selectRecipient = function (recipient, i) {
+        this.currentRecipient = recipient;
+        console.log(recipient, i);
+    };
     Recipients = __decorate([
         core_1.Component({
-            template: "\n    <div>Recipients</div>\n\n    <ul>\n      <li *ngFor=\"let recipient of recipients\">\n        {{recipient.name}}\n      </li>\n    </ul>\n  "
+            template: "\n    <h3>Recipients</h3>\n\n    <ul>\n      <li *ngFor=\"let recipient of recipients; let i = index\"\n        (click)=\"selectRecipient(recipient, i)\"> \n        {{recipient.name}}\n      </li>\n    </ul>\n\n    <recipient *ngIf=\"currentRecipient\"\n      [recipient]=\"currentRecipient\"\n      editMode=false>\n    </recipient>\n  "
         }), 
         __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService])
     ], Recipients);

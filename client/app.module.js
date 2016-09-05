@@ -20,18 +20,17 @@ var currency_service_1 = require('./services/currency.service');
 var recipient_service_1 = require('./services/recipient.service');
 var donation_service_1 = require('./services/donation.service');
 var error_service_1 = require('./services/error.service');
-var field_control_service_1 = require('./services/field-control.service');
 var fields_service_1 = require('./services/fields.service');
 var equal_validator_directive_1 = require('./directives/equal-validator.directive');
 var email_validator_directive_1 = require('./directives/email-validator.directive');
 var app_component_1 = require('./components/app.component');
 var error_message_component_1 = require('./components/common/error-message.component');
-var auto_form_component_1 = require('./components/common/auto-form.component');
 var auto_form_field_component_1 = require('./components/common/auto-form-field.component');
 var currencies_component_1 = require('./components/currencies.component');
 var recipients_component_1 = require('./components/recipients.component');
+var recipient_component_1 = require('./components/recipient.component');
 var donations_component_1 = require('./components/donations.component');
-var edit_donation_component_1 = require('./components/edit-donation.component');
+var donation_component_1 = require('./components/donation.component');
 var auth_menu_component_1 = require('./components/auth/auth-menu.component');
 var sign_up_component_1 = require('./components/auth/sign-up.component');
 var sign_in_component_1 = require('./components/auth/sign-in.component');
@@ -55,7 +54,6 @@ var AppModule = (function () {
                 donation_service_1.DonationService,
                 error_service_1.ErrorService,
                 auth_service_1.AuthService,
-                field_control_service_1.FieldControlService,
                 fields_service_1.FieldsService
             ],
             declarations: [
@@ -63,15 +61,15 @@ var AppModule = (function () {
                 error_message_component_1.ErrorMessage,
                 currencies_component_1.Currencies,
                 recipients_component_1.Recipients,
+                recipient_component_1.EditRecipient,
                 donations_component_1.Donations,
-                edit_donation_component_1.EditDonation,
+                donation_component_1.EditDonation,
                 equal_validator_directive_1.EqualValidator,
                 email_validator_directive_1.EmailValidator,
                 auth_menu_component_1.AuthMenu,
                 sign_up_component_1.SignUp,
                 sign_in_component_1.SignIn,
                 log_out_component_1.LogOut,
-                auto_form_component_1.AutoForm,
                 auto_form_field_component_1.AutoFormField
             ],
             bootstrap: [app_component_1.AppComponent]

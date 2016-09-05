@@ -13,6 +13,7 @@ var field_textbox_model_1 = require('../models/fields/field-textbox.model');
 var field_textarea_model_1 = require('../models/fields/field-textarea.model');
 var field_dropdown_model_1 = require('../models/fields/field-dropdown.model');
 var field_radio_model_1 = require('../models/fields/field-radio.model');
+var field_date_model_1 = require('../models/fields/field-date.model');
 var FieldsService = (function () {
     function FieldsService() {
     }
@@ -26,9 +27,7 @@ var FieldsService = (function () {
                     { key: 'debitcard', display: 'Debit Card' },
                     { key: 'paypal', display: 'Paypal' },
                     { key: 'cash', display: 'Cash' }
-                ],
-                value: 'creditcard',
-                order: 3
+                ]
             }),
             new field_radio_model_1.RadioField({
                 key: 'currency',
@@ -36,26 +35,27 @@ var FieldsService = (function () {
                 buttons: [
                     { key: 'EUR', display: 'Euro' },
                     { key: 'USD', display: 'US Dollar' }
-                ],
-                value: 'EUR',
-                order: 2
+                ]
             }),
             new field_textbox_model_1.TextboxField({
                 key: 'amount',
                 label: 'Amount',
-                type: 'number',
-                value: 10,
-                order: 1
+                type: 'number'
             }),
             new field_textarea_model_1.TextareaField({
                 key: 'note',
                 label: 'Notes',
                 rows: 6,
-                cols: 20,
-                order: 4
+                cols: 20
+            }),
+            new field_date_model_1.DateField({
+                key: 'dtPaid',
+                label: 'Date paid'
             })
         ];
-        return fields.sort(function (a, b) { return a.order - b.order; });
+        var fieldArr = {};
+        fields.forEach(function (field) { return fieldArr[field.key] = field; });
+        return fieldArr;
     };
     FieldsService = __decorate([
         core_1.Injectable(), 
