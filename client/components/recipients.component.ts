@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
 import {Recipient} from '../models/recipient.model';
@@ -8,9 +9,10 @@ import {Recipient} from '../models/recipient.model';
     <h3>Recipients</h3>
 
     <ul>
-      <li *ngFor="let recipient of recipients; let i = index"
-        (click)="selectRecipient(recipient, i)"> 
-        {{recipient.name}}
+      <li *ngFor="let recipient of recipients">
+        <span (click)="selectRecipient(recipient)"> 
+          {{recipient.name}} ({{recipient.cnt}}
+        </span> <span (click)="selectDonations(recipient)">donation{{recipient.cnt === 1 ? '' :'s'}}</span>)
       </li>
     </ul>
 
@@ -27,7 +29,8 @@ export class Recipients implements OnInit {
 
   constructor(
     private recipientService: RecipientService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -42,8 +45,12 @@ export class Recipients implements OnInit {
       );
   }
 
-  selectRecipient(recipient, i) {
+  selectRecipient(recipient) {
     this.currentRecipient = recipient;
-    console.log(recipient, i);
+  }
+
+  selectDonations(recipient) {
+    console.log('retrieving donations for ', recipient);
+    this.router.navigate(['/donations', recipient._id]);
   }
 }

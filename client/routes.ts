@@ -12,6 +12,7 @@ export const routes: Routes = [
   {path: 'recipients', component: Recipients},
   {path: 'currencies', component: Currencies},
   {path: 'donations', component: Donations},
+  {path: 'donations/:id', component: Donations},
   {
     path: 'auth',
     component: AuthMenu,

@@ -13,4 +13,10 @@ export class RecipientService {
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
+
+  getRecipient(recipientId: string) {
+    return this._http.get('/api/recipients/' + recipientId)
+      .map(response => response.json().obj)
+      .catch(error => Observable.throw(error));
+  }
 }

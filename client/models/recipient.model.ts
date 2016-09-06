@@ -10,6 +10,7 @@ export class Recipient {
 
   constructor(
     public userId: string,
-    public name: string
+    public name: string,
+    public _id?: string
   ) {}
 }

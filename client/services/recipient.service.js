@@ -21,6 +21,11 @@ var RecipientService = (function () {
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
+    RecipientService.prototype.getRecipient = function (recipientId) {
+        return this._http.get('/api/recipients/' + recipientId)
+            .map(function (response) { return response.json().obj; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
     RecipientService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

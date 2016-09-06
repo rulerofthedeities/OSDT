@@ -1,12 +1,12 @@
 "use strict";
 var Donation = (function () {
-    function Donation(currency, amount, paymentType, dtPaid, note, recipientId) {
+    function Donation(currency, amount, paymentType, dtPaid, note, _id) {
         this.currency = currency;
         this.amount = amount;
         this.paymentType = paymentType;
         this.dtPaid = dtPaid;
         this.note = note;
-        this.recipientId = recipientId;
+        this._id = _id;
     }
     return Donation;
 }());

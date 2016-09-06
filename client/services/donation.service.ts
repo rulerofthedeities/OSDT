@@ -10,17 +10,16 @@ export class DonationService {
 
   constructor(private _http: Http) {}
 
-  getDonations() {
-    return this._http.get('/api/donations')
-      .map(response => response.json().obj.map(donation => {
-        //donation.donation.recipientId = donation.recipientId;
-        return donation.donation;
-      }))
+  getDonations(recipientId: string) {
+    const url = '/api/donations' + (recipientId ? '/' + recipientId : '');
+    console.log('url', url);
+    return this._http.get(url)
+      .map(response => response.json().obj.map(donation => donation.donation))
       .catch(error => Observable.throw(error));
   }
 
-  addDonation(donation: Donation) {
-    const body = JSON.stringify(donation);
+  addDonation(donation: Donation, recipientId: string) {
+    const body = JSON.stringify({donation, recipientId});
     const headers = new Headers({'Content-Type': 'application/json'});
     return this._http.post('/api/donations', body, {headers:headers})
       .map(response => {

@@ -9,12 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var recipient_service_1 = require('../services/recipient.service');
 var error_service_1 = require('../services/error.service');
 var Recipients = (function () {
-    function Recipients(recipientService, errorService) {
+    function Recipients(recipientService, errorService, router) {
         this.recipientService = recipientService;
         this.errorService = errorService;
+        this.router = router;
         this.recipients = [];
         this.currentRecipient = null;
     }
@@ -26,15 +28,18 @@ var Recipients = (function () {
         this.recipientService.getRecipients()
             .subscribe(function (recipients) { _this.recipients = recipients; }, function (error) { return _this.errorService.handleError(error); });
     };
-    Recipients.prototype.selectRecipient = function (recipient, i) {
+    Recipients.prototype.selectRecipient = function (recipient) {
         this.currentRecipient = recipient;
-        console.log(recipient, i);
+    };
+    Recipients.prototype.selectDonations = function (recipient) {
+        console.log('retrieving donations for ', recipient);
+        this.router.navigate(['/donations', recipient._id]);
     };
     Recipients = __decorate([
         core_1.Component({
-            template: "\n    <h3>Recipients</h3>\n\n    <ul>\n      <li *ngFor=\"let recipient of recipients; let i = index\"\n        (click)=\"selectRecipient(recipient, i)\"> \n        {{recipient.name}}\n      </li>\n    </ul>\n\n    <recipient *ngIf=\"currentRecipient\"\n      [recipient]=\"currentRecipient\"\n      editMode=false>\n    </recipient>\n  "
+            template: "\n    <h3>Recipients</h3>\n\n    <ul>\n      <li *ngFor=\"let recipient of recipients\">\n        <span (click)=\"selectRecipient(recipient)\"> \n          {{recipient.name}} ({{recipient.cnt}}\n        </span> <span (click)=\"selectDonations(recipient)\">donation{{recipient.cnt === 1 ? '' :'s'}}</span>)\n      </li>\n    </ul>\n\n    <recipient *ngIf=\"currentRecipient\"\n      [recipient]=\"currentRecipient\"\n      editMode=false>\n    </recipient>\n  "
         }), 
-        __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService])
+        __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, router_1.Router])
     ], Recipients);
     return Recipients;
 }());

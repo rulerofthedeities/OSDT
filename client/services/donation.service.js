@@ -17,17 +17,16 @@ var DonationService = (function () {
         this._http = _http;
         this.added = new core_1.EventEmitter();
     }
-    DonationService.prototype.getDonations = function () {
-        return this._http.get('/api/donations')
-            .map(function (response) { return response.json().obj.map(function (donation) {
-            //donation.donation.recipientId = donation.recipientId;
-            return donation.donation;
-        }); })
+    DonationService.prototype.getDonations = function (recipientId) {
+        var url = '/api/donations' + (recipientId ? '/' + recipientId : '');
+        console.log('url', url);
+        return this._http.get(url)
+            .map(function (response) { return response.json().obj.map(function (donation) { return donation.donation; }); })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
-    DonationService.prototype.addDonation = function (donation) {
+    DonationService.prototype.addDonation = function (donation, recipientId) {
         var _this = this;
-        var body = JSON.stringify(donation);
+        var body = JSON.stringify({ donation: donation, recipientId: recipientId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.post('/api/donations', body, { headers: headers })
             .map(function (response) {
