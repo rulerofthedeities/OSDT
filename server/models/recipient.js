@@ -17,6 +17,7 @@ var recipientSchema = new Schema(
     name: {type: String, required: true, index: {unique: true}},
     description: {type: String, required: false},
     categories: [String],
+    isActive: Boolean,
     donations: [donationSchema]
     //reminders: [{type: Schema.Types.ObjectId, ref: 'Reminder'}]
   },

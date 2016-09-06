@@ -22,7 +22,6 @@ module.exports = {
     });
   },
   add: function(req, res) {
-    console.log('adding ', req.body);
     var recipientId =  mongoose.Types.ObjectId(req.body.recipientId);
     Recipient.findById(recipientId, function(err, doc) {
       response.handleError(err, res, 500, 'Error finding recipient "' + req.body.recipientId + '"', function(){
@@ -40,7 +39,7 @@ module.exports = {
 
     Recipient.findOneAndUpdate(
       {"donations._id": donationId},
-      {"$set": {"donations.$": req.body}},
+      {$set: {"donations.$": req.body}},
       function(err, doc) {
         response.handleError(err, res, 500, 'Error updating donation', function(){
             response.handleSuccess(res, doc, 200, 'Updated donation');

@@ -12,13 +12,16 @@ module.exports.initialize = function(app, router) {
   });
 
   router.get('/currencies', currencies.load);
-  router.get('/recipients', recipients.load);
-  router.get('/recipients/:id', recipients.loadOne);
+
   router.get('/donations', donations.load);
   router.get('/donations/:id', donations.load);
-
   router.post('/donations', donations.add);
   router.put('/donations', donations.update);
+
+  router.get('/recipients', recipients.load);
+  router.get('/recipients/:id', recipients.loadOne);
+  router.post('/recipients', recipients.add);
+  router.put('/recipients', recipients.update);
 
   router.post('/user/signin', users.signin);
   router.post('/user/signup', users.signup);

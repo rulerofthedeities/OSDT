@@ -61,14 +61,14 @@ import {Field} from '../../models/fields/field.model';
           </div>
         </div>
 
-        <div *ngSwitchCase="'checkbox'">
+        <div *ngSwitchCase="'checkbox'" class="checkbox">
           <input 
-            class="form-control"
             [formControlName]="field.key"
             [ngModel]="data[field.key]"
             [id]="field.key"
             type="checkbox">{{field.display}}
         </div> 
+        
       </div>
       <div class="errorMessage" *ngIf="!isValid">{{field.label}} is required</div>
 

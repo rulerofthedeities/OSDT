@@ -34,12 +34,9 @@ export class DonationService {
     const headers = new Headers({'Content-Type': 'application/json'});
     return this._http.put('/api/donations', body, {headers:headers})
       .map(response => {
-        console.log('response', response.json().obj);
         //this.updated.emit(response.json().obj);
         return response.json();
       })
       .catch(error => Observable.throw(error));
   }
-
-
 }

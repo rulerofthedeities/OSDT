@@ -40,7 +40,6 @@ var DonationService = (function () {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.put('/api/donations', body, { headers: headers })
             .map(function (response) {
-            console.log('response', response.json().obj);
             //this.updated.emit(response.json().obj);
             return response.json();
         })

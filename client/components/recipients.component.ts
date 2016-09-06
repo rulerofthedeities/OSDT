@@ -8,7 +8,14 @@ import {Recipient} from '../models/recipient.model';
   template: `
     <h3>Recipients</h3>
 
-    <ul>
+    <button *ngIf="!currentRecipient" 
+      type="button"
+      (click)="addRecipient()"
+      class="btn btn-primary">
+      Add Recipient
+    </button>
+
+    <ul *ngIf="!currentRecipient">
       <li *ngFor="let recipient of recipients">
         <span (click)="selectRecipient(recipient)"> 
           {{recipient.name}} ({{recipient.cnt}}
@@ -49,8 +56,11 @@ export class Recipients implements OnInit {
     this.currentRecipient = recipient;
   }
 
+  addRecipient() {
+    this.currentRecipient = new Recipient('demoUser', '', '', [], true);
+  }
+
   selectDonations(recipient) {
-    console.log('retrieving donations for ', recipient);
     this.router.navigate(['/donations', recipient._id]);
   }
 }

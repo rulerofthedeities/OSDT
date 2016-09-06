@@ -26,6 +26,20 @@ var RecipientService = (function () {
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
+    RecipientService.prototype.addRecipient = function (recipient) {
+        var body = JSON.stringify(recipient);
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        return this._http.post('/api/recipients', body, { headers: headers })
+            .map(function (response) { return response.json(); })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    RecipientService.prototype.updateRecipient = function (recipient) {
+        var body = JSON.stringify(recipient);
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        return this._http.put('/api/recipients', body, { headers: headers })
+            .map(function (response) { return response.json(); })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
     RecipientService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

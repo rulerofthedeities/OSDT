@@ -1,10 +1,12 @@
 "use strict";
 var Recipient = (function () {
-    function Recipient(userId, name, _id) {
+    function Recipient(userId, name, description, categories, isActive) {
+        if (isActive === void 0) { isActive = true; }
         this.userId = userId;
         this.name = name;
-        this._id = _id;
-        this.isActive = true;
+        this.description = description;
+        this.categories = categories;
+        this.isActive = isActive;
     }
     return Recipient;
 }());

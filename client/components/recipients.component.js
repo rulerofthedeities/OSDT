@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var recipient_service_1 = require('../services/recipient.service');
 var error_service_1 = require('../services/error.service');
+var recipient_model_1 = require('../models/recipient.model');
 var Recipients = (function () {
     function Recipients(recipientService, errorService, router) {
         this.recipientService = recipientService;
@@ -31,13 +32,15 @@ var Recipients = (function () {
     Recipients.prototype.selectRecipient = function (recipient) {
         this.currentRecipient = recipient;
     };
+    Recipients.prototype.addRecipient = function () {
+        this.currentRecipient = new recipient_model_1.Recipient('demoUser', '', '', [], true);
+    };
     Recipients.prototype.selectDonations = function (recipient) {
-        console.log('retrieving donations for ', recipient);
         this.router.navigate(['/donations', recipient._id]);
     };
     Recipients = __decorate([
         core_1.Component({
-            template: "\n    <h3>Recipients</h3>\n\n    <ul>\n      <li *ngFor=\"let recipient of recipients\">\n        <span (click)=\"selectRecipient(recipient)\"> \n          {{recipient.name}} ({{recipient.cnt}}\n        </span> <span (click)=\"selectDonations(recipient)\">donation{{recipient.cnt === 1 ? '' :'s'}}</span>)\n      </li>\n    </ul>\n\n    <recipient *ngIf=\"currentRecipient\"\n      [recipient]=\"currentRecipient\"\n      editMode=false>\n    </recipient>\n  "
+            template: "\n    <h3>Recipients</h3>\n\n    <button *ngIf=\"!currentRecipient\" \n      type=\"button\"\n      (click)=\"addRecipient()\"\n      class=\"btn btn-primary\">\n      Add Recipient\n    </button>\n\n    <ul *ngIf=\"!currentRecipient\">\n      <li *ngFor=\"let recipient of recipients\">\n        <span (click)=\"selectRecipient(recipient)\"> \n          {{recipient.name}} ({{recipient.cnt}}\n        </span> <span (click)=\"selectDonations(recipient)\">donation{{recipient.cnt === 1 ? '' :'s'}}</span>)\n      </li>\n    </ul>\n\n    <recipient *ngIf=\"currentRecipient\"\n      [recipient]=\"currentRecipient\"\n      editMode=false>\n    </recipient>\n  "
         }), 
         __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, router_1.Router])
     ], Recipients);

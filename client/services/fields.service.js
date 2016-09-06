@@ -13,6 +13,7 @@ var field_textbox_model_1 = require('../models/fields/field-textbox.model');
 var field_textarea_model_1 = require('../models/fields/field-textarea.model');
 var field_dropdown_model_1 = require('../models/fields/field-dropdown.model');
 var field_radio_model_1 = require('../models/fields/field-radio.model');
+var field_checkbox_model_1 = require('../models/fields/field-checkbox.model');
 var field_date_model_1 = require('../models/fields/field-date.model');
 var FieldsService = (function () {
     function FieldsService() {
@@ -53,6 +54,35 @@ var FieldsService = (function () {
                 label: 'Date paid'
             })
         ];
+        return this.makeAssocArray(fields);
+    };
+    FieldsService.prototype.getRecipientFields = function () {
+        var fields = [
+            new field_textbox_model_1.TextboxField({
+                key: 'name',
+                label: 'Name',
+                placeholder: 'Enter the name of the recipient',
+                type: 'text'
+            }),
+            new field_textarea_model_1.TextareaField({
+                key: 'description',
+                label: 'Description',
+                rows: 4,
+                cols: 20
+            }),
+            new field_textbox_model_1.TextboxField({
+                key: 'categories',
+                label: 'Categories',
+                type: 'text'
+            }),
+            new field_checkbox_model_1.CheckboxField({
+                key: 'isActive',
+                display: 'Recipient is active'
+            })
+        ];
+        return this.makeAssocArray(fields);
+    };
+    FieldsService.prototype.makeAssocArray = function (fields) {
         var fieldArr = {};
         fields.forEach(function (field) { return fieldArr[field.key] = field; });
         return fieldArr;

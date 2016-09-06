@@ -2,10 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Donation} from '../models/donation.model';
 import {Recipient} from '../models/recipient.model';
+import {Field} from '../models/fields/field.model';
 import {DonationService} from '../services/donation.service';
 import {ErrorService} from '../services/error.service';
 import {FieldsService} from '../services/fields.service';
-import {Field} from '../models/fields/field.model';
 
 @Component({
   selector: 'donation',
@@ -50,7 +50,6 @@ import {Field} from '../models/fields/field.model';
       </auto-field>
     </div>
 
-
     <button 
       type="submit"
       [disabled]="!donationForm.valid" 
@@ -58,10 +57,7 @@ import {Field} from '../models/fields/field.model';
       {{donation._id ? "Update donation" : "Save donation"}}
     </button>
 
-
   </form>
-
-
   `
 })
 
@@ -80,23 +76,23 @@ export class EditDonation implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.buildForm();
+    this.donationFields = this.fieldsService.getDonationFields();
+  }
+
+  buildForm() {
     this.donationForm = this.formBuilder.group({
       'paymentType': [this.donation.paymentType, Validators.required],
       'amount': [this.donation.amount, Validators.required],
       'note': [this.donation.amount],
       'currency': [this.donation.amount, Validators.required]
     });
-
-    this.donationFields = this.fieldsService.getDonationFields();
-
   }
 
   submitForm(donation: Donation) {
     if (this.donation._id) {
       //Update donation
-      console.log('Updating donation', donation);
       donation._id = this.donation._id;
-
       this.donationService.updateDonation(donation)
         .subscribe(
             data => {console.log('Updated donation', data);},
@@ -104,7 +100,6 @@ export class EditDonation implements OnInit {
         );
     } else {
       //Save donation
-      console.log('Saving donation', donation);
       donation.dtPaid = new Date();
       this.donationService.addDonation(donation, this.recipient._id)
         .subscribe(

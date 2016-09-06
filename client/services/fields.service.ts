@@ -4,6 +4,7 @@ import {TextboxField} from '../models/fields/field-textbox.model';
 import {TextareaField} from '../models/fields/field-textarea.model';
 import {DropdownField} from '../models/fields/field-dropdown.model';
 import {RadioField} from '../models/fields/field-radio.model';
+import {CheckboxField} from '../models/fields/field-checkbox.model';
 import {DateField} from '../models/fields/field-date.model';
 
 @Injectable()
@@ -51,6 +52,41 @@ export class FieldsService {
       })
     ];
 
+    return this.makeAssocArray(fields);
+  }
+
+  getRecipientFields() {
+    let fields: Field<any>[] = [
+      new TextboxField({
+        key: 'name',
+        label: 'Name',
+        placeholder: 'Enter the name of the recipient',
+        type: 'text'
+      }),
+
+      new TextareaField({
+        key: 'description',
+        label: 'Description',
+        rows: 4,
+        cols: 20
+      }),
+
+      new TextboxField({
+        key: 'categories',
+        label: 'Categories',
+        type: 'text'
+      }),
+
+      new CheckboxField({
+        key: 'isActive',
+        display: 'Recipient is active'
+      })
+    ];
+
+    return this.makeAssocArray(fields);
+  }
+
+  makeAssocArray(fields: Field<any>[]): {[fieldname: string]:Field<any>;} {
     let fieldArr: {[fieldname: string]:Field<any>;} = {};
     fields.forEach(field => fieldArr[field.key] = field);
     return fieldArr;

@@ -19,5 +19,28 @@ module.exports = {
         response.handleSuccess(res, doc, 200, 'Loaded recipient');
       });
     });
+  },
+  add: function(req, res) {
+    console.log('adding', req.body);
+    var recipient = new Recipient(req.body);
+    recipient.save(function(err, result) {
+      response.handleError(err, res, 500, 'Error adding recipient', function(){
+        response.handleSuccess(res, result, 200, 'Added recipient');
+      });
+    });
+  },
+  update: function(req, res) {
+    var doc = req.body;
+    Recipient.findByIdAndUpdate(doc._id, {$set: {
+      name: doc.name, 
+      description: doc.description, 
+      isActive: doc.isActive, 
+      categories: doc.categories
+    }}, function (err, recipient) {
+      response.handleError(err, res, 500, 'Error updating recipient', function(){
+          response.handleSuccess(res, recipient, 200, 'Updated recipient');
+        });
+      }
+    );
   }
 }

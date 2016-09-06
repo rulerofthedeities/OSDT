@@ -24,26 +24,27 @@ var EditDonation = (function () {
         this.donationFields = {};
     }
     EditDonation.prototype.ngOnInit = function () {
+        this.buildForm();
+        this.donationFields = this.fieldsService.getDonationFields();
+    };
+    EditDonation.prototype.buildForm = function () {
         this.donationForm = this.formBuilder.group({
             'paymentType': [this.donation.paymentType, forms_1.Validators.required],
             'amount': [this.donation.amount, forms_1.Validators.required],
             'note': [this.donation.amount],
             'currency': [this.donation.amount, forms_1.Validators.required]
         });
-        this.donationFields = this.fieldsService.getDonationFields();
     };
     EditDonation.prototype.submitForm = function (donation) {
         var _this = this;
         if (this.donation._id) {
             //Update donation
-            console.log('Updating donation', donation);
             donation._id = this.donation._id;
             this.donationService.updateDonation(donation)
                 .subscribe(function (data) { console.log('Updated donation', data); }, function (error) { return _this.errorService.handleError(error); });
         }
         else {
             //Save donation
-            console.log('Saving donation', donation);
             donation.dtPaid = new Date();
             this.donationService.addDonation(donation, this.recipient._id)
                 .subscribe(function (data) { console.log('Added donation', data); }, function (error) { return _this.errorService.handleError(error); });
@@ -64,7 +65,7 @@ var EditDonation = (function () {
     EditDonation = __decorate([
         core_1.Component({
             selector: 'donation',
-            template: "\n  NEW DONATION\n  <form \n    [formGroup]=\"donationForm\" \n    class=\"form-horizontal\" \n    (submit)=\"submitForm(donationForm.value)\">\n\n    <pre>{{donation|json}}</pre>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['paymentType']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['amount']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['currency']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['note']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n\n    <button \n      type=\"submit\"\n      [disabled]=\"!donationForm.valid\" \n      class=\"btn btn-primary col-xs-offset-2\">\n      {{donation._id ? \"Update donation\" : \"Save donation\"}}\n    </button>\n\n\n  </form>\n\n\n  "
+            template: "\n  NEW DONATION\n  <form \n    [formGroup]=\"donationForm\" \n    class=\"form-horizontal\" \n    (submit)=\"submitForm(donationForm.value)\">\n\n    <pre>{{donation|json}}</pre>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['paymentType']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['amount']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['currency']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['note']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <button \n      type=\"submit\"\n      [disabled]=\"!donationForm.valid\" \n      class=\"btn btn-primary col-xs-offset-2\">\n      {{donation._id ? \"Update donation\" : \"Save donation\"}}\n    </button>\n\n  </form>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder])
     ], EditDonation);
