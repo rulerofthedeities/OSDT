@@ -23,6 +23,7 @@ import {AppComponent} from './components/app.component';
 import {ErrorMessage} from './components/common/error-message.component';
 import {AutoFormField} from './components/common/auto-form-field.component';
 import {AutoFormRead} from './components/common/auto-form-read.component';
+import {AutoForm} from './components/common/auto-form.component';
 import {Currencies} from './components/currencies.component';
 import {Recipients} from './components/recipients.component';
 import {EditRecipient} from './components/recipient.component';
@@ -67,6 +68,7 @@ import {LogOut} from './components/auth/log-out.component';
     LogOut,
     AutoFormField,
     AutoFormRead,
+    AutoForm,
     FormatFieldPipe
   ],
   bootstrap: [ AppComponent ]

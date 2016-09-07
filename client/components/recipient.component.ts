@@ -21,37 +21,11 @@ import {ErrorService} from '../services/error.service';
       class="form-horizontal" 
       (submit)="submitForm(recipientForm.value)">
 
-      <div class="form-group">
-        <auto-field 
-          [field]="recipientFieldsAssoc['name']"
-          [data]="recipient"
-          [form]="recipientForm">
-        </auto-field>
-      </div>
-
-      <div class="form-group">
-        <auto-field 
-          [field]="recipientFieldsAssoc['description']"
-          [data]="recipient"
-          [form]="recipientForm">
-        </auto-field>
-      </div>
-
-      <div class="form-group">
-        <auto-field 
-          [field]="recipientFieldsAssoc['categories']"
-          [data]="recipient"
-          [form]="recipientForm">
-        </auto-field>
-      </div>
-
-      <div class="form-group">
-        <auto-field 
-          [field]="recipientFieldsAssoc['isActive']"
-          [data]="recipient"
-          [form]="recipientForm">
-        </auto-field>
-      </div>
+      <auto-form 
+        [fields]="recipientFieldsOrder"
+        [data]="recipient"
+        [form]="recipientForm">
+      </auto-form>
 
       <button 
         type="submit"

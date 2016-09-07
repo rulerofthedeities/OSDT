@@ -28,6 +28,7 @@ var app_component_1 = require('./components/app.component');
 var error_message_component_1 = require('./components/common/error-message.component');
 var auto_form_field_component_1 = require('./components/common/auto-form-field.component');
 var auto_form_read_component_1 = require('./components/common/auto-form-read.component');
+var auto_form_component_1 = require('./components/common/auto-form.component');
 var currencies_component_1 = require('./components/currencies.component');
 var recipients_component_1 = require('./components/recipients.component');
 var recipient_component_1 = require('./components/recipient.component');
@@ -74,6 +75,7 @@ var AppModule = (function () {
                 log_out_component_1.LogOut,
                 auto_form_field_component_1.AutoFormField,
                 auto_form_read_component_1.AutoFormRead,
+                auto_form_component_1.AutoForm,
                 format_field_pipe_1.FormatFieldPipe
             ],
             bootstrap: [app_component_1.AppComponent]
