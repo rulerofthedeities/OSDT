@@ -59,7 +59,6 @@ var EditRecipient = (function () {
             //Add recipient
             recipient.userId = this.recipient.userId;
             recipient.categories = this.formatCategories(recipient.categories);
-            console.log(recipient.categories);
             this.recipientService.addRecipient(recipient).subscribe(function (recipient) { console.log('added recipient', recipient); }, function (error) { return _this.errorService.handleError(error); });
         }
     };
@@ -70,6 +69,9 @@ var EditRecipient = (function () {
     };
     EditRecipient.prototype.toggleEditMode = function () {
         this.editMode = !this.editMode;
+    };
+    EditRecipient.prototype.close = function () {
+        this.recipientService.closeRecipient();
     };
     __decorate([
         core_1.Input(), 
@@ -82,7 +84,7 @@ var EditRecipient = (function () {
     EditRecipient = __decorate([
         core_1.Component({
             selector: 'recipient',
-            template: "\n    <button *ngIf=\"!editMode\"\n      class=\"btn btn-primary\" \n      type=\"button\"\n      (click)=\"toggleEditMode()\">\n      Edit Mode\n    </button>\n\n    <form *ngIf=\"editMode\"\n      [formGroup]=\"recipientForm\" \n      class=\"form-horizontal\" \n      (submit)=\"submitForm(recipientForm.value)\">\n\n      <auto-form \n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        [form]=\"recipientForm\">\n      </auto-form>\n\n      <button \n        type=\"submit\"\n        [disabled]=\"!recipientForm.valid\" \n        class=\"btn btn-primary col-xs-offset-2\">\n        {{recipient._id ? \"Update recipient\" : \"Save recipient\"}}\n      </button>\n\n      <button\n        class=\"btn btn-primary\" \n        type=\"button\"\n        (click)=\"toggleEditMode()\">\n        Cancel\n      </button>\n    </form>\n  \n    <div *ngIf=\"!editMode\">\n      <auto-form-read\n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        >\n      </auto-form-read>\n    </div>\n  "
+            template: "\n    <button *ngIf=\"!editMode\"\n      class=\"btn btn-primary\" \n      type=\"button\"\n      (click)=\"toggleEditMode()\">\n      Edit Mode\n    </button>\n\n    <form *ngIf=\"editMode\"\n      [formGroup]=\"recipientForm\" \n      class=\"form-horizontal\" \n      (submit)=\"submitForm(recipientForm.value)\">\n\n      <auto-form \n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        [form]=\"recipientForm\">\n      </auto-form>\n\n      <button \n        type=\"submit\"\n        [disabled]=\"!recipientForm.valid\" \n        class=\"btn btn-success col-xs-offset-2\">\n        {{recipient._id ? \"Update recipient\" : \"Save recipient\"}}\n      </button>\n\n      <button\n        class=\"btn btn-warning\" \n        type=\"button\"\n        (click)=\"toggleEditMode()\">\n        Cancel\n      </button>\n    </form>\n  \n    <div *ngIf=\"!editMode\">\n      <auto-form-read\n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        >\n      </auto-form-read>\n\n      <button\n        class=\"btn btn-warning\" \n        type=\"button\"\n        (click)=\"close()\">\n        Close\n      </button>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder])
     ], EditRecipient);

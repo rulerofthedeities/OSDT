@@ -6,7 +6,12 @@ import {Component} from '@angular/core';
   <nav role="navigation" class="navbar navbar-default">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+      <button 
+        type="button" 
+        data-target="#navbarCollapse" 
+        (click)="isCollapsed = !isCollapsed" 
+        class="navbar-toggle"
+      >
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -15,7 +20,11 @@ import {Component} from '@angular/core';
       <a class="navbar-brand">OSDT</a>
     </div>
     <!-- Collection of nav links and other content for toggling -->
-    <div id="navbarCollapse" class="collapse navbar-collapse">
+    <div 
+      id="navbarCollapse" 
+      class="collapse navbar-collapse" 
+      [collapse]="isCollapsed"
+    >
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
           <a routerLink="recipients" class="item">
@@ -41,4 +50,6 @@ import {Component} from '@angular/core';
   `
 })
 
-export class Navbar { }
+export class Navbar {
+  isCollapsed: boolean = true;
+}

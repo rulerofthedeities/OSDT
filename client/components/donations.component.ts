@@ -9,31 +9,32 @@ import {Subscription}   from 'rxjs/Subscription';
 
 @Component({
   template: `
-    <h3>Donations</h3>
+    <div *ngIf="!currentDonation">
 
-    <div>
-      {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}
+      <button 
+        type="button"
+        (click)="addDonation()"
+        class="btn btn-primary">
+        Add Donation {{currentRecipient ? ' for ' + currentRecipient.name : ''}}
+      </button>
+
+      <div>
+        {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}
+      </div>
+
+      <ul>
+        <li *ngFor="let donation of donations"
+          (click)="selectDonation(donation)"> 
+          {{donation.note}}
+        </li>
+      </ul>
     </div>
-
-    <button *ngIf="currentRecipient && !currentDonation" 
-      type="button"
-      (click)="addDonation()"
-      class="btn btn-primary">
-      Add Donation
-    </button>
 
     <donation *ngIf="currentDonation"
       [donation]="currentDonation"
-      [recipient]="currentRecipient"
-      [editMode]=false>
+      [recipientId]="recipientId"
+      [editMode]="isNew">
     </donation>
-
-    <ul *ngIf="!currentDonation">
-      <li *ngFor="let donation of donations"
-        (click)="selectDonation(donation)"> 
-        {{donation.note}}
-      </li>
-    </ul>
 
     <alert type="info">ng2-bootstrap hello world!</alert>
   `
@@ -44,6 +45,8 @@ export class Donations implements OnInit {
   currentDonation: Donation = null;
   currentRecipient: Recipient = null;
   subscription: Subscription;
+  recipientId: string;
+  isNew = false;
 
   constructor(
     private donationService: DonationService,
@@ -55,9 +58,9 @@ export class Donations implements OnInit {
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
-      let recipientId = params['id'];
-      this.getDonations(recipientId);
-      this.getRecipient(recipientId);
+      this.recipientId = params['id'];
+      this.getDonations(this.recipientId);
+      this.getRecipient(this.recipientId);
    });
 
     this.donationService.added.subscribe(
@@ -65,6 +68,10 @@ export class Donations implements OnInit {
         this.currentDonation = null;
         this.donations.push(addedDonation);
       }
+    );
+
+    this.donationService.closed.subscribe(
+      closedDonation => {this.currentDonation = null;}
     );
   }
 
@@ -90,6 +97,7 @@ export class Donations implements OnInit {
   }
 
   addDonation() {
+    this.isNew = true;
     this.currentDonation = new Donation('EUR', 10, 'creditcard', new Date(),'');
   }
 

@@ -7,6 +7,7 @@ import {Donation} from '../models/donation.model';
 @Injectable()
 export class DonationService {
   added = new EventEmitter<Donation>();
+  closed = new EventEmitter();
 
   constructor(private _http: Http) {}
 
@@ -37,5 +38,9 @@ export class DonationService {
         return response.json();
       })
       .catch(error => Observable.throw(error));
+  }
+
+  closeDonation() {
+    this.closed.emit();
   }
 }

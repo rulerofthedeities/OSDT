@@ -15,6 +15,7 @@ var Observable_1 = require('rxjs/Observable');
 var RecipientService = (function () {
     function RecipientService(_http) {
         this._http = _http;
+        this.closed = new core_1.EventEmitter();
     }
     RecipientService.prototype.getRecipients = function () {
         return this._http.get('/api/recipients')
@@ -39,6 +40,9 @@ var RecipientService = (function () {
         return this._http.put('/api/recipients', body, { headers: headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    RecipientService.prototype.closeRecipient = function () {
+        this.closed.emit();
     };
     RecipientService = __decorate([
         core_1.Injectable(), 

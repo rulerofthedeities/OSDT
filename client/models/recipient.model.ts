@@ -2,7 +2,6 @@ import {Reminder} from './reminder.model';
 import {Donation} from './donation.model';
 
 export class Recipient {
-  public _id: string;
   public reminder: Reminder[];
   public donations: Donation[];
 
@@ -11,6 +10,7 @@ export class Recipient {
     public name: string,
     public description: string,
     public categories: string[],
-    public isActive = true
+    public isActive = true,
+    public _id?: string
   ) {}
 }

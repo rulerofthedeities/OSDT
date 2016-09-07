@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
@@ -6,6 +6,7 @@ import {Recipient} from '../models/recipient.model';
 
 @Injectable()
 export class RecipientService {
+  closed = new EventEmitter();
 
   constructor(private _http: Http) {}
 
@@ -35,5 +36,9 @@ export class RecipientService {
     return this._http.put('/api/recipients', body, {headers:headers})
       .map(response => response.json())
       .catch(error => Observable.throw(error));
+  }
+
+  closeRecipient() {
+    this.closed.emit();
   }
 }

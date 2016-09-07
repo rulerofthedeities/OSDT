@@ -6,26 +6,26 @@ import {Recipient} from '../models/recipient.model';
 
 @Component({
   template: `
-    <h3>Recipients</h3>
+    <div  *ngIf="!currentRecipient">
+      <button
+        type="button"
+        (click)="addRecipient()"
+        class="btn btn-primary">
+        Add Recipient
+      </button>
 
-    <button *ngIf="!currentRecipient" 
-      type="button"
-      (click)="addRecipient()"
-      class="btn btn-primary">
-      Add Recipient
-    </button>
-
-    <ul *ngIf="!currentRecipient">
-      <li *ngFor="let recipient of recipients">
-        <span (click)="selectRecipient(recipient)"> 
-          {{recipient.name}} ({{recipient.cnt}}
-        </span> <span (click)="selectDonations(recipient)">donation{{recipient.cnt === 1 ? '' :'s'}}</span>)
-      </li>
-    </ul>
+      <ul>
+        <li *ngFor="let recipient of recipients">
+          <span (click)="selectRecipient(recipient)"> 
+            {{recipient.name}} ({{recipient.cnt}}
+          </span> <span (click)="selectDonations(recipient)">donation{{recipient.cnt === 1 ? '' :'s'}}</span>)
+        </li>
+      </ul>
+    </div>
 
     <recipient *ngIf="currentRecipient"
       [recipient]="currentRecipient"
-      [editMode]=false>
+      [editMode]="isNew">
     </recipient>
   `
 })
@@ -33,6 +33,7 @@ import {Recipient} from '../models/recipient.model';
 export class Recipients implements OnInit {
   recipients:Recipient[] = [];
   currentRecipient: Recipient = null;
+  isNew = false;
 
   constructor(
     private recipientService: RecipientService,
@@ -42,6 +43,10 @@ export class Recipients implements OnInit {
 
   ngOnInit() {
     this.getRecipients();
+
+    this.recipientService.closed.subscribe(
+      closedRecipient => {this.currentRecipient = null;}
+    );
   }
 
   getRecipients() {
@@ -57,6 +62,7 @@ export class Recipients implements OnInit {
   }
 
   addRecipient() {
+    this.isNew = true;
     this.currentRecipient = new Recipient('demoUser', '', '', [], true);
   }
 

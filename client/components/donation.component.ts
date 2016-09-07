@@ -4,6 +4,7 @@ import {Donation} from '../models/donation.model';
 import {Recipient} from '../models/recipient.model';
 import {Field} from '../models/fields/field.model';
 import {DonationService} from '../services/donation.service';
+import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
 import {FieldsService} from '../services/fields.service';
 
@@ -17,7 +18,30 @@ import {FieldsService} from '../services/fields.service';
     Edit Mode
   </button>
 
-  <form *ngIf="editMode"
+  <!-- Select Recipient if none available -->
+  <form *ngIf="editMode && !recipientId" >
+    <label 
+      [attr.for]="recipient"
+      class="control-label col-xs-2">
+      Select a recipient
+    </label>
+
+    <select 
+      class="form-control"
+      [id]="recipient" 
+      (change)="recipientSelected(recipient.value)" #recipient>
+      <option 
+        *ngFor="let rec of recipients" 
+        [value]="rec._id">
+        {{rec.name}}
+      </option>
+    </select>
+
+  </form>
+
+  <!-- Donation Form -->
+  recipientid{{recipientId}}
+  <form *ngIf="editMode && recipientId"
     [formGroup]="donationForm" 
     class="form-horizontal" 
     (submit)="submitForm(donationForm.value)">
@@ -57,12 +81,12 @@ import {FieldsService} from '../services/fields.service';
     <button 
       type="submit"
       [disabled]="!donationForm.valid" 
-      class="btn btn-primary col-xs-offset-2">
+      class="btn btn-success col-xs-offset-2">
       {{donation._id ? "Update donation" : "Save donation"}}
     </button>
 
     <button
-      class="btn btn-primary" 
+      class="btn btn-warning" 
       type="button"
       (click)="toggleEditMode()">
       Cancel
@@ -75,26 +99,41 @@ import {FieldsService} from '../services/fields.service';
       [data]="donation"
       >
     </auto-form-read>
+
+    <button
+      class="btn btn-warning" 
+      type="button"
+      (click)="close()">
+      Close
+    </button>
   </div>
   `
 })
 
 export class EditDonation implements OnInit {
   @Input() donation: Donation;
-  @Input() recipient: Recipient;
+  @Input() recipientId: string;
   @Input() editMode: boolean;
   donationFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
   donationFieldsOrder: Field<any>[];
   donationForm: FormGroup;
+  recipients: Recipient[]; //if no recipient is present
 
   constructor (
     private donationService: DonationService,
+    private recipientService: RecipientService,
     private errorService: ErrorService,
     private fieldsService: FieldsService,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
+    if (!this.recipientId) {
+      this.recipientService.getRecipients().subscribe(
+        recipients => {this.recipients = recipients;},
+        error => this.errorService.handleError(error)
+      );
+    }
     this.buildForm();
     let fields = this.fieldsService.getFields('donation');
     this.donationFieldsAssoc = fields.assoc;
@@ -122,7 +161,7 @@ export class EditDonation implements OnInit {
     } else {
       //Save donation
       donation.dtPaid = new Date();
-      this.donationService.addDonation(donation, this.recipient._id)
+      this.donationService.addDonation(donation, this.recipientId)
         .subscribe(
             data => {console.log('Added donation', data);},
             error => this.errorService.handleError(error)
@@ -132,6 +171,15 @@ export class EditDonation implements OnInit {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+  }
+
+  close() {
+    this.donationService.closeDonation();
+  }
+
+  recipientSelected(recipientId: string) {
+    console.log('recipient Selected', recipientId);
+    this.recipientId = recipientId;
   }
 
 }

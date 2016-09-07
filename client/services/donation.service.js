@@ -16,6 +16,7 @@ var DonationService = (function () {
     function DonationService(_http) {
         this._http = _http;
         this.added = new core_1.EventEmitter();
+        this.closed = new core_1.EventEmitter();
     }
     DonationService.prototype.getDonations = function (recipientId) {
         var url = '/api/donations' + (recipientId ? '/' + recipientId : '');
@@ -43,6 +44,9 @@ var DonationService = (function () {
             return response.json();
         })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    DonationService.prototype.closeDonation = function () {
+        this.closed.emit();
     };
     DonationService = __decorate([
         core_1.Injectable(), 

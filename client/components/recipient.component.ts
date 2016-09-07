@@ -30,12 +30,12 @@ import {ErrorService} from '../services/error.service';
       <button 
         type="submit"
         [disabled]="!recipientForm.valid" 
-        class="btn btn-primary col-xs-offset-2">
+        class="btn btn-success col-xs-offset-2">
         {{recipient._id ? "Update recipient" : "Save recipient"}}
       </button>
 
       <button
-        class="btn btn-primary" 
+        class="btn btn-warning" 
         type="button"
         (click)="toggleEditMode()">
         Cancel
@@ -48,6 +48,13 @@ import {ErrorService} from '../services/error.service';
         [data]="recipient"
         >
       </auto-form-read>
+
+      <button
+        class="btn btn-warning" 
+        type="button"
+        (click)="close()">
+        Close
+      </button>
     </div>
   `
 })
@@ -109,7 +116,6 @@ export class EditRecipient implements OnInit {
       //Add recipient
       recipient.userId = this.recipient.userId;
       recipient.categories = this.formatCategories(recipient.categories);
-      console.log(recipient.categories);
       this.recipientService.addRecipient(recipient).subscribe(
         recipient => {console.log('added recipient', recipient);},
         error => this.errorService.handleError(error)
@@ -126,6 +132,10 @@ export class EditRecipient implements OnInit {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+  }
+
+  close() {
+    this.recipientService.closeRecipient();
   }
 
 }

@@ -23,18 +23,20 @@ var Donations = (function () {
         this.router = router;
         this.currentDonation = null;
         this.currentRecipient = null;
+        this.isNew = false;
     }
     Donations.prototype.ngOnInit = function () {
         var _this = this;
         this.subscription = this.route.params.subscribe(function (params) {
-            var recipientId = params['id'];
-            _this.getDonations(recipientId);
-            _this.getRecipient(recipientId);
+            _this.recipientId = params['id'];
+            _this.getDonations(_this.recipientId);
+            _this.getRecipient(_this.recipientId);
         });
         this.donationService.added.subscribe(function (addedDonation) {
             _this.currentDonation = null;
             _this.donations.push(addedDonation);
         });
+        this.donationService.closed.subscribe(function (closedDonation) { _this.currentDonation = null; });
     };
     Donations.prototype.getDonations = function (recipientId) {
         var _this = this;
@@ -51,6 +53,7 @@ var Donations = (function () {
         this.currentDonation = donation;
     };
     Donations.prototype.addDonation = function () {
+        this.isNew = true;
         this.currentDonation = new donation_model_1.Donation('EUR', 10, 'creditcard', new Date(), '');
     };
     Donations.prototype.ngOnDestroy = function () {
@@ -58,7 +61,7 @@ var Donations = (function () {
     };
     Donations = __decorate([
         core_1.Component({
-            template: "\n    <h3>Donations</h3>\n\n    <div>\n      {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}\n    </div>\n\n    <button *ngIf=\"currentRecipient && !currentDonation\" \n      type=\"button\"\n      (click)=\"addDonation()\"\n      class=\"btn btn-primary\">\n      Add Donation\n    </button>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      [recipient]=\"currentRecipient\"\n      [editMode]=false>\n    </donation>\n\n    <ul *ngIf=\"!currentDonation\">\n      <li *ngFor=\"let donation of donations\"\n        (click)=\"selectDonation(donation)\"> \n        {{donation.note}}\n      </li>\n    </ul>\n\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
+            template: "\n    <div *ngIf=\"!currentDonation\">\n\n      <button \n        type=\"button\"\n        (click)=\"addDonation()\"\n        class=\"btn btn-primary\">\n        Add Donation {{currentRecipient ? ' for ' + currentRecipient.name : ''}}\n      </button>\n\n      <div>\n        {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}\n      </div>\n\n      <ul>\n        <li *ngFor=\"let donation of donations\"\n          (click)=\"selectDonation(donation)\"> \n          {{donation.note}}\n        </li>\n      </ul>\n    </div>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      [recipientId]=\"recipientId\"\n      [editMode]=\"isNew\">\n    </donation>\n\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, recipient_service_1.RecipientService, error_service_1.ErrorService, router_1.ActivatedRoute, router_1.Router])
     ], Donations);
