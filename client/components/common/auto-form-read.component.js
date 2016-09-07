@@ -24,7 +24,7 @@ var AutoFormRead = (function () {
     AutoFormRead = __decorate([
         core_1.Component({
             selector: 'auto-form-read',
-            template: "\n  <div *ngFor=\"let field of fields\" class=\"row\">\n    <label \n      [attr.for]=\"field.key\"\n      class=\"control-label col-xs-2 text-right\">\n      {{field.label}}\n    </label>\n    <div class=\"col-xs-10\" [id]=\"field.key\">\n      {{data[field.key]}}\n    </div>\n  </div>\n  "
+            template: "\n  <div *ngFor=\"let field of fields\" class=\"row\">\n    <label \n      [attr.for]=\"field.key\"\n      class=\"control-label col-xs-2 text-right\">\n      {{field.label}}\n    </label>\n    <div class=\"col-xs-10\" [id]=\"field.key\">\n      {{data[field.key] | formatField:field }}\n    </div>\n  </div>\n  "
         }), 
         __metadata('design:paramtypes', [])
     ], AutoFormRead);

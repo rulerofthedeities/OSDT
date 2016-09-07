@@ -18,8 +18,10 @@ var field_date_model_1 = require('../models/fields/field-date.model');
 var FieldsService = (function () {
     function FieldsService() {
     }
-    FieldsService.prototype.getDonationFields = function () {
-        var fields = [
+    FieldsService.prototype.getFields = function (formName) {
+        var fields = [];
+        //Donation
+        fields['donation'] = [
             new field_dropdown_model_1.DropdownField({
                 key: 'paymentType',
                 label: 'Payment Type',
@@ -59,13 +61,8 @@ var FieldsService = (function () {
                 order: 5
             })
         ];
-        return {
-            'assoc': this.getFieldsAssoc(fields),
-            'ordered': this.getFieldsOrdered(fields)
-        };
-    };
-    FieldsService.prototype.getRecipientFields = function () {
-        var fields = [
+        //Recipient
+        fields['recipient'] = [
             new field_textbox_model_1.TextboxField({
                 key: 'name',
                 label: 'Name',
@@ -93,8 +90,8 @@ var FieldsService = (function () {
             })
         ];
         return {
-            'assoc': this.getFieldsAssoc(fields),
-            'ordered': this.getFieldsOrdered(fields)
+            'assoc': this.getFieldsAssoc(fields[formName]),
+            'ordered': this.getFieldsOrdered(fields[formName])
         };
     };
     FieldsService.prototype.getFieldsAssoc = function (fields) {

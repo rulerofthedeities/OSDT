@@ -82,7 +82,7 @@ export class EditRecipient implements OnInit {
       );
     }
     this.buildForm();
-    this.recipientFields = this.fieldsService.getRecipientFields();
+    this.recipientFields = this.fieldsService.getFields('recipient').assoc;
   }
 
   buildForm() {

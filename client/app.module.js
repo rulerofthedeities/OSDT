@@ -21,6 +21,7 @@ var recipient_service_1 = require('./services/recipient.service');
 var donation_service_1 = require('./services/donation.service');
 var error_service_1 = require('./services/error.service');
 var fields_service_1 = require('./services/fields.service');
+var format_field_pipe_1 = require('./pipes/format-field.pipe');
 var equal_validator_directive_1 = require('./directives/equal-validator.directive');
 var email_validator_directive_1 = require('./directives/email-validator.directive');
 var app_component_1 = require('./components/app.component');
@@ -72,7 +73,8 @@ var AppModule = (function () {
                 sign_in_component_1.SignIn,
                 log_out_component_1.LogOut,
                 auto_form_field_component_1.AutoFormField,
-                auto_form_read_component_1.AutoFormRead
+                auto_form_read_component_1.AutoFormRead,
+                format_field_pipe_1.FormatFieldPipe
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 

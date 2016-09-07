@@ -12,7 +12,6 @@ export class DonationService {
 
   getDonations(recipientId: string) {
     const url = '/api/donations' + (recipientId ? '/' + recipientId : '');
-    console.log('url', url);
     return this._http.get(url)
       .map(response => response.json().obj.map(donation => donation.donation))
       .catch(error => Observable.throw(error));

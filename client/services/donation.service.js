@@ -19,7 +19,6 @@ var DonationService = (function () {
     }
     DonationService.prototype.getDonations = function (recipientId) {
         var url = '/api/donations' + (recipientId ? '/' + recipientId : '');
-        console.log('url', url);
         return this._http.get(url)
             .map(function (response) { return response.json().obj.map(function (donation) { return donation.donation; }); })
             .catch(function (error) { return Observable_1.Observable.throw(error); });

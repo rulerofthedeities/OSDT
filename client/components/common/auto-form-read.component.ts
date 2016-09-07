@@ -11,7 +11,7 @@ import {Field} from '../../models/fields/field.model';
       {{field.label}}
     </label>
     <div class="col-xs-10" [id]="field.key">
-      {{data[field.key]}}
+      {{data[field.key] | formatField:field }}
     </div>
   </div>
   `

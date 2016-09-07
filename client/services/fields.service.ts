@@ -10,9 +10,12 @@ import {DateField} from '../models/fields/field-date.model';
 @Injectable()
 export class FieldsService {
 
-  getDonationFields() {
-    let fields: Field<any>[] = [
+  getFields(formName: string) {
+    let fields: Field<any>[][] = [];
 
+    //Donation
+
+    fields['donation'] = [
       new DropdownField({
         key: 'paymentType',
         label: 'Payment Type',
@@ -57,14 +60,9 @@ export class FieldsService {
       })
     ];
 
-    return {
-      'assoc':this.getFieldsAssoc(fields),
-      'ordered': this.getFieldsOrdered(fields)
-    };
-  }
+    //Recipient
 
-  getRecipientFields() {
-    let fields: Field<any>[] = [
+    fields['recipient'] = [
       new TextboxField({
         key: 'name',
         label: 'Name',
@@ -96,8 +94,8 @@ export class FieldsService {
     ];
 
     return {
-      'assoc':this.getFieldsAssoc(fields),
-      'ordered': this.getFieldsOrdered(fields)
+      'assoc':this.getFieldsAssoc(fields[formName]),
+      'ordered': this.getFieldsOrdered(fields[formName])
     };
   }
 

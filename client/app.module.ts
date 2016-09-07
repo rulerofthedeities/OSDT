@@ -14,6 +14,8 @@ import {DonationService} from './services/donation.service';
 import {ErrorService} from './services/error.service';
 import {FieldsService} from './services/fields.service';
 
+import {FormatFieldPipe} from './pipes/format-field.pipe';
+
 import {EqualValidator} from './directives/equal-validator.directive';
 import {EmailValidator} from './directives/email-validator.directive';
 
@@ -64,7 +66,8 @@ import {LogOut} from './components/auth/log-out.component';
     SignIn,
     LogOut,
     AutoFormField,
-    AutoFormRead
+    AutoFormRead,
+    FormatFieldPipe
   ],
   bootstrap: [ AppComponent ]
 })

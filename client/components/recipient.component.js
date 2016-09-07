@@ -31,7 +31,7 @@ var EditRecipient = (function () {
             }, function (error) { return _this.errorService.handleError(error); });
         }
         this.buildForm();
-        this.recipientFields = this.fieldsService.getRecipientFields();
+        this.recipientFields = this.fieldsService.getFields('recipient').assoc;
     };
     EditRecipient.prototype.buildForm = function () {
         this.recipientForm = this.formBuilder.group({

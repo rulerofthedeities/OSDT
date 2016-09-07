@@ -11,11 +11,11 @@ import {FieldsService} from '../services/fields.service';
   selector: 'donation',
   template: `
 
-  <button 
+  <button *ngIf="!editMode"
     class="btn btn-primary" 
     type="button"
     (click)="toggleEditMode()">
-    {{editMode ? "Read Mode" : "Edit Mode"}}
+    Edit Mode
   </button>
 
   <form 
@@ -62,6 +62,13 @@ import {FieldsService} from '../services/fields.service';
       class="btn btn-primary col-xs-offset-2">
       {{donation._id ? "Update donation" : "Save donation"}}
     </button>
+
+    <button *ngIf="editMode"
+      class="btn btn-primary" 
+      type="button"
+      (click)="toggleEditMode()">
+      Cancel
+    </button>
   </form>
   
   <div *ngIf="!editMode">
@@ -91,7 +98,7 @@ export class EditDonation implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    let fields = this.fieldsService.getDonationFields();
+    let fields = this.fieldsService.getFields('donation');
     this.donationFieldsAssoc = fields.assoc;
     this.donationFieldsOrder = fields.ordered;
   }
