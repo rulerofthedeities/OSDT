@@ -25,14 +25,13 @@ import {Subscription}   from 'rxjs/Subscription';
     <donation *ngIf="currentDonation"
       [donation]="currentDonation"
       [recipient]="currentRecipient"
-      editMode=false>
+      [editMode]=false>
     </donation>
 
     <ul *ngIf="!currentDonation">
       <li *ngFor="let donation of donations"
         (click)="selectDonation(donation)"> 
         {{donation.note}}
-        <!-- <pre>{{donation|json}}</pre> -->
       </li>
     </ul>
 

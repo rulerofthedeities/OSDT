@@ -28,7 +28,8 @@ var FieldsService = (function () {
                     { key: 'debitcard', display: 'Debit Card' },
                     { key: 'paypal', display: 'Paypal' },
                     { key: 'cash', display: 'Cash' }
-                ]
+                ],
+                order: 1
             }),
             new field_radio_model_1.RadioField({
                 key: 'currency',
@@ -36,25 +37,32 @@ var FieldsService = (function () {
                 buttons: [
                     { key: 'EUR', display: 'Euro' },
                     { key: 'USD', display: 'US Dollar' }
-                ]
+                ],
+                order: 3
             }),
             new field_textbox_model_1.TextboxField({
                 key: 'amount',
                 label: 'Amount',
-                type: 'number'
+                type: 'number',
+                order: 2
             }),
             new field_textarea_model_1.TextareaField({
                 key: 'note',
                 label: 'Notes',
                 rows: 6,
-                cols: 20
+                cols: 20,
+                order: 4
             }),
             new field_date_model_1.DateField({
                 key: 'dtPaid',
-                label: 'Date paid'
+                label: 'Date paid',
+                order: 5
             })
         ];
-        return this.makeAssocArray(fields);
+        return {
+            'assoc': this.getFieldsAssoc(fields),
+            'ordered': this.getFieldsOrdered(fields)
+        };
     };
     FieldsService.prototype.getRecipientFields = function () {
         var fields = [
@@ -62,30 +70,40 @@ var FieldsService = (function () {
                 key: 'name',
                 label: 'Name',
                 placeholder: 'Enter the name of the recipient',
-                type: 'text'
+                type: 'text',
+                order: 1
             }),
             new field_textarea_model_1.TextareaField({
                 key: 'description',
                 label: 'Description',
                 rows: 4,
-                cols: 20
+                cols: 20,
+                order: 2
             }),
             new field_textbox_model_1.TextboxField({
                 key: 'categories',
                 label: 'Categories',
-                type: 'text'
+                type: 'text',
+                order: 3
             }),
             new field_checkbox_model_1.CheckboxField({
                 key: 'isActive',
-                display: 'Recipient is active'
+                display: 'Recipient is active',
+                order: 4
             })
         ];
-        return this.makeAssocArray(fields);
+        return {
+            'assoc': this.getFieldsAssoc(fields),
+            'ordered': this.getFieldsOrdered(fields)
+        };
     };
-    FieldsService.prototype.makeAssocArray = function (fields) {
+    FieldsService.prototype.getFieldsAssoc = function (fields) {
         var fieldArr = {};
         fields.forEach(function (field) { return fieldArr[field.key] = field; });
         return fieldArr;
+    };
+    FieldsService.prototype.getFieldsOrdered = function (fields) {
+        return fields.sort(function (a, b) { return a.order - b.order; });
     };
     FieldsService = __decorate([
         core_1.Injectable(), 

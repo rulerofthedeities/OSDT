@@ -21,7 +21,8 @@ export class FieldsService {
           {key: 'debitcard', display: 'Debit Card'},
           {key: 'paypal', display: 'Paypal'},
           {key: 'cash', display: 'Cash'}
-        ]
+        ],
+        order: 1
       }),
 
       new RadioField({
@@ -30,29 +31,36 @@ export class FieldsService {
         buttons: [
           {key: 'EUR', display: 'Euro'},
           {key: 'USD', display: 'US Dollar'}
-        ]
+        ],
+        order: 3
       }),
 
       new TextboxField({
         key: 'amount',
         label: 'Amount',
-        type: 'number'
+        type: 'number',
+        order: 2
       }),
 
       new TextareaField({
         key: 'note',
         label: 'Notes',
         rows: 6,
-        cols: 20
+        cols: 20,
+        order: 4
       }),
 
       new DateField({
         key: 'dtPaid',
-        label: 'Date paid'
+        label: 'Date paid',
+        order: 5
       })
     ];
 
-    return this.makeAssocArray(fields);
+    return {
+      'assoc':this.getFieldsAssoc(fields),
+      'ordered': this.getFieldsOrdered(fields)
+    };
   }
 
   getRecipientFields() {
@@ -61,34 +69,45 @@ export class FieldsService {
         key: 'name',
         label: 'Name',
         placeholder: 'Enter the name of the recipient',
-        type: 'text'
+        type: 'text',
+        order: 1
       }),
 
       new TextareaField({
         key: 'description',
         label: 'Description',
         rows: 4,
-        cols: 20
+        cols: 20,
+        order: 2
       }),
 
       new TextboxField({
         key: 'categories',
         label: 'Categories',
-        type: 'text'
+        type: 'text',
+        order: 3
       }),
 
       new CheckboxField({
         key: 'isActive',
-        display: 'Recipient is active'
+        display: 'Recipient is active',
+        order: 4
       })
     ];
 
-    return this.makeAssocArray(fields);
+    return {
+      'assoc':this.getFieldsAssoc(fields),
+      'ordered': this.getFieldsOrdered(fields)
+    };
   }
 
-  makeAssocArray(fields: Field<any>[]): {[fieldname: string]:Field<any>;} {
+  getFieldsAssoc(fields: Field<any>[]): {[fieldname: string]:Field<any>;} {
     let fieldArr: {[fieldname: string]:Field<any>;} = {};
     fields.forEach(field => fieldArr[field.key] = field);
     return fieldArr;
+  }
+
+  getFieldsOrdered(fields: Field<any>[]): Field<any>[] {
+    return fields.sort((a, b) => a.order - b.order);
   }
 }

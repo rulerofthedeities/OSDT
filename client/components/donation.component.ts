@@ -10,17 +10,23 @@ import {FieldsService} from '../services/fields.service';
 @Component({
   selector: 'donation',
   template: `
-  NEW DONATION
+
+  <button 
+    class="btn btn-primary" 
+    type="button"
+    (click)="toggleEditMode()">
+    {{editMode ? "Read Mode" : "Edit Mode"}}
+  </button>
+
   <form 
+    *ngIf="editMode"
     [formGroup]="donationForm" 
     class="form-horizontal" 
     (submit)="submitForm(donationForm.value)">
 
-    <pre>{{donation|json}}</pre>
-
     <div class="form-group">
       <auto-field 
-        [field]="donationFields['paymentType']"
+        [field]="donationFieldsAssoc['paymentType']"
         [data]="donation"
         [form]="donationForm">
       </auto-field>
@@ -28,7 +34,7 @@ import {FieldsService} from '../services/fields.service';
 
     <div class="form-group">
       <auto-field 
-        [field]="donationFields['amount']"
+        [field]="donationFieldsAssoc['amount']"
         [data]="donation"
         [form]="donationForm">
       </auto-field>
@@ -36,7 +42,7 @@ import {FieldsService} from '../services/fields.service';
 
     <div class="form-group">
       <auto-field 
-        [field]="donationFields['currency']"
+        [field]="donationFieldsAssoc['currency']"
         [data]="donation"
         [form]="donationForm">
       </auto-field>
@@ -44,7 +50,7 @@ import {FieldsService} from '../services/fields.service';
 
     <div class="form-group">
       <auto-field 
-        [field]="donationFields['note']"
+        [field]="donationFieldsAssoc['note']"
         [data]="donation"
         [form]="donationForm">
       </auto-field>
@@ -56,8 +62,15 @@ import {FieldsService} from '../services/fields.service';
       class="btn btn-primary col-xs-offset-2">
       {{donation._id ? "Update donation" : "Save donation"}}
     </button>
-
   </form>
+  
+  <div *ngIf="!editMode">
+    <auto-form-read
+      [fields]="donationFieldsOrder"
+      [data]="donation"
+      >
+    </auto-form-read>
+  </div>
   `
 })
 
@@ -65,7 +78,8 @@ export class EditDonation implements OnInit {
   @Input() donation: Donation;
   @Input() recipient: Recipient;
   @Input() editMode: boolean;
-  donationFields: {[fieldname: string]:Field<any>;} = {};
+  donationFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
+  donationFieldsOrder: Field<any>[];
   donationForm: FormGroup;
 
   constructor (
@@ -77,7 +91,9 @@ export class EditDonation implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    this.donationFields = this.fieldsService.getDonationFields();
+    let fields = this.fieldsService.getDonationFields();
+    this.donationFieldsAssoc = fields.assoc;
+    this.donationFieldsOrder = fields.ordered;
   }
 
   buildForm() {
@@ -107,6 +123,10 @@ export class EditDonation implements OnInit {
             error => this.errorService.handleError(error)
         );
     }
+  }
+
+  toggleEditMode() {
+    this.editMode = !this.editMode;
   }
 
 }

@@ -21,11 +21,13 @@ var EditDonation = (function () {
         this.errorService = errorService;
         this.fieldsService = fieldsService;
         this.formBuilder = formBuilder;
-        this.donationFields = {};
+        this.donationFieldsAssoc = {};
     }
     EditDonation.prototype.ngOnInit = function () {
         this.buildForm();
-        this.donationFields = this.fieldsService.getDonationFields();
+        var fields = this.fieldsService.getDonationFields();
+        this.donationFieldsAssoc = fields.assoc;
+        this.donationFieldsOrder = fields.ordered;
     };
     EditDonation.prototype.buildForm = function () {
         this.donationForm = this.formBuilder.group({
@@ -50,6 +52,9 @@ var EditDonation = (function () {
                 .subscribe(function (data) { console.log('Added donation', data); }, function (error) { return _this.errorService.handleError(error); });
         }
     };
+    EditDonation.prototype.toggleEditMode = function () {
+        this.editMode = !this.editMode;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', donation_model_1.Donation)
@@ -65,7 +70,7 @@ var EditDonation = (function () {
     EditDonation = __decorate([
         core_1.Component({
             selector: 'donation',
-            template: "\n  NEW DONATION\n  <form \n    [formGroup]=\"donationForm\" \n    class=\"form-horizontal\" \n    (submit)=\"submitForm(donationForm.value)\">\n\n    <pre>{{donation|json}}</pre>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['paymentType']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['amount']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['currency']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFields['note']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <button \n      type=\"submit\"\n      [disabled]=\"!donationForm.valid\" \n      class=\"btn btn-primary col-xs-offset-2\">\n      {{donation._id ? \"Update donation\" : \"Save donation\"}}\n    </button>\n\n  </form>\n  "
+            template: "\n\n  <button \n    class=\"btn btn-primary\" \n    type=\"button\"\n    (click)=\"toggleEditMode()\">\n    {{editMode ? \"Read Mode\" : \"Edit Mode\"}}\n  </button>\n\n  <form \n    *ngIf=\"editMode\"\n    [formGroup]=\"donationForm\" \n    class=\"form-horizontal\" \n    (submit)=\"submitForm(donationForm.value)\">\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFieldsAssoc['paymentType']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFieldsAssoc['amount']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFieldsAssoc['currency']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <div class=\"form-group\">\n      <auto-field \n        [field]=\"donationFieldsAssoc['note']\"\n        [data]=\"donation\"\n        [form]=\"donationForm\">\n      </auto-field>\n    </div>\n\n    <button \n      type=\"submit\"\n      [disabled]=\"!donationForm.valid\" \n      class=\"btn btn-primary col-xs-offset-2\">\n      {{donation._id ? \"Update donation\" : \"Save donation\"}}\n    </button>\n  </form>\n  \n  <div *ngIf=\"!editMode\">\n    <auto-form-read\n      [fields]=\"donationFieldsOrder\"\n      [data]=\"donation\"\n      >\n    </auto-form-read>\n  </div>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder])
     ], EditDonation);

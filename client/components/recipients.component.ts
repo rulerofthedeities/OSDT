@@ -25,7 +25,7 @@ import {Recipient} from '../models/recipient.model';
 
     <recipient *ngIf="currentRecipient"
       [recipient]="currentRecipient"
-      editMode=false>
+      [editMode]=false>
     </recipient>
   `
 })

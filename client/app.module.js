@@ -26,6 +26,7 @@ var email_validator_directive_1 = require('./directives/email-validator.directiv
 var app_component_1 = require('./components/app.component');
 var error_message_component_1 = require('./components/common/error-message.component');
 var auto_form_field_component_1 = require('./components/common/auto-form-field.component');
+var auto_form_read_component_1 = require('./components/common/auto-form-read.component');
 var currencies_component_1 = require('./components/currencies.component');
 var recipients_component_1 = require('./components/recipients.component');
 var recipient_component_1 = require('./components/recipient.component');
@@ -70,7 +71,8 @@ var AppModule = (function () {
                 sign_up_component_1.SignUp,
                 sign_in_component_1.SignIn,
                 log_out_component_1.LogOut,
-                auto_form_field_component_1.AutoFormField
+                auto_form_field_component_1.AutoFormField,
+                auto_form_read_component_1.AutoFormRead
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
