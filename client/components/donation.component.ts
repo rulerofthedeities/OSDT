@@ -10,7 +10,6 @@ import {FieldsService} from '../services/fields.service';
 @Component({
   selector: 'donation',
   template: `
-
   <button *ngIf="!editMode"
     class="btn btn-primary" 
     type="button"
@@ -18,8 +17,7 @@ import {FieldsService} from '../services/fields.service';
     Edit Mode
   </button>
 
-  <form 
-    *ngIf="editMode"
+  <form *ngIf="editMode"
     [formGroup]="donationForm" 
     class="form-horizontal" 
     (submit)="submitForm(donationForm.value)">
@@ -63,7 +61,7 @@ import {FieldsService} from '../services/fields.service';
       {{donation._id ? "Update donation" : "Save donation"}}
     </button>
 
-    <button *ngIf="editMode"
+    <button
       class="btn btn-primary" 
       type="button"
       (click)="toggleEditMode()">

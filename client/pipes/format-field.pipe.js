@@ -18,14 +18,14 @@ var FormatFieldPipe = (function () {
             case 'dropdown':
                 //find the value in the array of options
                 var options = field.options.filter(function (option) { return option.key === value; });
-                if (options) {
+                if (options && options[0]) {
                     newValue = options[0].display;
                 }
                 break;
             case 'radio':
                 //find the value in the array of buttons
                 var buttons = field.buttons.filter(function (option) { return option.key === value; });
-                if (buttons) {
+                if (buttons && buttons[0]) {
                     newValue = buttons[0].display;
                 }
                 break;

@@ -88,6 +88,7 @@ export class FieldsService {
 
       new CheckboxField({
         key: 'isActive',
+        label: 'Active',
         display: 'Recipient is active',
         order: 4
       })

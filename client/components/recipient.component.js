@@ -20,18 +20,14 @@ var EditRecipient = (function () {
         this.errorService = errorService;
         this.fieldsService = fieldsService;
         this.formBuilder = formBuilder;
-        this.recipientFields = {};
+        this.recipientFieldsAssoc = {};
     }
     EditRecipient.prototype.ngOnInit = function () {
-        var _this = this;
-        if (this.recipient._id) {
-            //Retrieve all data in case of an existing recipient
-            this.recipientService.getRecipient(this.recipient._id).subscribe(function (recipient) {
-                _this.recipient = recipient;
-            }, function (error) { return _this.errorService.handleError(error); });
-        }
+        this.retrieveRecipient();
         this.buildForm();
-        this.recipientFields = this.fieldsService.getFields('recipient').assoc;
+        var fields = this.fieldsService.getFields('recipient');
+        this.recipientFieldsAssoc = fields.assoc;
+        this.recipientFieldsOrder = fields.ordered;
     };
     EditRecipient.prototype.buildForm = function () {
         this.recipientForm = this.formBuilder.group({
@@ -40,6 +36,16 @@ var EditRecipient = (function () {
             'categories': [this.recipient.categories],
             'isActive': [this.recipient.isActive]
         });
+    };
+    EditRecipient.prototype.retrieveRecipient = function () {
+        var _this = this;
+        if (this.recipient._id) {
+            //Retrieve all data in case of an existing recipient
+            //Note: Input() recipient doesn't contain all data
+            this.recipientService.getRecipient(this.recipient._id).subscribe(function (recipient) {
+                _this.recipient = recipient;
+            }, function (error) { return _this.errorService.handleError(error); });
+        }
     };
     EditRecipient.prototype.submitForm = function (recipient) {
         var _this = this;
@@ -62,6 +68,9 @@ var EditRecipient = (function () {
         categories = cats.toString().split(',');
         return categories.map(function (category) { return category.trim(); });
     };
+    EditRecipient.prototype.toggleEditMode = function () {
+        this.editMode = !this.editMode;
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', recipient_model_1.Recipient)
@@ -73,7 +82,7 @@ var EditRecipient = (function () {
     EditRecipient = __decorate([
         core_1.Component({
             selector: 'recipient',
-            template: "RECIPIENT\n    <form \n      [formGroup]=\"recipientForm\" \n      class=\"form-horizontal\" \n      (submit)=\"submitForm(recipientForm.value)\">\n\n      <pre>{{recipient|json}}</pre>\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFields['name']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFields['description']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFields['categories']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFields['isActive']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <button \n        type=\"submit\"\n        [disabled]=\"!recipientForm.valid\" \n        class=\"btn btn-primary col-xs-offset-2\">\n        {{recipient._id ? \"Update recipient\" : \"Save recipient\"}}\n      </button>\n    </form>\n  "
+            template: "\n    <button *ngIf=\"!editMode\"\n      class=\"btn btn-primary\" \n      type=\"button\"\n      (click)=\"toggleEditMode()\">\n      Edit Mode\n    </button>\n\n    <form *ngIf=\"editMode\"\n      [formGroup]=\"recipientForm\" \n      class=\"form-horizontal\" \n      (submit)=\"submitForm(recipientForm.value)\">\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFieldsAssoc['name']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFieldsAssoc['description']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFieldsAssoc['categories']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <div class=\"form-group\">\n        <auto-field \n          [field]=\"recipientFieldsAssoc['isActive']\"\n          [data]=\"recipient\"\n          [form]=\"recipientForm\">\n        </auto-field>\n      </div>\n\n      <button \n        type=\"submit\"\n        [disabled]=\"!recipientForm.valid\" \n        class=\"btn btn-primary col-xs-offset-2\">\n        {{recipient._id ? \"Update recipient\" : \"Save recipient\"}}\n      </button>\n\n      <button\n        class=\"btn btn-primary\" \n        type=\"button\"\n        (click)=\"toggleEditMode()\">\n        Cancel\n      </button>\n    </form>\n  \n    <div *ngIf=\"!editMode\">\n      <auto-form-read\n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        >\n      </auto-form-read>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder])
     ], EditRecipient);

@@ -8,17 +8,22 @@ import {ErrorService} from '../services/error.service';
 
 @Component({
   selector:'recipient',
-  template: `RECIPIENT
-    <form 
+  template: `
+    <button *ngIf="!editMode"
+      class="btn btn-primary" 
+      type="button"
+      (click)="toggleEditMode()">
+      Edit Mode
+    </button>
+
+    <form *ngIf="editMode"
       [formGroup]="recipientForm" 
       class="form-horizontal" 
       (submit)="submitForm(recipientForm.value)">
 
-      <pre>{{recipient|json}}</pre>
-
       <div class="form-group">
         <auto-field 
-          [field]="recipientFields['name']"
+          [field]="recipientFieldsAssoc['name']"
           [data]="recipient"
           [form]="recipientForm">
         </auto-field>
@@ -26,7 +31,7 @@ import {ErrorService} from '../services/error.service';
 
       <div class="form-group">
         <auto-field 
-          [field]="recipientFields['description']"
+          [field]="recipientFieldsAssoc['description']"
           [data]="recipient"
           [form]="recipientForm">
         </auto-field>
@@ -34,7 +39,7 @@ import {ErrorService} from '../services/error.service';
 
       <div class="form-group">
         <auto-field 
-          [field]="recipientFields['categories']"
+          [field]="recipientFieldsAssoc['categories']"
           [data]="recipient"
           [form]="recipientForm">
         </auto-field>
@@ -42,7 +47,7 @@ import {ErrorService} from '../services/error.service';
 
       <div class="form-group">
         <auto-field 
-          [field]="recipientFields['isActive']"
+          [field]="recipientFieldsAssoc['isActive']"
           [data]="recipient"
           [form]="recipientForm">
         </auto-field>
@@ -54,14 +59,30 @@ import {ErrorService} from '../services/error.service';
         class="btn btn-primary col-xs-offset-2">
         {{recipient._id ? "Update recipient" : "Save recipient"}}
       </button>
+
+      <button
+        class="btn btn-primary" 
+        type="button"
+        (click)="toggleEditMode()">
+        Cancel
+      </button>
     </form>
+  
+    <div *ngIf="!editMode">
+      <auto-form-read
+        [fields]="recipientFieldsOrder"
+        [data]="recipient"
+        >
+      </auto-form-read>
+    </div>
   `
 })
 
 export class EditRecipient implements OnInit {
   @Input() recipient: Recipient;
   @Input() editMode: boolean;
-  recipientFields: {[fieldname: string]:Field<any>;} = {};
+  recipientFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
+  recipientFieldsOrder: Field<any>[];
   recipientForm: FormGroup;
 
   constructor (
@@ -72,17 +93,11 @@ export class EditRecipient implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.recipient._id) {
-      //Retrieve all data in case of an existing recipient
-      this.recipientService.getRecipient(this.recipient._id).subscribe(
-        recipient => {
-          this.recipient = recipient;
-        },
-        error => this.errorService.handleError(error)
-      );
-    }
+    this.retrieveRecipient();
     this.buildForm();
-    this.recipientFields = this.fieldsService.getFields('recipient').assoc;
+    let fields = this.fieldsService.getFields('recipient');
+    this.recipientFieldsAssoc = fields.assoc;
+    this.recipientFieldsOrder = fields.ordered;
   }
 
   buildForm() {
@@ -92,6 +107,19 @@ export class EditRecipient implements OnInit {
       'categories': [this.recipient.categories],
       'isActive': [this.recipient.isActive]
     });
+  }
+
+  retrieveRecipient() {
+    if (this.recipient._id) {
+      //Retrieve all data in case of an existing recipient
+      //Note: Input() recipient doesn't contain all data
+      this.recipientService.getRecipient(this.recipient._id).subscribe(
+        recipient => {
+          this.recipient = recipient;
+        },
+        error => this.errorService.handleError(error)
+      );
+    }
   }
 
   submitForm(recipient: Recipient) {
@@ -120,6 +148,10 @@ export class EditRecipient implements OnInit {
 
     categories = cats.toString().split(',');
     return categories.map(category => category.trim());
+  }
+
+  toggleEditMode() {
+    this.editMode = !this.editMode;
   }
 
 }

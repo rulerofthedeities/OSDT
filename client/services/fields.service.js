@@ -85,6 +85,7 @@ var FieldsService = (function () {
             }),
             new field_checkbox_model_1.CheckboxField({
                 key: 'isActive',
+                label: 'Active',
                 display: 'Recipient is active',
                 order: 4
             })
