@@ -15,37 +15,57 @@ import {Subscription}   from 'rxjs/Subscription';
         type="button"
         (click)="addDonation()"
         class="btn btn-primary">
+        <span class="fa fa-plus"></span>
         Add Donation {{currentRecipient ? ' for ' + currentRecipient.name : ''}}
       </button>
 
-      <div>
-        {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}
-      </div>
-
-      <ul>
-        <li *ngFor="let donation of donations"
-          (click)="selectDonation(donation)"> 
-          {{donation.note}}
-        </li>
-      </ul>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th colspan="5">
+              {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let donation of donations; let i=index"
+            (click)="selectDonation(donation)"
+            on-mouseover="selectDonationIndex(i)"
+            [ngClass]="{'info':i===selectedDonation}">
+            <td>{{i+1}}</td>
+            <td>{{donation.amount}} {{donation.currency}}</td>
+            <td>{{donation.dtPaid|date:'shortDate'}}</td>
+            <td>{{donation.note}}</td>
+            <td>
+              <button class="btn btn-default btn-sm"
+                (click)="editDonation(donation)">
+                <span class="fa fa-pencil"></span> Edit
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <donation *ngIf="currentDonation"
       [donation]="currentDonation"
       [recipientId]="recipientId"
-      [editMode]="isNew">
+      [editMode]="isNew || isEdit">
     </donation>
 
     <alert type="info">ng2-bootstrap hello world!</alert>
-  `
+  `,
+  styles:[`td:hover {cursor:pointer;}`]
 })
 
 export class Donations implements OnInit {
   donations: Donation[];
   currentDonation: Donation = null;
   currentRecipient: Recipient = null;
+  selectedDonation: number = null;
   subscription: Subscription;
   recipientId: string;
+  isEdit = false;
   isNew = false;
 
   constructor(
@@ -92,8 +112,17 @@ export class Donations implements OnInit {
     }
   }
 
-  selectDonation(donation) {
+  selectDonation(donation: Donation) {
     this.currentDonation = donation;
+  }
+
+  editDonation(donation: Donation) {
+    this.isEdit = true;
+    this.currentDonation = donation;
+  }
+
+  selectDonationIndex(i: number) {
+    this.selectedDonation = i;
   }
 
   addDonation() {

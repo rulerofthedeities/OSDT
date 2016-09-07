@@ -11,6 +11,7 @@ import {Recipient} from '../models/recipient.model';
         type="button"
         (click)="addRecipient()"
         class="btn btn-primary">
+        <span class="fa fa-plus"></span>
         Add Recipient
       </button>
 

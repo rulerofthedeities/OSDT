@@ -23,6 +23,8 @@ var Donations = (function () {
         this.router = router;
         this.currentDonation = null;
         this.currentRecipient = null;
+        this.selectedDonation = null;
+        this.isEdit = false;
         this.isNew = false;
     }
     Donations.prototype.ngOnInit = function () {
@@ -52,6 +54,13 @@ var Donations = (function () {
     Donations.prototype.selectDonation = function (donation) {
         this.currentDonation = donation;
     };
+    Donations.prototype.editDonation = function (donation) {
+        this.isEdit = true;
+        this.currentDonation = donation;
+    };
+    Donations.prototype.selectDonationIndex = function (i) {
+        this.selectedDonation = i;
+    };
     Donations.prototype.addDonation = function () {
         this.isNew = true;
         this.currentDonation = new donation_model_1.Donation('EUR', 10, 'creditcard', new Date(), '');
@@ -61,7 +70,8 @@ var Donations = (function () {
     };
     Donations = __decorate([
         core_1.Component({
-            template: "\n    <div *ngIf=\"!currentDonation\">\n\n      <button \n        type=\"button\"\n        (click)=\"addDonation()\"\n        class=\"btn btn-primary\">\n        Add Donation {{currentRecipient ? ' for ' + currentRecipient.name : ''}}\n      </button>\n\n      <div>\n        {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}\n      </div>\n\n      <ul>\n        <li *ngFor=\"let donation of donations\"\n          (click)=\"selectDonation(donation)\"> \n          {{donation.note}}\n        </li>\n      </ul>\n    </div>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      [recipientId]=\"recipientId\"\n      [editMode]=\"isNew\">\n    </donation>\n\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  "
+            template: "\n    <div *ngIf=\"!currentDonation\">\n\n      <button \n        type=\"button\"\n        (click)=\"addDonation()\"\n        class=\"btn btn-primary\">\n        <span class=\"fa fa-plus\"></span>\n        Add Donation {{currentRecipient ? ' for ' + currentRecipient.name : ''}}\n      </button>\n\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th colspan=\"5\">\n              {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}\n            </th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let donation of donations; let i=index\"\n            (click)=\"selectDonation(donation)\"\n            on-mouseover=\"selectDonationIndex(i)\"\n            [ngClass]=\"{'info':i===selectedDonation}\">\n            <td>{{i+1}}</td>\n            <td>{{donation.amount}} {{donation.currency}}</td>\n            <td>{{donation.dtPaid|date:'shortDate'}}</td>\n            <td>{{donation.note}}</td>\n            <td>\n              <button class=\"btn btn-default btn-sm\"\n                (click)=\"editDonation(donation)\">\n                <span class=\"fa fa-pencil\"></span> Edit\n              </button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      [recipientId]=\"recipientId\"\n      [editMode]=\"isNew || isEdit\">\n    </donation>\n\n    <alert type=\"info\">ng2-bootstrap hello world!</alert>\n  ",
+            styles: ["td:hover {cursor:pointer;}"]
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, recipient_service_1.RecipientService, error_service_1.ErrorService, router_1.ActivatedRoute, router_1.Router])
     ], Donations);

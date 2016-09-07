@@ -11,12 +11,14 @@ import {FieldsService} from '../services/fields.service';
 @Component({
   selector: 'donation',
   template: `
-  <button *ngIf="!editMode"
-    class="btn btn-primary" 
-    type="button"
-    (click)="toggleEditMode()">
-    Edit Mode
-  </button>
+  Recipient Id: {{recipientId}}
+    <button *ngIf="!editMode"
+      class="btn btn-primary" 
+      type="button"
+      (click)="toggleEditMode()">
+      <span class="fa fa-pencil"></span>
+      Edit Mode
+    </button>
 
   <!-- Select Recipient if none available -->
   <form *ngIf="editMode && !recipientId" >
@@ -36,11 +38,9 @@ import {FieldsService} from '../services/fields.service';
         {{rec.name}}
       </option>
     </select>
-
   </form>
 
   <!-- Donation Form -->
-  recipientid{{recipientId}}
   <form *ngIf="editMode && recipientId"
     [formGroup]="donationForm" 
     class="form-horizontal" 
@@ -82,6 +82,7 @@ import {FieldsService} from '../services/fields.service';
       type="submit"
       [disabled]="!donationForm.valid" 
       class="btn btn-success col-xs-offset-2">
+      <span class="fa fa-check"></span>
       {{donation._id ? "Update donation" : "Save donation"}}
     </button>
 
@@ -89,6 +90,7 @@ import {FieldsService} from '../services/fields.service';
       class="btn btn-warning" 
       type="button"
       (click)="toggleEditMode()">
+      <span class="fa fa-times"></span>
       Cancel
     </button>
   </form>
@@ -104,10 +106,12 @@ import {FieldsService} from '../services/fields.service';
       class="btn btn-warning" 
       type="button"
       (click)="close()">
+      <span class="fa fa-times"></span>
       Close
     </button>
   </div>
-  `
+  `,
+  styles:[`.fa {font-size: 1.2em;}`]
 })
 
 export class EditDonation implements OnInit {

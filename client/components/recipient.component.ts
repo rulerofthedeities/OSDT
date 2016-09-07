@@ -13,6 +13,7 @@ import {ErrorService} from '../services/error.service';
       class="btn btn-primary" 
       type="button"
       (click)="toggleEditMode()">
+      <span class="fa fa-pencil"></span>
       Edit Mode
     </button>
 
@@ -31,6 +32,7 @@ import {ErrorService} from '../services/error.service';
         type="submit"
         [disabled]="!recipientForm.valid" 
         class="btn btn-success col-xs-offset-2">
+        <span class="fa fa-check"></span>
         {{recipient._id ? "Update recipient" : "Save recipient"}}
       </button>
 
@@ -38,6 +40,7 @@ import {ErrorService} from '../services/error.service';
         class="btn btn-warning" 
         type="button"
         (click)="toggleEditMode()">
+        <span class="fa fa-times"></span>
         Cancel
       </button>
     </form>
@@ -53,6 +56,7 @@ import {ErrorService} from '../services/error.service';
         class="btn btn-warning" 
         type="button"
         (click)="close()">
+        <span class="fa fa-times"></span>
         Close
       </button>
     </div>
