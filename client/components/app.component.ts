@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
   selector: 'osdt',
   template: `
     <div class="container">
-      <h2>OSDT</h2>
+      <navbar></navbar>
       <router-outlet></router-outlet>
       <error-msg></error-msg>
     </div>

@@ -20,6 +20,7 @@ import {EqualValidator} from './directives/equal-validator.directive';
 import {EmailValidator} from './directives/email-validator.directive';
 
 import {AppComponent} from './components/app.component';
+import {Navbar} from './components/navbar.component';
 import {ErrorMessage} from './components/common/error-message.component';
 import {AutoFormField} from './components/common/auto-form-field.component';
 import {AutoFormRead} from './components/common/auto-form-read.component';
@@ -54,6 +55,7 @@ import {LogOut} from './components/auth/log-out.component';
   ],
   declarations: [
     AppComponent,
+    Navbar,
     ErrorMessage,
     Currencies,
     Recipients,
