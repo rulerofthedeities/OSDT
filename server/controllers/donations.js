@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 module.exports = {
   load: function(req, res) {
     var pipeline = [
-      {$project: {donation:"$donations", "recipientId":"$_id"}},
+      {$project: {donation:"$donations", "recipient":{id:"$_id", name:"$name"}}},
       {$unwind: "$donation"},
       {$sort: {"donation.dtPaid" : -1}}
     ];

@@ -11,7 +11,6 @@ import {FieldsService} from '../services/fields.service';
 @Component({
   selector: 'donation',
   template: `
-  Recipient Id: {{recipientId}}
     <button *ngIf="!editMode"
       class="btn btn-primary" 
       type="button"
@@ -41,6 +40,11 @@ import {FieldsService} from '../services/fields.service';
   </form>
 
   <!-- Donation Form -->
+
+  <h3 class="col-xs-offset-2">
+    {{isNew ? "New donation" : "Donation"}} for {{currentRecipient?.name}}
+  </h3>
+
   <form *ngIf="editMode && recipientId"
     [formGroup]="donationForm" 
     class="form-horizontal" 
@@ -121,7 +125,9 @@ export class EditDonation implements OnInit {
   donationFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
   donationFieldsOrder: Field<any>[];
   donationForm: FormGroup;
-  recipients: Recipient[]; //if no recipient is present
+  recipients: Recipient[]; //if new donation and no recipient selected
+  currentRecipient: Recipient;
+  isNew = false;
 
   constructor (
     private donationService: DonationService,
@@ -133,10 +139,13 @@ export class EditDonation implements OnInit {
 
   ngOnInit() {
     if (!this.recipientId) {
-      this.recipientService.getRecipients().subscribe(
-        recipients => {this.recipients = recipients;},
-        error => this.errorService.handleError(error)
-      );
+      //if new donation and no recipient selected, show dropbox with recipient list
+      this.getRecipients();
+      this.isNew = this.editMode;
+    } else {
+      //get current recipient data
+      this.getRecipient(this.recipientId);
+      this.isNew = !this.donation._id;
     }
     this.buildForm();
     let fields = this.fieldsService.getFields('donation');
@@ -151,6 +160,20 @@ export class EditDonation implements OnInit {
       'note': [this.donation.amount],
       'currency': [this.donation.amount, Validators.required]
     });
+  }
+
+  getRecipients() {
+    this.recipientService.getRecipients().subscribe(
+      recipients => {this.recipients = recipients;},
+      error => this.errorService.handleError(error)
+    );
+  }
+
+  getRecipient(recipientId: string) {
+    this.recipientService.getRecipient(recipientId).subscribe(
+      recipient => {this.currentRecipient = recipient;},
+      error => this.errorService.handleError(error)
+    );
   }
 
   submitForm(donation: Donation) {

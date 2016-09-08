@@ -22,7 +22,7 @@ import {Subscription}   from 'rxjs/Subscription';
       <table class="table table-striped">
         <thead>
           <tr>
-            <th colspan="5">
+            <th colspan="6" class="text-center">
               {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}
             </th>
           </tr>
@@ -33,6 +33,7 @@ import {Subscription}   from 'rxjs/Subscription';
             on-mouseover="selectDonationIndex(i)"
             [ngClass]="{'info':i===selectedDonation}">
             <td>{{i+1}}</td>
+            <td>{{recipientId ? '' : recipientIds[i].name}}</td>
             <td>{{donation.amount}} {{donation.currency}}</td>
             <td>{{donation.dtPaid|date:'shortDate'}}</td>
             <td>{{donation.note}}</td>
@@ -49,7 +50,7 @@ import {Subscription}   from 'rxjs/Subscription';
 
     <donation *ngIf="currentDonation"
       [donation]="currentDonation"
-      [recipientId]="recipientId"
+      [recipientId]="recipientId || recipientIds[selectedDonation]?.id"
       [editMode]="isNew || isEdit">
     </donation>
 
@@ -65,6 +66,7 @@ export class Donations implements OnInit {
   selectedDonation: number = null;
   subscription: Subscription;
   recipientId: string;
+  recipientIds: any[];//for all donations -> one recipientId per donation
   isEdit = false;
   isNew = false;
 
@@ -98,7 +100,12 @@ export class Donations implements OnInit {
   getDonations(recipientId: string) {
     this.donationService.getDonations(recipientId)
       .subscribe(
-        donations => {this.donations = donations;},
+        donations => {
+          this.donations = donations.map(donation => donation.donation);
+          if (!recipientId) {
+            this.recipientIds = donations.map(donation => donation.recipient);
+          }
+        },
         error => this.errorService.handleError(error)
       );
   }
