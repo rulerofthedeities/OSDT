@@ -12,7 +12,6 @@ var core_1 = require('@angular/core');
 var field_textbox_model_1 = require('../models/fields/field-textbox.model');
 var field_textarea_model_1 = require('../models/fields/field-textarea.model');
 var field_dropdown_model_1 = require('../models/fields/field-dropdown.model');
-var field_radio_model_1 = require('../models/fields/field-radio.model');
 var field_checkbox_model_1 = require('../models/fields/field-checkbox.model');
 var field_date_model_1 = require('../models/fields/field-date.model');
 var FieldsService = (function () {
@@ -33,10 +32,10 @@ var FieldsService = (function () {
                 ],
                 order: 1
             }),
-            new field_radio_model_1.RadioField({
+            new field_dropdown_model_1.DropdownField({
                 key: 'currency',
                 label: 'Currency',
-                buttons: [
+                options: [
                     { key: 'EUR', display: 'Euro' },
                     { key: 'USD', display: 'US Dollar' }
                 ],

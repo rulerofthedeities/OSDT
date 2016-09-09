@@ -20,13 +20,6 @@ import {Subscription}   from 'rxjs/Subscription';
       </button>
 
       <table class="table table-striped">
-        <thead>
-          <tr>
-            <th colspan="6" class="text-center">
-              {{currentRecipient ? 'Donations for ' + currentRecipient.name : 'All donations'}}
-            </th>
-          </tr>
-        </thead>
         <tbody>
           <tr *ngFor="let donation of donations; let i=index"
             (click)="selectDonation(donation)"
@@ -53,10 +46,19 @@ import {Subscription}   from 'rxjs/Subscription';
       [recipientId]="recipientId || recipientIds[selectedDonation]?.id"
       [editMode]="isNew || isEdit">
     </donation>
-
-    <alert type="info">ng2-bootstrap hello world!</alert>
   `,
-  styles:[`td:hover {cursor:pointer;}`]
+  styles:[`
+  td:hover {cursor:pointer;}
+  tr:nth-child(odd) >td {
+    background-color:#eff5f5;
+  }
+  tr:nth-child(even) >td {
+    background-color:#fdfdff;
+  }
+  tr:hover >td{
+   background-color:#ccffcc;
+  }
+  `]
 })
 
 export class Donations implements OnInit {

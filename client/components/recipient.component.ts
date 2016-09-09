@@ -17,10 +17,9 @@ import {ErrorService} from '../services/error.service';
       Edit Mode
     </button>
 
-    <form *ngIf="editMode"
+    <form *ngIf="editMode && recipientForm"
       [formGroup]="recipientForm" 
-      class="form-horizontal" 
-      (submit)="submitForm(recipientForm.value)">
+      class="form-horizontal">
 
       <auto-form 
         [fields]="recipientFieldsOrder"
@@ -29,17 +28,27 @@ import {ErrorService} from '../services/error.service';
       </auto-form>
 
       <button 
-        type="submit"
+        type="click"
+        (click)="submitForm(recipientForm.value, 'doc')"
         [disabled]="!recipientForm.valid" 
         class="btn btn-success col-xs-offset-2">
         <span class="fa fa-check"></span>
-        {{recipient._id ? "Update recipient" : "Save recipient"}}
+        Save
+      </button>
+
+      <button 
+        type="submit"
+        (click)="submitForm(recipientForm.value, 'view')"
+        [disabled]="!recipientForm.valid" 
+        class="btn btn-success">
+        <span class="fa fa-check"></span>
+        Save & Close
       </button>
 
       <button
         class="btn btn-warning" 
         type="button"
-        (click)="toggleEditMode()">
+        (click)="close()">
         <span class="fa fa-times"></span>
         Cancel
       </button>
@@ -60,12 +69,15 @@ import {ErrorService} from '../services/error.service';
         Close
       </button>
     </div>
+
+    Closure will lead to: {{prevNavState}}
   `
 })
 
 export class EditRecipient implements OnInit {
   @Input() recipient: Recipient;
   @Input() editMode: boolean;
+  @Input() prevNavState: string;
   recipientFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
   recipientFieldsOrder: Field<any>[];
   recipientForm: FormGroup;
@@ -78,8 +90,19 @@ export class EditRecipient implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.retrieveRecipient();
-    this.buildForm();
+    this.recipientService.closeToDoc.subscribe(
+      closedRecipient => {
+        this.recipient = closedRecipient ? closedRecipient : this.recipient;
+        this.toggleEditMode();
+      }
+    );
+    if (this.recipient._id) {
+      //read/edit existing doc
+      this.retrieveRecipient();
+    } else {
+      //new doc
+      this.buildForm();
+    }
     let fields = this.fieldsService.getFields('recipient');
     this.recipientFieldsAssoc = fields.assoc;
     this.recipientFieldsOrder = fields.ordered;
@@ -95,25 +118,27 @@ export class EditRecipient implements OnInit {
   }
 
   retrieveRecipient() {
-    if (this.recipient._id) {
-      //Retrieve all data in case of an existing recipient
-      //Note: Input() recipient doesn't contain all data
-      this.recipientService.getRecipient(this.recipient._id).subscribe(
-        recipient => {
-          this.recipient = recipient;
-        },
-        error => this.errorService.handleError(error)
-      );
-    }
+    //Retrieve all data in case of an existing recipient
+    //Note: Input() recipient doesn't contain all data
+    this.recipientService.getRecipient(this.recipient._id).subscribe(
+      recipient => {
+        this.recipient = recipient;
+        this.buildForm();
+      },
+      error => this.errorService.handleError(error)
+    );
   }
 
-  submitForm(recipient: Recipient) {
+  submitForm(recipient: Recipient, target: string) {
     if (this.recipient._id) {
       //Update recipient
       recipient._id = this.recipient._id;
       recipient.categories = this.formatCategories(recipient.categories);
       this.recipientService.updateRecipient(recipient).subscribe(
-        update => {console.log('update', update);},
+        update => {
+          this.recipient = recipient;
+          this.recipientService.closeRecipient(target, recipient);
+        },
         error => this.errorService.handleError(error)
       );
     } else {
@@ -121,7 +146,10 @@ export class EditRecipient implements OnInit {
       recipient.userId = this.recipient.userId;
       recipient.categories = this.formatCategories(recipient.categories);
       this.recipientService.addRecipient(recipient).subscribe(
-        recipient => {console.log('added recipient', recipient);},
+        recipient => {
+          this.recipient = recipient;
+          this.recipientService.closeRecipient(target, recipient);
+        },
         error => this.errorService.handleError(error)
       );
     }
@@ -136,10 +164,11 @@ export class EditRecipient implements OnInit {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+    this.prevNavState = this.editMode ? 'doc' : 'view';
   }
 
   close() {
-    this.recipientService.closeRecipient();
+    this.recipientService.closeRecipient(this.prevNavState);
   }
 
 }

@@ -28,10 +28,10 @@ export class FieldsService {
         order: 1
       }),
 
-      new RadioField({
+      new DropdownField({
         key: 'currency',
         label: 'Currency',
-        buttons: [
+        options: [
           {key: 'EUR', display: 'Euro'},
           {key: 'USD', display: 'US Dollar'}
         ],

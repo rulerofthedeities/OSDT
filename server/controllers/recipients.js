@@ -5,8 +5,12 @@ var Recipient = require("../models/recipient"),
 module.exports = {
   load: function(req, res) {
     var pipeline = [
-      {$project: {cnt: {$size:'$donations'}, name:1}}
+      {$project: {cnt: {$size:'$donations'}, name:1, isActive:1}},
+      {$sort:{name:1}}
     ];
+    if (req.query.active === "1"){
+      pipeline.unshift({$match:{isActive:true}});
+    }
     Recipient.aggregate(pipeline, function(err, docs) {
       response.handleError(err, res, 500, 'Error loading recipients', function(){
         response.handleSuccess(res, docs, 200, 'Loaded recipients');
@@ -21,7 +25,6 @@ module.exports = {
     });
   },
   add: function(req, res) {
-    console.log('adding', req.body);
     var recipient = new Recipient(req.body);
     recipient.save(function(err, result) {
       response.handleError(err, res, 500, 'Error adding recipient', function(){

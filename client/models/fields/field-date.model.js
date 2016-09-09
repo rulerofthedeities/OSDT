@@ -7,11 +7,12 @@ var __extends = (this && this.__extends) || function (d, b) {
 var field_model_1 = require('./field.model');
 var DateField = (function (_super) {
     __extends(DateField, _super);
+    //minDate: string;
     function DateField(options) {
         if (options === void 0) { options = {}; }
         _super.call(this, options);
         this.controlType = 'date';
-        this.minDate = options['minDate'] || [];
+        //this.minDate = options['minDate'] || [];
     }
     return DateField;
 }(field_model_1.Field));

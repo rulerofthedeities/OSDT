@@ -19,9 +19,18 @@ import {Field} from '../../models/fields/field.model';
           [placeholder]="field.placeholder"
           [readonly]="field.readonly"
           [formControlName]="field.key"
-          [ngModel]="data[field.key]"
           [id]="field.key"
           [type]="field.type">
+
+        <input 
+          *ngSwitchCase="'date'" 
+          style="max-width:200px;"
+          class="form-control"
+          [placeholder]="field.placeholder"
+          [readonly]="field.readonly"
+          [formControlName]="field.key"
+          [id]="field.key"
+          type="date">
 
         <textarea 
           *ngSwitchCase="'textarea'" 
@@ -31,7 +40,6 @@ import {Field} from '../../models/fields/field.model';
           [rows]="field.rows"
           [cols]="field.cols"
           [formControlName]="field.key"
-          [ngModel]="data[field.key]"
           [id]="field.key">
         </textarea>
 
@@ -39,7 +47,6 @@ import {Field} from '../../models/fields/field.model';
           class="form-control"
           [id]="field.key" 
           [formControlName]="field.key"
-          [ngModel]="data[field.key]"
           *ngSwitchCase="'dropdown'">
           <option 
             *ngFor="let opt of field.options" 
@@ -54,21 +61,23 @@ import {Field} from '../../models/fields/field.model';
               <input 
                 type="radio"
                 [value]="button.key" 
-                [formControlName]="field.key"
-                [ngModel]="data[field.key]">
+                [formControlName]="field.key">
                 {{button.display}}
               </label>
           </div>
         </div>
-
-        <div *ngSwitchCase="'checkbox'" class="checkbox">
-          <input 
-            [formControlName]="field.key"
-            [ngModel]="data[field.key]"
-            [id]="field.key"
-            type="checkbox">{{field.display}}
-        </div> 
         
+        <div *ngSwitchCase="'checkbox'">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input 
+                [formControlName]="field.key"
+                [id]="field.key" 
+                type="checkbox">
+            </span>
+            <span class="form-control">{{field.display}}</span>
+        </div>
+
       </div>
       <div class="errorMessage" *ngIf="!isValid">{{field.label}} is required</div>
 

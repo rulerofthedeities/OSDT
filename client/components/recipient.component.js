@@ -23,8 +23,19 @@ var EditRecipient = (function () {
         this.recipientFieldsAssoc = {};
     }
     EditRecipient.prototype.ngOnInit = function () {
-        this.retrieveRecipient();
-        this.buildForm();
+        var _this = this;
+        this.recipientService.closeToDoc.subscribe(function (closedRecipient) {
+            _this.recipient = closedRecipient ? closedRecipient : _this.recipient;
+            _this.toggleEditMode();
+        });
+        if (this.recipient._id) {
+            //read/edit existing doc
+            this.retrieveRecipient();
+        }
+        else {
+            //new doc
+            this.buildForm();
+        }
         var fields = this.fieldsService.getFields('recipient');
         this.recipientFieldsAssoc = fields.assoc;
         this.recipientFieldsOrder = fields.ordered;
@@ -39,27 +50,32 @@ var EditRecipient = (function () {
     };
     EditRecipient.prototype.retrieveRecipient = function () {
         var _this = this;
-        if (this.recipient._id) {
-            //Retrieve all data in case of an existing recipient
-            //Note: Input() recipient doesn't contain all data
-            this.recipientService.getRecipient(this.recipient._id).subscribe(function (recipient) {
-                _this.recipient = recipient;
-            }, function (error) { return _this.errorService.handleError(error); });
-        }
+        //Retrieve all data in case of an existing recipient
+        //Note: Input() recipient doesn't contain all data
+        this.recipientService.getRecipient(this.recipient._id).subscribe(function (recipient) {
+            _this.recipient = recipient;
+            _this.buildForm();
+        }, function (error) { return _this.errorService.handleError(error); });
     };
-    EditRecipient.prototype.submitForm = function (recipient) {
+    EditRecipient.prototype.submitForm = function (recipient, target) {
         var _this = this;
         if (this.recipient._id) {
             //Update recipient
             recipient._id = this.recipient._id;
             recipient.categories = this.formatCategories(recipient.categories);
-            this.recipientService.updateRecipient(recipient).subscribe(function (update) { console.log('update', update); }, function (error) { return _this.errorService.handleError(error); });
+            this.recipientService.updateRecipient(recipient).subscribe(function (update) {
+                _this.recipient = recipient;
+                _this.recipientService.closeRecipient(target, recipient);
+            }, function (error) { return _this.errorService.handleError(error); });
         }
         else {
             //Add recipient
             recipient.userId = this.recipient.userId;
             recipient.categories = this.formatCategories(recipient.categories);
-            this.recipientService.addRecipient(recipient).subscribe(function (recipient) { console.log('added recipient', recipient); }, function (error) { return _this.errorService.handleError(error); });
+            this.recipientService.addRecipient(recipient).subscribe(function (recipient) {
+                _this.recipient = recipient;
+                _this.recipientService.closeRecipient(target, recipient);
+            }, function (error) { return _this.errorService.handleError(error); });
         }
     };
     EditRecipient.prototype.formatCategories = function (cats) {
@@ -69,9 +85,10 @@ var EditRecipient = (function () {
     };
     EditRecipient.prototype.toggleEditMode = function () {
         this.editMode = !this.editMode;
+        this.prevNavState = this.editMode ? 'doc' : 'view';
     };
     EditRecipient.prototype.close = function () {
-        this.recipientService.closeRecipient();
+        this.recipientService.closeRecipient(this.prevNavState);
     };
     __decorate([
         core_1.Input(), 
@@ -81,10 +98,14 @@ var EditRecipient = (function () {
         core_1.Input(), 
         __metadata('design:type', Boolean)
     ], EditRecipient.prototype, "editMode", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], EditRecipient.prototype, "prevNavState", void 0);
     EditRecipient = __decorate([
         core_1.Component({
             selector: 'recipient',
-            template: "\n    <button *ngIf=\"!editMode\"\n      class=\"btn btn-primary\" \n      type=\"button\"\n      (click)=\"toggleEditMode()\">\n      <span class=\"fa fa-pencil\"></span>\n      Edit Mode\n    </button>\n\n    <form *ngIf=\"editMode\"\n      [formGroup]=\"recipientForm\" \n      class=\"form-horizontal\" \n      (submit)=\"submitForm(recipientForm.value)\">\n\n      <auto-form \n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        [form]=\"recipientForm\">\n      </auto-form>\n\n      <button \n        type=\"submit\"\n        [disabled]=\"!recipientForm.valid\" \n        class=\"btn btn-success col-xs-offset-2\">\n        <span class=\"fa fa-check\"></span>\n        {{recipient._id ? \"Update recipient\" : \"Save recipient\"}}\n      </button>\n\n      <button\n        class=\"btn btn-warning\" \n        type=\"button\"\n        (click)=\"toggleEditMode()\">\n        <span class=\"fa fa-times\"></span>\n        Cancel\n      </button>\n    </form>\n  \n    <div *ngIf=\"!editMode\">\n      <auto-form-read\n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        >\n      </auto-form-read>\n\n      <button\n        class=\"btn btn-warning\" \n        type=\"button\"\n        (click)=\"close()\">\n        <span class=\"fa fa-times\"></span>\n        Close\n      </button>\n    </div>\n  "
+            template: "\n    <button *ngIf=\"!editMode\"\n      class=\"btn btn-primary\" \n      type=\"button\"\n      (click)=\"toggleEditMode()\">\n      <span class=\"fa fa-pencil\"></span>\n      Edit Mode\n    </button>\n\n    <form *ngIf=\"editMode && recipientForm\"\n      [formGroup]=\"recipientForm\" \n      class=\"form-horizontal\">\n\n      <auto-form \n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        [form]=\"recipientForm\">\n      </auto-form>\n\n      <button \n        type=\"click\"\n        (click)=\"submitForm(recipientForm.value, 'doc')\"\n        [disabled]=\"!recipientForm.valid\" \n        class=\"btn btn-success col-xs-offset-2\">\n        <span class=\"fa fa-check\"></span>\n        Save\n      </button>\n\n      <button \n        type=\"submit\"\n        (click)=\"submitForm(recipientForm.value, 'view')\"\n        [disabled]=\"!recipientForm.valid\" \n        class=\"btn btn-success\">\n        <span class=\"fa fa-check\"></span>\n        Save & Close\n      </button>\n\n      <button\n        class=\"btn btn-warning\" \n        type=\"button\"\n        (click)=\"close()\">\n        <span class=\"fa fa-times\"></span>\n        Cancel\n      </button>\n    </form>\n  \n    <div *ngIf=\"!editMode\">\n      <auto-form-read\n        [fields]=\"recipientFieldsOrder\"\n        [data]=\"recipient\"\n        >\n      </auto-form-read>\n\n      <button\n        class=\"btn btn-warning\" \n        type=\"button\"\n        (click)=\"close()\">\n        <span class=\"fa fa-times\"></span>\n        Close\n      </button>\n    </div>\n\n    Closure will lead to: {{prevNavState}}\n  "
         }), 
         __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder])
     ], EditRecipient);

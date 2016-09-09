@@ -15,10 +15,13 @@ var Observable_1 = require('rxjs/Observable');
 var RecipientService = (function () {
     function RecipientService(_http) {
         this._http = _http;
-        this.closed = new core_1.EventEmitter();
+        this.closeToView = new core_1.EventEmitter();
+        this.closeToDoc = new core_1.EventEmitter();
     }
-    RecipientService.prototype.getRecipients = function () {
-        return this._http.get('/api/recipients')
+    RecipientService.prototype.getRecipients = function (activeOnly) {
+        var url = '/api/recipients';
+        url += activeOnly ? '?active=1' : '';
+        return this._http.get(url)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
@@ -28,21 +31,35 @@ var RecipientService = (function () {
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.addRecipient = function (recipient) {
+        recipient.name = this.toProperCase(recipient.name); //for sorting
         var body = JSON.stringify(recipient);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.post('/api/recipients', body, { headers: headers })
-            .map(function (response) { return response.json(); })
+            .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.updateRecipient = function (recipient) {
+        recipient.name = this.toProperCase(recipient.name); //for sorting
         var body = JSON.stringify(recipient);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.put('/api/recipients', body, { headers: headers })
-            .map(function (response) { return response.json(); })
+            .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
-    RecipientService.prototype.closeRecipient = function () {
-        this.closed.emit();
+    RecipientService.prototype.closeRecipient = function (targetState, recipient) {
+        if (recipient === void 0) { recipient = null; }
+        switch (targetState) {
+            case 'view':
+                this.closeToView.emit(recipient);
+                break;
+            case 'doc':
+            default:
+                this.closeToDoc.emit(recipient);
+                break;
+        }
+    };
+    RecipientService.prototype.toProperCase = function (word) {
+        return word[0].toUpperCase() + word.slice(1);
     };
     RecipientService = __decorate([
         core_1.Injectable(), 

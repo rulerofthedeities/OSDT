@@ -20,7 +20,7 @@ import {FieldsService} from '../services/fields.service';
     </button>
 
   <!-- Select Recipient if none available -->
-  <form *ngIf="editMode && !recipientId" >
+  <form *ngIf="editMode && !currentRecipient" >
     <label 
       [attr.for]="recipient"
       class="control-label col-xs-2">
@@ -45,7 +45,7 @@ import {FieldsService} from '../services/fields.service';
     {{isNew ? "New donation" : "Donation"}} for {{currentRecipient?.name}}
   </h3>
 
-  <form *ngIf="editMode && recipientId"
+  <form *ngIf="editMode && currentRecipient"
     [formGroup]="donationForm" 
     class="form-horizontal" 
     (submit)="submitForm(donationForm.value)">
@@ -59,19 +59,30 @@ import {FieldsService} from '../services/fields.service';
     </div>
 
     <div class="form-group">
-      <auto-field 
-        [field]="donationFieldsAssoc['amount']"
-        [data]="donation"
-        [form]="donationForm">
-      </auto-field>
-    </div>
-
-    <div class="form-group">
-      <auto-field 
-        [field]="donationFieldsAssoc['currency']"
-        [data]="donation"
-        [form]="donationForm">
-      </auto-field>
+      <label 
+        for="amount"
+        class="control-label col-xs-2">
+        {{donationFieldsAssoc['amount'].label}}
+      </label>
+      <div class="col-xs-5">
+        <input 
+          class="form-control"
+          [placeholder]="donationFieldsAssoc['amount'].placeholder"
+          formControlName="amount"
+          [id]="amount"
+          type="text">
+      </div>
+      <div class="col-xs-5">
+        <select 
+          class="form-control"
+          formControlName="currency">
+          <option 
+            *ngFor="let opt of donationFieldsAssoc['currency'].options" 
+            [value]="opt.key">
+            {{opt.display}}
+          </option>
+        </select>
+      </div>
     </div>
 
     <div class="form-group">
@@ -87,7 +98,16 @@ import {FieldsService} from '../services/fields.service';
       [disabled]="!donationForm.valid" 
       class="btn btn-success col-xs-offset-2">
       <span class="fa fa-check"></span>
-      {{donation._id ? "Update donation" : "Save donation"}}
+      Save
+    </button>
+
+    <button 
+      type="button"
+      (click)="testForm(donationForm.value, dtPaid)"
+      [disabled]="!donationForm.valid" 
+      class="btn btn-success">
+      <span class="fa fa-check"></span>
+      Save & Close
     </button>
 
     <button
@@ -98,7 +118,9 @@ import {FieldsService} from '../services/fields.service';
       Cancel
     </button>
   </form>
-  
+
+  <!--<datepicker [(ngModel)]="date" showWeeks="true"></datepicker>-->
+
   <div *ngIf="!editMode">
     <auto-form-read
       [fields]="donationFieldsOrder"
@@ -157,13 +179,14 @@ export class EditDonation implements OnInit {
     this.donationForm = this.formBuilder.group({
       'paymentType': [this.donation.paymentType, Validators.required],
       'amount': [this.donation.amount, Validators.required],
-      'note': [this.donation.amount],
-      'currency': [this.donation.amount, Validators.required]
+      'note': [this.donation.note],
+      'currency': [this.donation.currency, Validators.required],
+      'dtPaid': [this.donation.dtPaid, Validators.required]
     });
   }
 
   getRecipients() {
-    this.recipientService.getRecipients().subscribe(
+    this.recipientService.getRecipients(true).subscribe(
       recipients => {this.recipients = recipients;},
       error => this.errorService.handleError(error)
     );
@@ -177,6 +200,9 @@ export class EditDonation implements OnInit {
   }
 
   submitForm(donation: Donation) {
+    console.log(donation);
+    console.log(this.donation);
+    /*
     if (this.donation._id) {
       //Update donation
       donation._id = this.donation._id;
@@ -194,6 +220,7 @@ export class EditDonation implements OnInit {
             error => this.errorService.handleError(error)
         );
     }
+    */
   }
 
   toggleEditMode() {
@@ -205,8 +232,13 @@ export class EditDonation implements OnInit {
   }
 
   recipientSelected(recipientId: string) {
-    console.log('recipient Selected', recipientId);
     this.recipientId = recipientId;
+    this.getRecipient(recipientId);
+  }
+
+  testForm(donation: Donation, dtPaid: any) {
+    console.log(donation, dtPaid);
+    console.log(this.donation);
   }
 
 }
