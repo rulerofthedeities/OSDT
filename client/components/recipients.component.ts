@@ -7,14 +7,16 @@ import {Recipient} from '../models/recipient.model';
 @Component({
   template: `
     <div  *ngIf="!currentRecipient">
-      <button
-        type="button"
-        (click)="addRecipient()"
-        class="btn btn-primary">
-        <span class="fa fa-plus"></span>
-        Add Recipient
-      </button>
-
+      <alert type="info">
+        <button
+          type="button"
+          (click)="addRecipient()"
+          class="btn btn-primary">
+          <span class="fa fa-plus"></span>
+          Add Recipient
+        </button>
+      </alert>
+    
       <table class="table table-striped">
         <thead>
           <tr>
@@ -26,36 +28,52 @@ import {Recipient} from '../models/recipient.model';
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let recipient of recipients; let i=index"
-            (click)="selectRecipient(recipient)"
-            on-mouseover="selectRecipientIndex(i)"
-            [ngClass]="{'info':i===selectedRecipient}">
-            <td>{{i+1}}</td>
-            <td>
-              <span 
-                class="fa" 
-                [ngClass]="{'fa-check':recipient.isActive,'fa-times':!recipient.isActive}"
-                [ngStyle]="{'color':recipient.isActive ? 'green' : 'red'}">
-              </span>
-            </td>
-            <td>{{recipient.name}}</td>
-            <td>
-              <span [ngStyle]="{'color':recipient.cnt > 0 ? 'black' : 'darkred'}">
-              {{recipient.cnt}}
-              </span>
-              <span 
-                *ngIf="recipient.cnt > 0"
-                class="fa fa-plus-square-o"
-                (click)="selectDonations(recipient)">
-              </span>
-            </td>
-            <td>
-              <button class="btn btn-default btn-sm"
-                (click)="editRecipient(recipient)">
-                <span class="fa fa-pencil"></span> Edit
-              </button>
-            </td>
-          </tr>
+          <template ngFor [ngForOf]="recipients" let-recipient let-i="index">
+            <tr class="recipients"
+              on-mouseover="selectRecipientIndex(i)"
+              [ngClass]="{'info':i===selectedRecipient}">
+              <td>{{i+1}}</td>
+              <td>
+                <span 
+                  class="fa" 
+                  [ngClass]="{'fa-check':recipient.isActive,'fa-times':!recipient.isActive}"
+                  [ngStyle]="{'color':recipient.isActive ? 'green' : 'red'}">
+                </span>
+              </td>
+              <td class="hover" (click)="selectRecipient(recipient)">
+                {{recipient.name}}
+              </td>
+              <td>
+                <span (click)="toggleDonations(i)" class="hover">
+                  <span [ngStyle]="{'color':recipient.cnt > 0 ? 'black' : 'darkred'}">
+                  {{recipient.cnt}}
+                  </span>
+                  <span 
+                    *ngIf="recipient.cnt > 0"
+                    class="fa"
+                    [ngClass]="{
+                      'fa-plus-square-o':selectedDonations!==i,
+                      'fa-minus-square-o':selectedDonations===i
+                    }">
+                  </span>
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-default btn-sm"
+                  (click)="editRecipient(recipient)">
+                  <span class="fa fa-pencil"></span> Edit
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="selectedDonations===i" class="donations">
+              <td colspan="2"></td>
+              <td colspan="3">
+                <donations
+                  [recipientId]="recipients[selectedDonations]._id">
+                </donations>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </div>
@@ -67,16 +85,17 @@ import {Recipient} from '../models/recipient.model';
     </recipient>
   `,
   styles:[`
-  td:hover {cursor:pointer;}
+  .hover:hover {cursor:pointer;}
   tr:nth-child(odd) >td {
     background-color:#fffae6;
   }
   tr:nth-child(even) >td {
     background-color:snow;
   }
-  tr:hover >td{
+  tr.recipients:hover >td{
    background-color:#ccffcc;
   }
+  .fa{font-size:1.2em}
   `]
 })
 
@@ -84,6 +103,7 @@ export class Recipients implements OnInit {
   recipients:Recipient[] = [];
   currentRecipient: Recipient = null;
   selectedRecipient: number = null;
+  selectedDonations: number = null;
   isEdit = false;
   isNew = false;
   prevNavState = 'view'; //view if closing/canceling must lead back to view
@@ -132,7 +152,8 @@ export class Recipients implements OnInit {
     this.currentRecipient = new Recipient('demoUser', '', '', [], true);
   }
 
-  selectDonations(recipient) {
-    this.router.navigate(['/donations', recipient._id]);
+  toggleDonations(i) {
+    this.selectedDonations = this.selectedDonations === i ? null : i;
+    //this.router.navigate(['/donations', recipient._id]);
   }
 }

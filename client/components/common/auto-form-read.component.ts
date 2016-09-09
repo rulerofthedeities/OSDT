@@ -11,7 +11,17 @@ import {Field} from '../../models/fields/field.model';
       {{field.label}}
     </label>
     <div class="col-xs-10" [id]="field.key">
-      {{data[field.key] | formatField:field }}
+      <div [ngSwitch]="field.controlType">
+        <span *ngSwitchCase="'checkbox'">
+          <span class="fa" 
+            [ngClass]="{'fa-check':data[field.key],'fa-times':!data[field.key]}"
+            [ngStyle]="{'color':data[field.key] ? 'green' : 'red'}">
+          </span>
+        </span>
+        <span *ngSwitchDefault>
+          {{data[field.key] | formatField:field }}
+        </span>
+      </div>
     </div>
   </div>
   `

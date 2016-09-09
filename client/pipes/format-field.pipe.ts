@@ -19,7 +19,6 @@ export class FormatFieldPipe implements PipeTransform {
         if (buttons && buttons[0]) {
           newValue = buttons[0].display;
         }
-
       break;
 
     }
