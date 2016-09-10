@@ -36,6 +36,7 @@ var recipient_component_1 = require('./components/recipient.component');
 var donations_component_1 = require('./components/donations.component');
 var donations_embedded_component_1 = require('./components/donations-embedded.component');
 var donation_component_1 = require('./components/donation.component');
+var donation_new_recipient_component_1 = require('./components/donation-new-recipient.component');
 var auth_menu_component_1 = require('./components/auth/auth-menu.component');
 var sign_up_component_1 = require('./components/auth/sign-up.component');
 var sign_in_component_1 = require('./components/auth/sign-in.component');
@@ -71,6 +72,7 @@ var AppModule = (function () {
                 donations_component_1.Donations,
                 donations_embedded_component_1.EmbeddedDonations,
                 donation_component_1.EditDonation,
+                donation_new_recipient_component_1.DonationNewRecipient,
                 equal_validator_directive_1.EqualValidator,
                 email_validator_directive_1.EmailValidator,
                 auth_menu_component_1.AuthMenu,

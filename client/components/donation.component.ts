@@ -19,26 +19,6 @@ import {FieldsService} from '../services/fields.service';
       Edit Mode
     </button>
 
-  <!-- Select Recipient if none available -->
-  <form *ngIf="editMode && !currentRecipient" >
-    <label 
-      [attr.for]="recipient"
-      class="control-label col-xs-2">
-      Select a recipient
-    </label>
-
-    <select 
-      class="form-control"
-      [id]="recipient" 
-      (change)="recipientSelected(recipient.value)" #recipient>
-      <option 
-        *ngFor="let rec of recipients" 
-        [value]="rec._id">
-        {{rec.name}}
-      </option>
-    </select>
-  </form>
-
   <!-- Donation Form -->
 
   <h3 class="col-xs-offset-2">
@@ -229,11 +209,6 @@ export class EditDonation implements OnInit {
 
   close() {
     this.donationService.closeDonation();
-  }
-
-  recipientSelected(recipientId: string) {
-    this.recipientId = recipientId;
-    this.getRecipient(recipientId);
   }
 
   testForm(donation: Donation, dtPaid: any) {

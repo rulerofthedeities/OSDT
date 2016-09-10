@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
 import {Recipient} from '../models/recipient.model';
 
 @Component({
   template: `
-    <div  *ngIf="!currentRecipient">
+    <div *ngIf="!currentRecipient">
       <alert type="info">
         <button
           type="button"
@@ -16,7 +15,7 @@ import {Recipient} from '../models/recipient.model';
           Add Recipient
         </button>
       </alert>
-    
+
       <table class="table table-striped">
         <thead>
           <tr>
@@ -110,8 +109,7 @@ export class Recipients implements OnInit {
 
   constructor(
     private recipientService: RecipientService,
-    private errorService: ErrorService,
-    private router: Router
+    private errorService: ErrorService
   ) {}
 
   ngOnInit() {
@@ -153,6 +151,7 @@ export class Recipients implements OnInit {
   }
 
   toggleDonations(i) {
+    console.log('donations', i);
     this.selectedDonations = this.selectedDonations === i ? null : i;
     //this.router.navigate(['/donations', recipient._id]);
   }

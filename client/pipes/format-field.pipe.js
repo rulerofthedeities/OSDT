@@ -17,14 +17,16 @@ var FormatFieldPipe = (function () {
         switch (field.controlType) {
             case 'dropdown':
                 //find the value in the array of options
-                var options = field.options.filter(function (option) { return option.key === value; });
+                var ddfield = field;
+                var options = ddfield.options.filter(function (option) { return option.key === value; });
                 if (options && options[0]) {
                     newValue = options[0].display;
                 }
                 break;
             case 'radio':
                 //find the value in the array of buttons
-                var buttons = field.buttons.filter(function (option) { return option.key === value; });
+                var rfield = field;
+                var buttons = rfield.buttons.filter(function (option) { return option.key === value; });
                 if (buttons && buttons[0]) {
                     newValue = buttons[0].display;
                 }

@@ -19,7 +19,13 @@ var DonationService = (function () {
         this.closed = new core_1.EventEmitter();
     }
     DonationService.prototype.getDonations = function (recipientId) {
-        var url = '/api/donations' + (recipientId ? '/' + recipientId : '');
+        var url = '/api/donations' + (recipientId ? '/recipients/' + recipientId : '');
+        return this._http.get(url)
+            .map(function (response) { return response.json().obj; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    DonationService.prototype.getDonation = function (donationId) {
+        var url = '/api/donations' + (donationId ? '/' + donationId : '');
         return this._http.get(url)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });

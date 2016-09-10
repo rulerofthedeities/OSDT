@@ -21,6 +21,14 @@ module.exports = {
       });
     });
   },
+  loadOne: function(req, res) {
+    var donationId = mongoose.Types.ObjectId(req.params.id);
+    Recipient.findOne({"donations._id": donationId}, {"donations.$":1}, function(err, donation) {
+      response.handleError(err, res, 500, 'Error loading donation', function(){
+        response.handleSuccess(res, donation, 200, 'Loaded donation');
+      });
+    });
+  },
   add: function(req, res) {
     var recipientId =  mongoose.Types.ObjectId(req.body.recipientId);
     Recipient.findById(recipientId, function(err, doc) {

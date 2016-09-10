@@ -14,7 +14,8 @@ module.exports.initialize = function(app, router) {
   router.get('/currencies', currencies.load);
 
   router.get('/donations', donations.load);
-  router.get('/donations/:id', donations.load);
+  router.get('/donations/recipients/:id', donations.load);
+  router.get('/donations/:id', donations.loadOne);
   router.post('/donations', donations.add);
   router.put('/donations', donations.update);
 

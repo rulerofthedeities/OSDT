@@ -10,42 +10,36 @@ import {Subscription}   from 'rxjs/Subscription';
 @Component({
   template: `
     <div *ngIf="!currentDonation">
+      <alert type="info">
+        <button 
+          type="button"
+          (click)="addDonation()"
+          class="btn btn-primary">
+          <span class="fa fa-plus"></span>
+          Add Donation
+        </button>
+      </alert>
 
-      <button 
-        type="button"
-        (click)="addDonation()"
-        class="btn btn-primary">
-        <span class="fa fa-plus"></span>
-        Add Donation {{currentRecipient ? ' for ' + currentRecipient.name : ''}}
-      </button>
-
-      <table class="table table-striped">
-        <tbody>
-          <tr *ngFor="let donation of donations; let i=index"
-            (click)="selectDonation(donation)"
-            on-mouseover="selectDonationIndex(i)"
-            [ngClass]="{'info':i===selectedDonation}">
-            <td>{{i+1}}</td>
-            <td>{{recipientId ? '' : recipientIds[i].name}}</td>
-            <td>{{donation.amount}} {{donation.currency}}</td>
-            <td>{{donation.dtPaid|date:'shortDate'}}</td>
-            <td>{{donation.note}}</td>
-            <td>
-              <button class="btn btn-default btn-sm"
-                (click)="editDonation(donation)">
-                <span class="fa fa-pencil"></span> Edit
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <donations
+        [recipientId]="''">
+      </donations>
     </div>
 
-    <donation *ngIf="currentDonation"
-      [donation]="currentDonation"
-      [recipientId]="recipientId || recipientIds[selectedDonation]?.id"
-      [editMode]="isNew || isEdit">
-    </donation>
+    <div *ngIf="currentDonation">
+      <div *ngIf="isNew && !recipientId">
+        <new-recipient
+          (selectedRecipientId)="onSelectedRecipientId($event)">
+        </new-recipient>
+      </div>
+
+      <div *ngIf="!isNew || recipientId">
+        <donation
+          [donation]="currentDonation"
+          [recipientId]="recipientId || recipientIds[selectedDonation]?.id"
+          [editMode]="isEdit">
+        </donation>
+      </div>
+    </div>
   `,
   styles:[`
   td:hover {cursor:pointer;}
@@ -67,6 +61,7 @@ export class Donations implements OnInit {
   currentRecipient: Recipient = null;
   selectedDonation: number = null;
   subscription: Subscription;
+  donationId: string;
   recipientId: string;
   recipientIds: any[];//for all donations -> one recipientId per donation
   isEdit = false;
@@ -82,10 +77,13 @@ export class Donations implements OnInit {
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {
-      this.recipientId = params['id'];
-      this.getDonations(this.recipientId);
-      this.getRecipient(this.recipientId);
-   });
+    if (params['id']) {
+      console.log('fetching donation ', params['id']);
+      this.getDonation(params['id']);
+      //this.getDonations(this.recipientId);
+      //this.getRecipient(this.recipientId);
+    });
+
 
     this.donationService.added.subscribe(
       addedDonation => {
@@ -99,6 +97,17 @@ export class Donations implements OnInit {
     );
   }
 
+  getDonation(donationId: string) {
+    this.donationService.getDonation(donationId).subscribe(
+        result => {console.log('result', result);
+          this.currentDonation = result.donations[0];
+          this.recipientId = result._id;
+        },
+        error => this.errorService.handleError(error)
+      );
+  }
+
+/*
   getDonations(recipientId: string) {
     this.donationService.getDonations(recipientId)
       .subscribe(
@@ -120,7 +129,7 @@ export class Donations implements OnInit {
       );
     }
   }
-
+*/
   selectDonation(donation: Donation) {
     this.currentDonation = donation;
   }
@@ -137,6 +146,12 @@ export class Donations implements OnInit {
   addDonation() {
     this.isNew = true;
     this.currentDonation = new Donation('EUR', 10, 'creditcard', new Date(),'');
+  }
+
+  onSelectedRecipientId(recipientId: string) {
+    //New donation, recipient selected
+    this.recipientId = recipientId;
+    this.isEdit = true;
   }
 
   ngOnDestroy() {

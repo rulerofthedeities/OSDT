@@ -6,6 +6,7 @@ var Field = (function () {
         this.key = options.key || '';
         this.label = options.label || '';
         this.placeholder = options.placeholder || '';
+        this.display = options.display || '';
         this.required = !!options.required;
         this.readonly = !!options.readonly;
         this.order = options.order === undefined ? 1 : options.order;

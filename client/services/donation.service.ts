@@ -12,7 +12,14 @@ export class DonationService {
   constructor(private _http: Http) {}
 
   getDonations(recipientId: string) {
-    const url = '/api/donations' + (recipientId ? '/' + recipientId : '');
+    const url = '/api/donations' + (recipientId ? '/recipients/' + recipientId : '');
+    return this._http.get(url)
+      .map(response => response.json().obj)
+      .catch(error => Observable.throw(error));
+  }
+
+  getDonation(donationId: string) {
+    const url = '/api/donations' + (donationId ? '/' + donationId : '');
     return this._http.get(url)
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));

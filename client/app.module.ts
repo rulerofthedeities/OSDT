@@ -31,6 +31,7 @@ import {EditRecipient} from './components/recipient.component';
 import {Donations} from './components/donations.component';
 import {EmbeddedDonations} from './components/donations-embedded.component';
 import {EditDonation} from './components/donation.component';
+import {DonationNewRecipient} from './components/donation-new-recipient.component';
 import {AuthMenu} from './components/auth/auth-menu.component';
 import {SignUp} from './components/auth/sign-up.component';
 import {SignIn} from './components/auth/sign-in.component';
@@ -64,6 +65,7 @@ import {LogOut} from './components/auth/log-out.component';
     Donations,
     EmbeddedDonations,
     EditDonation,
+    DonationNewRecipient,
     EqualValidator,
     EmailValidator,
     AuthMenu,

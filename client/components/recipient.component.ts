@@ -9,57 +9,62 @@ import {ErrorService} from '../services/error.service';
 @Component({
   selector:'recipient',
   template: `
-    <button *ngIf="!editMode"
-      class="btn btn-primary" 
-      type="button"
-      (click)="toggleEditMode()">
-      <span class="fa fa-pencil"></span>
-      Edit Mode
-    </button>
-
-    <form *ngIf="editMode && recipientForm"
-      [formGroup]="recipientForm" 
-      class="form-horizontal">
-
-      <auto-form 
-        [fields]="recipientFieldsOrder"
-        [data]="recipient"
-        [form]="recipientForm">
-      </auto-form>
-
-      <button 
-        type="click"
-        (click)="submitForm(recipientForm.value, 'doc')"
-        [disabled]="!recipientForm.valid" 
-        class="btn btn-success col-xs-offset-2">
-        <span class="fa fa-check"></span>
-        Save
-      </button>
-
-      <button 
-        type="submit"
-        (click)="submitForm(recipientForm.value, 'view')"
-        [disabled]="!recipientForm.valid" 
-        class="btn btn-success">
-        <span class="fa fa-check"></span>
-        Save & Close
-      </button>
-
-      <button
-        class="btn btn-warning" 
+    <alert type="info">
+      <button *ngIf="!editMode"
+        class="btn btn-primary" 
         type="button"
-        (click)="close()">
-        <span class="fa fa-times"></span>
-        Cancel
+        (click)="toggleEditMode()">
+        <span class="fa fa-pencil"></span>
+        Edit Mode
       </button>
-    </form>
-  
+    </alert>
+    <div class="doc" *ngIf="editMode && recipientForm">
+      <form
+        [formGroup]="recipientForm" 
+        class="form-horizontal">
+
+        <auto-form 
+          [fields]="recipientFieldsOrder"
+          [data]="recipient"
+          [form]="recipientForm">
+        </auto-form>
+
+        <button 
+          type="click"
+          (click)="submitForm(recipientForm.value, 'doc')"
+          [disabled]="!recipientForm.valid" 
+          class="btn btn-success col-xs-offset-2">
+          <span class="fa fa-check"></span>
+          Save
+        </button>
+
+        <button 
+          type="submit"
+          (click)="submitForm(recipientForm.value, 'view')"
+          [disabled]="!recipientForm.valid" 
+          class="btn btn-success">
+          <span class="fa fa-check"></span>
+          Save & Close
+        </button>
+
+        <button
+          class="btn btn-warning" 
+          type="button"
+          (click)="close()">
+          <span class="fa fa-times"></span>
+          Cancel
+        </button>
+      </form>
+    </div>
+    
     <div *ngIf="!editMode">
-      <auto-form-read
-        [fields]="recipientFieldsOrder"
-        [data]="recipient"
-        >
-      </auto-form-read>
+      <div class="doc">
+        <auto-form-read
+          [fields]="recipientFieldsOrder"
+          [data]="recipient"
+          >
+        </auto-form-read>
+      </div>
 
       <button
         class="btn btn-warning" 
@@ -71,7 +76,16 @@ import {ErrorService} from '../services/error.service';
     </div>
 
     Closure will lead to: {{prevNavState}}
-  `
+  `,
+  styles:[`
+    .doc {
+      border:1px solid Gainsboro;
+      border-radius:5px;
+      background-color: #fffae6;
+      padding:6px;
+      margin-bottom:12px;
+    }
+  `]
 })
 
 export class EditRecipient implements OnInit {

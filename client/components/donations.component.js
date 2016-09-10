@@ -30,9 +30,10 @@ var Donations = (function () {
     Donations.prototype.ngOnInit = function () {
         var _this = this;
         this.subscription = this.route.params.subscribe(function (params) {
-            _this.recipientId = params['id'];
-            _this.getDonations(_this.recipientId);
-            _this.getRecipient(_this.recipientId);
+            if (params['id']) {
+                console.log('fetching donation ', params['id']);
+                _this.getDonation(params['id']);
+            }
         });
         this.donationService.added.subscribe(function (addedDonation) {
             _this.currentDonation = null;
@@ -40,22 +41,37 @@ var Donations = (function () {
         });
         this.donationService.closed.subscribe(function (closedDonation) { _this.currentDonation = null; });
     };
-    Donations.prototype.getDonations = function (recipientId) {
+    Donations.prototype.getDonation = function (donationId) {
         var _this = this;
-        this.donationService.getDonations(recipientId)
-            .subscribe(function (donations) {
-            _this.donations = donations.map(function (donation) { return donation.donation; });
-            if (!recipientId) {
-                _this.recipientIds = donations.map(function (donation) { return donation.recipient; });
-            }
+        this.donationService.getDonation(donationId).subscribe(function (result) {
+            console.log('result', result);
+            _this.currentDonation = result.donations[0];
+            _this.recipientId = result._id;
         }, function (error) { return _this.errorService.handleError(error); });
     };
-    Donations.prototype.getRecipient = function (recipientId) {
-        var _this = this;
+    /*
+      getDonations(recipientId: string) {
+        this.donationService.getDonations(recipientId)
+          .subscribe(
+            donations => {
+              this.donations = donations.map(donation => donation.donation);
+              if (!recipientId) {
+                this.recipientIds = donations.map(donation => donation.recipient);
+              }
+            },
+            error => this.errorService.handleError(error)
+          );
+      }
+    
+      getRecipient(recipientId: string) {
         if (recipientId) {
-            this.recipientService.getRecipient(recipientId).subscribe(function (recipient) { _this.currentRecipient = recipient; }, function (error) { return _this.errorService.handleError(error); });
+          this.recipientService.getRecipient(recipientId).subscribe(
+            recipient => {this.currentRecipient = recipient;},
+            error => this.errorService.handleError(error)
+          );
         }
-    };
+      }
+    */
     Donations.prototype.selectDonation = function (donation) {
         this.currentDonation = donation;
     };
@@ -70,12 +86,17 @@ var Donations = (function () {
         this.isNew = true;
         this.currentDonation = new donation_model_1.Donation('EUR', 10, 'creditcard', new Date(), '');
     };
+    Donations.prototype.onSelectedRecipientId = function (recipientId) {
+        //New donation, recipient selected
+        this.recipientId = recipientId;
+        this.isEdit = true;
+    };
     Donations.prototype.ngOnDestroy = function () {
         this.subscription.unsubscribe();
     };
     Donations = __decorate([
         core_1.Component({
-            template: "\n    <div *ngIf=\"!currentDonation\">\n\n      <button \n        type=\"button\"\n        (click)=\"addDonation()\"\n        class=\"btn btn-primary\">\n        <span class=\"fa fa-plus\"></span>\n        Add Donation {{currentRecipient ? ' for ' + currentRecipient.name : ''}}\n      </button>\n\n      <table class=\"table table-striped\">\n        <tbody>\n          <tr *ngFor=\"let donation of donations; let i=index\"\n            (click)=\"selectDonation(donation)\"\n            on-mouseover=\"selectDonationIndex(i)\"\n            [ngClass]=\"{'info':i===selectedDonation}\">\n            <td>{{i+1}}</td>\n            <td>{{recipientId ? '' : recipientIds[i].name}}</td>\n            <td>{{donation.amount}} {{donation.currency}}</td>\n            <td>{{donation.dtPaid|date:'shortDate'}}</td>\n            <td>{{donation.note}}</td>\n            <td>\n              <button class=\"btn btn-default btn-sm\"\n                (click)=\"editDonation(donation)\">\n                <span class=\"fa fa-pencil\"></span> Edit\n              </button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <donation *ngIf=\"currentDonation\"\n      [donation]=\"currentDonation\"\n      [recipientId]=\"recipientId || recipientIds[selectedDonation]?.id\"\n      [editMode]=\"isNew || isEdit\">\n    </donation>\n  ",
+            template: "\n    <div *ngIf=\"!currentDonation\">\n      <alert type=\"info\">\n        <button \n          type=\"button\"\n          (click)=\"addDonation()\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-plus\"></span>\n          Add Donation\n        </button>\n      </alert>\n\n      <donations\n        [recipientId]=\"''\">\n      </donations>\n    </div>\n\n    <div *ngIf=\"currentDonation\">\n      <div *ngIf=\"isNew && !recipientId\">\n        <new-recipient\n          (selectedRecipientId)=\"onSelectedRecipientId($event)\">\n        </new-recipient>\n      </div>\n\n      <div *ngIf=\"!isNew || recipientId\">\n        <donation\n          [donation]=\"currentDonation\"\n          [recipientId]=\"recipientId || recipientIds[selectedDonation]?.id\"\n          [editMode]=\"isEdit\">\n        </donation>\n      </div>\n    </div>\n  ",
             styles: ["\n  td:hover {cursor:pointer;}\n  tr:nth-child(odd) >td {\n    background-color:#eff5f5;\n  }\n  tr:nth-child(even) >td {\n    background-color:#fdfdff;\n  }\n  tr:hover >td{\n   background-color:#ccffcc;\n  }\n  "]
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, recipient_service_1.RecipientService, error_service_1.ErrorService, router_1.ActivatedRoute, router_1.Router])
