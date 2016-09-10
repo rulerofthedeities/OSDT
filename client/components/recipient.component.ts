@@ -18,6 +18,7 @@ import {ErrorService} from '../services/error.service';
         Edit Mode
       </button>
     </alert>
+    
     <div class="doc" *ngIf="editMode && recipientForm">
       <form
         [formGroup]="recipientForm" 

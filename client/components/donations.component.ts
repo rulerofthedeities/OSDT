@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DonationService} from '../services/donation.service';
-import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
 import {Donation} from '../models/donation.model';
-import {Recipient} from '../models/recipient.model';
 import {Subscription}   from 'rxjs/Subscription';
 
 @Component({
@@ -20,8 +18,7 @@ import {Subscription}   from 'rxjs/Subscription';
         </button>
       </alert>
 
-      <donations
-        [recipientId]="''">
+      <donations>
       </donations>
     </div>
 
@@ -30,37 +27,34 @@ import {Subscription}   from 'rxjs/Subscription';
         <new-recipient
           (selectedRecipientId)="onSelectedRecipientId($event)">
         </new-recipient>
+
+        <button
+          class="btn btn-warning" 
+          type="button"
+          (click)="cancelNewDonation()">
+          <span class="fa fa-times"></span>
+          Cancel
+        </button>
       </div>
 
       <div *ngIf="!isNew || recipientId">
         <donation
           [donation]="currentDonation"
           [recipientId]="recipientId || recipientIds[selectedDonation]?.id"
-          [editMode]="isEdit">
+          [editMode]="isEdit"
+          [prevNavState]="'view'">
         </donation>
       </div>
     </div>
-  `,
-  styles:[`
-  td:hover {cursor:pointer;}
-  tr:nth-child(odd) >td {
-    background-color:#eff5f5;
-  }
-  tr:nth-child(even) >td {
-    background-color:#fdfdff;
-  }
-  tr:hover >td{
-   background-color:#ccffcc;
-  }
-  `]
+  `
 })
 
 export class Donations implements OnInit {
   donations: Donation[];
   currentDonation: Donation = null;
-  currentRecipient: Recipient = null;
   selectedDonation: number = null;
-  subscription: Subscription;
+  paramSubscription: Subscription;
+  querySubscription: Subscription;
   donationId: string;
   recipientId: string;
   recipientIds: any[];//for all donations -> one recipientId per donation
@@ -69,37 +63,34 @@ export class Donations implements OnInit {
 
   constructor(
     private donationService: DonationService,
-    private recipientService: RecipientService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.subscription = this.route.params.subscribe(params => {
+    this.paramSubscription = this.route.params.subscribe(params => {
     if (params['id']) {
-      console.log('fetching donation ', params['id']);
       this.getDonation(params['id']);
-      //this.getDonations(this.recipientId);
-      //this.getRecipient(this.recipientId);
-    });
+    }});
+    this.querySubscription = this.route.queryParams.subscribe(params => {
+    if (params['edit']) {
+      this.isEdit = params['edit'] === '1' ? true : false;
+    }});
 
-
-    this.donationService.added.subscribe(
-      addedDonation => {
-        this.currentDonation = null;
-        this.donations.push(addedDonation);
+    this.donationService.closeToView.subscribe(
+      closedDonation => {
+        this.currentDonation = null; //in case of new
+        if (this.router.url !== '/donations') {
+          this.router.navigate(['/donations']);
+        }
       }
-    );
-
-    this.donationService.closed.subscribe(
-      closedDonation => {this.currentDonation = null;}
     );
   }
 
   getDonation(donationId: string) {
     this.donationService.getDonation(donationId).subscribe(
-        result => {console.log('result', result);
+        result => {
           this.currentDonation = result.donations[0];
           this.recipientId = result._id;
         },
@@ -107,45 +98,14 @@ export class Donations implements OnInit {
       );
   }
 
-/*
-  getDonations(recipientId: string) {
-    this.donationService.getDonations(recipientId)
-      .subscribe(
-        donations => {
-          this.donations = donations.map(donation => donation.donation);
-          if (!recipientId) {
-            this.recipientIds = donations.map(donation => donation.recipient);
-          }
-        },
-        error => this.errorService.handleError(error)
-      );
-  }
-
-  getRecipient(recipientId: string) {
-    if (recipientId) {
-      this.recipientService.getRecipient(recipientId).subscribe(
-        recipient => {this.currentRecipient = recipient;},
-        error => this.errorService.handleError(error)
-      );
-    }
-  }
-*/
-  selectDonation(donation: Donation) {
-    this.currentDonation = donation;
-  }
-
-  editDonation(donation: Donation) {
-    this.isEdit = true;
-    this.currentDonation = donation;
-  }
-
-  selectDonationIndex(i: number) {
-    this.selectedDonation = i;
-  }
-
   addDonation() {
     this.isNew = true;
     this.currentDonation = new Donation('EUR', 10, 'creditcard', new Date(),'');
+  }
+
+  cancelNewDonation() {
+    this.currentDonation = null;
+    this.isNew = false;
   }
 
   onSelectedRecipientId(recipientId: string) {
@@ -155,6 +115,7 @@ export class Donations implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.querySubscription.unsubscribe();
+    this.paramSubscription.unsubscribe();
   }
 }

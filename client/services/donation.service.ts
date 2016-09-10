@@ -6,8 +6,8 @@ import {Donation} from '../models/donation.model';
 
 @Injectable()
 export class DonationService {
-  added = new EventEmitter<Donation>();
-  closed = new EventEmitter();
+  closeToView = new EventEmitter<Donation>();
+  closeToDoc = new EventEmitter<Donation>();
 
   constructor(private _http: Http) {}
 
@@ -29,10 +29,7 @@ export class DonationService {
     const body = JSON.stringify({donation, recipientId});
     const headers = new Headers({'Content-Type': 'application/json'});
     return this._http.post('/api/donations', body, {headers:headers})
-      .map(response => {
-        this.added.emit(response.json().obj);
-        return response.json();
-      })
+      .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
@@ -40,14 +37,19 @@ export class DonationService {
     const body = JSON.stringify(donation);
     const headers = new Headers({'Content-Type': 'application/json'});
     return this._http.put('/api/donations', body, {headers:headers})
-      .map(response => {
-        //this.updated.emit(response.json().obj);
-        return response.json();
-      })
+      .map(response => donation) //server does not return latest state!
       .catch(error => Observable.throw(error));
   }
 
-  closeDonation() {
-    this.closed.emit();
+  closeDonation(targetState: string, donation: Donation = null) {
+    switch (targetState) {
+      case 'view':
+        this.closeToView.emit(donation);
+        break;
+      case 'doc':
+      default:
+        this.closeToDoc.emit(donation);
+        break;
+    }
   }
 }

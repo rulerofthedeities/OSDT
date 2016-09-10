@@ -31,7 +31,7 @@ var DonationNewRecipient = (function () {
     DonationNewRecipient = __decorate([
         core_1.Component({
             selector: 'new-recipient',
-            template: "\n    <form>\n      <label \n        [attr.for]=\"recipient\"\n        class=\"control-label col-xs-2\">\n        Select a recipient\n      </label>\n\n      <select \n        class=\"form-control\"\n        [id]=\"recipient\" \n        (change)=\"recipientSelected(recipient.value)\" \n        #recipient>\n        <option value=\"\">Select a recipient...</option>\n        <option \n          *ngFor=\"let recipient of recipients\" \n          [value]=\"recipient._id\">\n          {{recipient.name}}\n        </option>\n      </select>\n    </form>\n  "
+            template: "\n    <div class=\"row\">\n      <form>\n        <div class=\"form-group\">\n          <label \n            [attr.for]=\"recipient\"\n            class=\"control-label\">\n            Select the recipient for this donation:\n          </label>\n          <div>\n            <select \n              class=\"form-control\"\n              [id]=\"recipient\" \n              (change)=\"recipientSelected(recipient.value)\" \n              #recipient>\n              <option value=\"\">Select a recipient...</option>\n              <option \n                *ngFor=\"let recipient of recipients\" \n                [value]=\"recipient._id\">\n                {{recipient.name}}\n              </option>\n            </select>\n          </div>\n        </div>\n      </form>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService])
     ], DonationNewRecipient);

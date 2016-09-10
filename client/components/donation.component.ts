@@ -11,123 +11,139 @@ import {FieldsService} from '../services/fields.service';
 @Component({
   selector: 'donation',
   template: `
-    <button *ngIf="!editMode"
-      class="btn btn-primary" 
-      type="button"
-      (click)="toggleEditMode()">
-      <span class="fa fa-pencil"></span>
-      Edit Mode
-    </button>
+    <alert type="info">
+      <button *ngIf="!editMode"
+        class="btn btn-primary" 
+        type="button"
+        (click)="toggleEditMode()">
+        <span class="fa fa-pencil"></span>
+        Edit Mode
+      </button>
+    </alert>
 
-  <!-- Donation Form -->
+    <!-- Donation Form -->
 
-  <h3 class="col-xs-offset-2">
-    {{isNew ? "New donation" : "Donation"}} for {{currentRecipient?.name}}
-  </h3>
+    <h3 class="col-xs-offset-2">
+      {{isNew ? "New donation" : "Donation"}} for {{currentRecipient?.name}}
+    </h3>
+    
+    <div class="doc" *ngIf="editMode && currentRecipient">
+      <form 
+        [formGroup]="donationForm" 
+        class="form-horizontal">
 
-  <form *ngIf="editMode && currentRecipient"
-    [formGroup]="donationForm" 
-    class="form-horizontal" 
-    (submit)="submitForm(donationForm.value)">
+        <div class="form-group">
+          <auto-field 
+            [field]="donationFieldsAssoc['paymentType']"
+            [data]="donation"
+            [form]="donationForm">
+          </auto-field>
+        </div>
 
-    <div class="form-group">
-      <auto-field 
-        [field]="donationFieldsAssoc['paymentType']"
-        [data]="donation"
-        [form]="donationForm">
-      </auto-field>
+        <div class="form-group">
+          <label 
+            for="amount"
+            class="control-label col-xs-2">
+            {{donationFieldsAssoc['amount'].label}}
+          </label>
+          <div class="col-xs-5">
+            <input 
+              class="form-control"
+              [placeholder]="donationFieldsAssoc['amount'].placeholder"
+              formControlName="amount"
+              [id]="amount"
+              type="text">
+          </div>
+          <div class="col-xs-5">
+            <select 
+              class="form-control"
+              formControlName="currency">
+              <option 
+                *ngFor="let opt of donationFieldsAssoc['currency'].options" 
+                [value]="opt.key">
+                {{opt.display}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <auto-field 
+            [field]="donationFieldsAssoc['note']"
+            [data]="donation"
+            [form]="donationForm">
+          </auto-field>
+        </div>
+
+        <button 
+          type="submit"
+          (click)="submitForm(donationForm.value, 'doc')"
+          [disabled]="!donationForm.valid" 
+          class="btn btn-success col-xs-offset-2">
+          <span class="fa fa-check"></span>
+          Save
+        </button>
+
+        <button 
+          type="submit"
+          (click)="submitForm(donationForm.value, 'view')"
+          [disabled]="!donationForm.valid" 
+          class="btn btn-success">
+          <span class="fa fa-check"></span>
+          Save & Close
+        </button>
+
+        <button
+          class="btn btn-warning" 
+          type="button"
+          (click)="close()">
+          <span class="fa fa-times"></span>
+          Cancel
+        </button>
+      </form>
     </div>
 
-    <div class="form-group">
-      <label 
-        for="amount"
-        class="control-label col-xs-2">
-        {{donationFieldsAssoc['amount'].label}}
-      </label>
-      <div class="col-xs-5">
-        <input 
-          class="form-control"
-          [placeholder]="donationFieldsAssoc['amount'].placeholder"
-          formControlName="amount"
-          [id]="amount"
-          type="text">
+    <!--<datepicker [(ngModel)]="date" showWeeks="true"></datepicker>-->
+
+    <div *ngIf="!editMode">
+      <div class="doc">
+        <auto-form-read
+          [fields]="donationFieldsOrder"
+          [data]="donation"
+          >
+        </auto-form-read>
       </div>
-      <div class="col-xs-5">
-        <select 
-          class="form-control"
-          formControlName="currency">
-          <option 
-            *ngFor="let opt of donationFieldsAssoc['currency'].options" 
-            [value]="opt.key">
-            {{opt.display}}
-          </option>
-        </select>
-      </div>
+
+      <button
+        class="btn btn-warning" 
+        type="button"
+        (click)="close()">
+        <span class="fa fa-times"></span>
+        Close
+      </button>
     </div>
 
-    <div class="form-group">
-      <auto-field 
-        [field]="donationFieldsAssoc['note']"
-        [data]="donation"
-        [form]="donationForm">
-      </auto-field>
-    </div>
-
-    <button 
-      type="submit"
-      [disabled]="!donationForm.valid" 
-      class="btn btn-success col-xs-offset-2">
-      <span class="fa fa-check"></span>
-      Save
-    </button>
-
-    <button 
-      type="button"
-      (click)="testForm(donationForm.value, dtPaid)"
-      [disabled]="!donationForm.valid" 
-      class="btn btn-success">
-      <span class="fa fa-check"></span>
-      Save & Close
-    </button>
-
-    <button
-      class="btn btn-warning" 
-      type="button"
-      (click)="toggleEditMode()">
-      <span class="fa fa-times"></span>
-      Cancel
-    </button>
-  </form>
-
-  <!--<datepicker [(ngModel)]="date" showWeeks="true"></datepicker>-->
-
-  <div *ngIf="!editMode">
-    <auto-form-read
-      [fields]="donationFieldsOrder"
-      [data]="donation"
-      >
-    </auto-form-read>
-
-    <button
-      class="btn btn-warning" 
-      type="button"
-      (click)="close()">
-      <span class="fa fa-times"></span>
-      Close
-    </button>
-  </div>
+    Closure will lead to: {{prevNavState}}
   `,
-  styles:[`.fa {font-size: 1.2em;}`]
+  styles:[`
+    .fa {font-size: 1.2em;}
+    .doc {
+      border:1px solid Gainsboro;
+      border-radius:5px;
+      background-color: #eff5f5;
+      padding:6px;
+      margin-bottom:12px;
+    }`]
 })
 
 export class EditDonation implements OnInit {
   @Input() donation: Donation;
   @Input() recipientId: string;
   @Input() editMode: boolean;
+  @Input() prevNavState: string;
   donationFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
   donationFieldsOrder: Field<any>[];
   donationForm: FormGroup;
-  recipients: Recipient[]; //if new donation and no recipient selected
   currentRecipient: Recipient;
   isNew = false;
 
@@ -140,9 +156,15 @@ export class EditDonation implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    this.donationService.closeToDoc.subscribe(
+      closedDonation => {
+        this.donation = closedDonation ? closedDonation : this.donation;
+        this.toggleEditMode();
+      }
+    );
+
     if (!this.recipientId) {
-      //if new donation and no recipient selected, show dropbox with recipient list
-      this.getRecipients();
       this.isNew = this.editMode;
     } else {
       //get current recipient data
@@ -165,13 +187,6 @@ export class EditDonation implements OnInit {
     });
   }
 
-  getRecipients() {
-    this.recipientService.getRecipients(true).subscribe(
-      recipients => {this.recipients = recipients;},
-      error => this.errorService.handleError(error)
-    );
-  }
-
   getRecipient(recipientId: string) {
     this.recipientService.getRecipient(recipientId).subscribe(
       recipient => {this.currentRecipient = recipient;},
@@ -179,41 +194,33 @@ export class EditDonation implements OnInit {
     );
   }
 
-  submitForm(donation: Donation) {
-    console.log(donation);
-    console.log(this.donation);
-    /*
+  submitForm(donation: Donation, target: string) {
     if (this.donation._id) {
       //Update donation
       donation._id = this.donation._id;
       this.donationService.updateDonation(donation)
         .subscribe(
-            data => {console.log('Updated donation', data);},
+            donation => {this.donationService.closeDonation(target, donation);},
             error => this.errorService.handleError(error)
         );
     } else {
-      //Save donation
+      //Add donation
       donation.dtPaid = new Date();
       this.donationService.addDonation(donation, this.recipientId)
         .subscribe(
-            data => {console.log('Added donation', data);},
+            donation => {this.donationService.closeDonation(target, donation);},
             error => this.errorService.handleError(error)
         );
     }
-    */
   }
 
   toggleEditMode() {
     this.editMode = !this.editMode;
+    this.prevNavState = this.editMode ? 'doc' : 'view';
   }
 
   close() {
-    this.donationService.closeDonation();
-  }
-
-  testForm(donation: Donation, dtPaid: any) {
-    console.log(donation, dtPaid);
-    console.log(this.donation);
+    this.donationService.closeDonation(this.prevNavState);
   }
 
 }

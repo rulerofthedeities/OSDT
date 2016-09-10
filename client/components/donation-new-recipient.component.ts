@@ -6,26 +6,31 @@ import {Recipient} from '../models/recipient.model';
 @Component({
   selector:'new-recipient',
   template:`
-    <form>
-      <label 
-        [attr.for]="recipient"
-        class="control-label col-xs-2">
-        Select a recipient
-      </label>
-
-      <select 
-        class="form-control"
-        [id]="recipient" 
-        (change)="recipientSelected(recipient.value)" 
-        #recipient>
-        <option value="">Select a recipient...</option>
-        <option 
-          *ngFor="let recipient of recipients" 
-          [value]="recipient._id">
-          {{recipient.name}}
-        </option>
-      </select>
-    </form>
+    <div class="row">
+      <form>
+        <div class="form-group">
+          <label 
+            [attr.for]="recipient"
+            class="control-label">
+            Select the recipient for this donation:
+          </label>
+          <div>
+            <select 
+              class="form-control"
+              [id]="recipient" 
+              (change)="recipientSelected(recipient.value)" 
+              #recipient>
+              <option value="">Select a recipient...</option>
+              <option 
+                *ngFor="let recipient of recipients" 
+                [value]="recipient._id">
+                {{recipient.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
   `
 })
 

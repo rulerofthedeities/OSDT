@@ -68,6 +68,7 @@ import {Recipient} from '../models/recipient.model';
               <td colspan="2"></td>
               <td colspan="3">
                 <donations
+                  [isSubview]="true"
                   [recipientId]="recipients[selectedDonations]._id">
                 </donations>
               </td>
@@ -117,7 +118,9 @@ export class Recipients implements OnInit {
 
     this.recipientService.closeToView.subscribe(
       closedRecipient => {
-        this.getRecipients();
+        if (closedRecipient) {
+          this.getRecipients();
+        }
         this.currentRecipient = null;
       }
     );
@@ -151,8 +154,6 @@ export class Recipients implements OnInit {
   }
 
   toggleDonations(i) {
-    console.log('donations', i);
     this.selectedDonations = this.selectedDonations === i ? null : i;
-    //this.router.navigate(['/donations', recipient._id]);
   }
 }

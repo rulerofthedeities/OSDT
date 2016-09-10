@@ -8,17 +8,24 @@ import {ErrorService} from '../services/error.service';
   selector: 'donations',
   template: `
     <div *ngIf="!currentDonation">
-      <table class="table table-striped small">
+      <table class="table table-striped" [ngClass]="{'small': isSubview}">
         <tbody>
           <tr *ngFor="let donation of donations; let i=index"
-            (click)="openDonation(donation, false)"
             on-mouseover="selectDonationIndex(i)"
             [ngClass]="{'info':i===selectedDonation}">
             <td>{{i+1}}</td>
-            <td>{{recipientIds ? recipientIds[i].name : ''}}</td>
-            <td>{{donation.amount}} {{donation.currency}}</td>
-            <td>{{donation.dtPaid|date:'shortDate'}}</td>
-            <td>{{donation.note}}</td>
+            <td class="hover" (click)="openDonation(donation, false)">
+              {{recipientIds ? recipientIds[i].name : ''}}
+            </td>
+            <td class="hover" (click)="openDonation(donation, false)">
+              {{donation.amount}} {{donation.currency}}
+            </td>
+            <td class="hover" (click)="openDonation(donation, false)">
+              {{donation.dtPaid|date:'shortDate'}}
+            </td>
+            <td class="hover" (click)="openDonation(donation, false)">
+              {{donation.note}}
+            </td>
             <td>
               <button class="btn btn-default btn-sm"
                 (click)="openDonation(donation, true)">
@@ -29,11 +36,24 @@ import {ErrorService} from '../services/error.service';
         </tbody>
       </table>
     </div>
-  `
+  `,
+  styles:[`
+    .hover:hover {cursor:pointer;}
+    tr:nth-child(odd) >td {
+      background-color:#eff5f5;
+    }
+    tr:nth-child(even) >td {
+      background-color:#fdfdff;
+    }
+    tr:hover >td{
+     background-color:#ccffcc;
+    }
+  `]
 })
 
 export class EmbeddedDonations implements OnInit {
-  @Input() recipientId: string;
+  @Input() recipientId: string = '';
+  @Input() isSubview: boolean = false;
   donations: Donation[];
   currentDonation: Donation = null;
   selectedDonation: number = null;
@@ -46,33 +66,31 @@ export class EmbeddedDonations implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getDonations();
+    this.getDonations(this.recipientId);
+
+    this.donationService.closeToView.subscribe(
+      closedDonation => {
+        if (closedDonation) {
+          this.getDonations('');
+        }
+        this.currentDonation = null;
+      }
+    );
   }
 
-  getDonations() {
-    this.donationService.getDonations('')
+  getDonations(recipientId: string) {
+    this.donationService.getDonations(recipientId)
       .subscribe(
         donations => {this.donations = donations.map(donation => donation.donation);},
         error => this.errorService.handleError(error)
       );
   }
-/*
-  selectDonation(donation: Donation) {
-    console.log('selected donation', donation);
-    this.currentDonation = donation;
-  }
-
-  editDonation(donation: Donation) {
-    this.isEdit = true;
-    this.currentDonation = donation;
-  }
-  */
 
   selectDonationIndex(i: number) {
     this.selectedDonation = i;
   }
 
   openDonation(donation: Donation, editMode: boolean) {
-    this.router.navigate(['/donations', donation._id]);
+    this.router.navigate(['/donations', donation._id], {queryParams: {'edit': editMode ? 1 : 0}});
   }
 }

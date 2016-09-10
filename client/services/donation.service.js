@@ -15,8 +15,8 @@ var Observable_1 = require('rxjs/Observable');
 var DonationService = (function () {
     function DonationService(_http) {
         this._http = _http;
-        this.added = new core_1.EventEmitter();
-        this.closed = new core_1.EventEmitter();
+        this.closeToView = new core_1.EventEmitter();
+        this.closeToDoc = new core_1.EventEmitter();
     }
     DonationService.prototype.getDonations = function (recipientId) {
         var url = '/api/donations' + (recipientId ? '/recipients/' + recipientId : '');
@@ -31,28 +31,30 @@ var DonationService = (function () {
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService.prototype.addDonation = function (donation, recipientId) {
-        var _this = this;
         var body = JSON.stringify({ donation: donation, recipientId: recipientId });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.post('/api/donations', body, { headers: headers })
-            .map(function (response) {
-            _this.added.emit(response.json().obj);
-            return response.json();
-        })
+            .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService.prototype.updateDonation = function (donation) {
         var body = JSON.stringify(donation);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.put('/api/donations', body, { headers: headers })
-            .map(function (response) {
-            //this.updated.emit(response.json().obj);
-            return response.json();
-        })
+            .map(function (response) { return donation; }) //server does not return latest state!
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
-    DonationService.prototype.closeDonation = function () {
-        this.closed.emit();
+    DonationService.prototype.closeDonation = function (targetState, donation) {
+        if (donation === void 0) { donation = null; }
+        switch (targetState) {
+            case 'view':
+                this.closeToView.emit(donation);
+                break;
+            case 'doc':
+            default:
+                this.closeToDoc.emit(donation);
+                break;
+        }
     };
     DonationService = __decorate([
         core_1.Injectable(), 
