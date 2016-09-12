@@ -38,6 +38,7 @@ import {SignUp} from './components/auth/sign-up.component';
 import {SignIn} from './components/auth/sign-in.component';
 import {LogOut} from './components/auth/log-out.component';
 import {FieldMessages} from './components/common/field-messages.component';
+import {KmDatepicker} from './components/common/km-datepicker.component';
 
 
 @NgModule({
@@ -79,7 +80,8 @@ import {FieldMessages} from './components/common/field-messages.component';
     AutoFormField,
     AutoFormRead,
     AutoForm,
-    FormatFieldPipe
+    FormatFieldPipe,
+    KmDatepicker
   ],
   bootstrap: [ AppComponent ]
 })

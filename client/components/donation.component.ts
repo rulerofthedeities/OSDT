@@ -73,7 +73,6 @@ import {FieldsService} from '../services/fields.service';
           </div>
         </div>
 
-
         <div class="form-group">
           <auto-field 
             [field]="donationFieldsAssoc['note']"
@@ -81,36 +80,49 @@ import {FieldsService} from '../services/fields.service';
             [form]="donationForm">
           </auto-field>
         </div>
-
-        <button 
-          type="submit"
-          (click)="submitForm(donationForm.value, 'doc')"
-          [disabled]="!donationForm.valid" 
-          class="btn btn-success col-xs-offset-2">
-          <span class="fa fa-check"></span>
-          Save
-        </button>
-
-        <button 
-          type="submit"
-          (click)="submitForm(donationForm.value, 'view')"
-          [disabled]="!donationForm.valid" 
-          class="btn btn-success">
-          <span class="fa fa-check"></span>
-          Save & Close
-        </button>
-
-        <button
-          class="btn btn-warning" 
-          type="button"
-          (click)="close()">
-          <span class="fa fa-times"></span>
-          Cancel
-        </button>
       </form>
-    </div>
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label 
+            for="dtPaid"
+            class="control-label col-xs-2">
+            {{donationFieldsAssoc['dtPaid'].label}}
+          </label>
+          <div class="col-xs-10">
+            <km-datepicker 
+              [dateModel]="donation.dtPaid"
+              (dateModelChange)="onDateChanged($event)">
+            </km-datepicker>
+          </div>
+        </div>
+      </div>
 
-    <!--<datepicker [(ngModel)]="date" showWeeks="true"></datepicker>-->
+      <button 
+        type="button"
+        (click)="submitForm(donationForm.value, 'doc')"
+        [disabled]="!donationForm.valid" 
+        class="btn btn-success col-xs-offset-2">
+        <span class="fa fa-check"></span>
+        Save
+      </button>
+
+      <button 
+        type="button"
+        (click)="submitForm(donationForm.value, 'view')"
+        [disabled]="!donationForm.valid" 
+        class="btn btn-success">
+        <span class="fa fa-check"></span>
+        Save & Close
+      </button>
+
+      <button
+        class="btn btn-warning" 
+        type="button"
+        (click)="close()">
+        <span class="fa fa-times"></span>
+        Cancel
+      </button>
+    </div>
 
     <div *ngIf="!editMode">
       <div class="doc">
@@ -191,7 +203,7 @@ export class EditDonation implements OnInit {
       'amount': [this.donation.amount, Validators.required],
       'note': [this.donation.note],
       'currency': [this.donation.currency, Validators.required],
-      'dtPaid': [this.donation.dtPaid, Validators.required]
+      'dtPaid': [this.isNew ? new Date() : this.donation.dtPaid, Validators.required]
     });
   }
 
@@ -213,13 +225,16 @@ export class EditDonation implements OnInit {
         );
     } else {
       //Add donation
-      donation.dtPaid = new Date();
       this.donationService.addDonation(donation, this.recipientId)
         .subscribe(
             donation => {this.donationService.closeDonation(target, donation);},
             error => this.errorService.handleError(error)
         );
     }
+  }
+
+  onDateChanged(newdt: Date) {
+    this.donationForm.patchValue({dtPaid: newdt});
   }
 
   toggleEditMode() {
@@ -230,5 +245,4 @@ export class EditDonation implements OnInit {
   close() {
     this.donationService.closeDonation(this.prevNavState);
   }
-
 }

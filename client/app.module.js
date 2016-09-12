@@ -43,6 +43,7 @@ var sign_up_component_1 = require('./components/auth/sign-up.component');
 var sign_in_component_1 = require('./components/auth/sign-in.component');
 var log_out_component_1 = require('./components/auth/log-out.component');
 var field_messages_component_1 = require('./components/common/field-messages.component');
+var km_datepicker_component_1 = require('./components/common/km-datepicker.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -86,7 +87,8 @@ var AppModule = (function () {
                 auto_form_field_component_1.AutoFormField,
                 auto_form_read_component_1.AutoFormRead,
                 auto_form_component_1.AutoForm,
-                format_field_pipe_1.FormatFieldPipe
+                format_field_pipe_1.FormatFieldPipe,
+                km_datepicker_component_1.KmDatepicker
             ],
             bootstrap: [app_component_1.AppComponent]
         }), 
