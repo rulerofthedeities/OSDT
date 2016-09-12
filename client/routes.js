@@ -9,6 +9,7 @@ var auth_menu_component_1 = require('./components/auth/auth-menu.component');
 exports.routes = [
     { path: '', component: recipients_component_1.Recipients },
     { path: 'recipients', component: recipients_component_1.Recipients },
+    { path: 'recipients/donations/:id', component: recipients_component_1.Recipients },
     { path: 'currencies', component: currencies_component_1.Currencies },
     { path: 'donations', component: donations_component_1.Donations },
     { path: 'donations/:id', component: donations_component_1.Donations },

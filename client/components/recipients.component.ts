@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
 import {Recipient} from '../models/recipient.model';
+import {Subscription}   from 'rxjs/Subscription';
 
 @Component({
   template: `
@@ -99,18 +101,20 @@ import {Recipient} from '../models/recipient.model';
   `]
 })
 
-export class Recipients implements OnInit {
+export class Recipients implements OnInit, OnDestroy {
   recipients:Recipient[] = [];
   currentRecipient: Recipient = null;
   selectedRecipient: number = null;
   selectedDonations: number = null;
+  paramSubscription: Subscription;
   isEdit = false;
   isNew = false;
   prevNavState = 'view'; //view if closing/canceling must lead back to view
 
   constructor(
     private recipientService: RecipientService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -129,7 +133,13 @@ export class Recipients implements OnInit {
   getRecipients() {
     this.recipientService.getRecipients(false)
       .subscribe(
-        recipients => {this.recipients = recipients;},
+        recipients => {
+          this.recipients = recipients;
+          this.paramSubscription = this.route.params.subscribe(params => {
+          if (params['id']) {
+            this.setInitialDonations(params['id']);
+          }});
+        },
         error => this.errorService.handleError(error)
       );
   }
@@ -155,5 +165,18 @@ export class Recipients implements OnInit {
 
   toggleDonations(i) {
     this.selectedDonations = this.selectedDonations === i ? null : i;
+  }
+
+  setInitialDonations(recipientId: string) {
+    let i = 0;
+    this.recipients.forEach(recipient => {
+      if(recipientId === recipient._id && recipient.cnt > 0) {
+      this.toggleDonations(i);
+    };
+      i++;
+  });
+  }
+  ngOnDestroy() {
+    this.paramSubscription.unsubscribe();
   }
 }

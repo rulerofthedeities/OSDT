@@ -4,6 +4,7 @@ import {Donation} from './donation.model';
 export class Recipient {
   public reminder: Reminder[];
   public donations: Donation[];
+  public cnt: number;
 
   constructor(
     public userId: string,

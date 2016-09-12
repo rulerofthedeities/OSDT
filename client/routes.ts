@@ -10,6 +10,7 @@ import {AuthMenu} from './components/auth/auth-menu.component';
 export const routes: Routes = [
   {path: '', component: Recipients},
   {path: 'recipients', component: Recipients},
+  {path: 'recipients/donations/:id', component: Recipients},
   {path: 'currencies', component: Currencies},
   {path: 'donations', component: Donations},
   {path: 'donations/:id', component: Donations},
