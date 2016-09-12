@@ -61,6 +61,11 @@ var RecipientService = (function () {
     RecipientService.prototype.toProperCase = function (word) {
         return word[0].toUpperCase() + word.slice(1);
     };
+    RecipientService.prototype.searchCategories = function (search) {
+        return this._http.get('/api/cats?search=' + search)
+            .map(function (response) { return response.json().obj; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
     RecipientService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

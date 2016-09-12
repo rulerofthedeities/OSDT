@@ -23,6 +23,7 @@ module.exports.initialize = function(app, router) {
   router.get('/recipients/:id', recipients.loadOne);
   router.post('/recipients', recipients.add);
   router.put('/recipients', recipients.update);
+  router.get('/cats', recipients.getCats);
 
   router.post('/user/signin', users.signin);
   router.post('/user/signup', users.signup);

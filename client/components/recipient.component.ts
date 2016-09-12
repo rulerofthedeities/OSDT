@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {Recipient} from '../models/recipient.model';
 import {Field} from '../models/fields/field.model';
 import {FieldsService} from '../services/fields.service';
@@ -24,11 +24,51 @@ import {ErrorService} from '../services/error.service';
         [formGroup]="recipientForm" 
         class="form-horizontal">
 
-        <auto-form 
-          [fields]="recipientFieldsOrder"
-          [data]="recipient"
-          [form]="recipientForm">
-        </auto-form>
+        <div class="form-group">
+          <auto-field 
+            [field]="recipientFieldsAssoc['name']"
+            [data]="recipient"
+            [form]="recipientForm">
+          </auto-field>
+        </div>
+
+        <div class="form-group">
+          <auto-field 
+            [field]="recipientFieldsAssoc['description']"
+            [data]="recipient"
+            [form]="recipientForm">
+          </auto-field>
+        </div>
+
+        <div class="form-group">
+          <auto-field 
+            [field]="recipientFieldsAssoc['categories']"
+            [data]="recipient"
+            [form]="recipientForm">
+          </auto-field>
+        </div>
+
+        <div class="col-xs-offset-2">
+          Search Categories:
+          <input type="text"
+            (keyup)="searchCats(searchcats.value)"
+            #searchcats>
+          <ul class="cats list-unstyled">
+            <li *ngFor="let cat of cats" 
+              (click)="addCategory(cat.name)"
+              class="label label-warning">
+                {{cat.name}}
+            </li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <auto-field 
+            [field]="recipientFieldsAssoc['isActive']"
+            [data]="recipient"
+            [form]="recipientForm">
+          </auto-field>
+        </div>
 
         <button 
           type="click"
@@ -86,6 +126,13 @@ import {ErrorService} from '../services/error.service';
       padding:6px;
       margin-bottom:12px;
     }
+    .label {
+      margin:2px;
+      cursor:pointer;
+    }
+    .cats {
+      margin-top:6px;
+    }
   `]
 })
 
@@ -93,6 +140,7 @@ export class EditRecipient implements OnInit {
   @Input() recipient: Recipient;
   @Input() editMode: boolean;
   @Input() prevNavState: string;
+  cats: string[];
   recipientFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
   recipientFieldsOrder: Field<any>[];
   recipientForm: FormGroup;
@@ -175,6 +223,25 @@ export class EditRecipient implements OnInit {
 
     categories = cats.toString().split(',');
     return categories.map(category => category.trim());
+  }
+
+  searchCats(cats: string):void {
+    if (cats.length > 0) {
+      this.recipientService.searchCategories(cats).subscribe(
+        cats => {this.cats = cats || [];},
+        error => this.errorService.handleError(error)
+        );
+    } else {
+      this.cats = [];
+    }
+  }
+
+  addCategory(newCat: string) {
+    let cat: string[] = [];
+    cat[0] = this.recipientForm.controls['categories'].value;
+    cat[1] = newCat;
+    cat = cat.filter(c => !!c);
+    (<FormControl>this.recipientForm.controls['categories']).updateValue(cat.join(','));
   }
 
   toggleEditMode() {

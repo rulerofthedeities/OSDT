@@ -58,4 +58,10 @@ export class RecipientService {
   toProperCase(word: string): string {
     return word[0].toUpperCase() + word.slice(1);
   }
+
+  searchCategories(search: string) {
+    return this._http.get('/api/cats?search=' + search)
+      .map(response => response.json().obj)
+      .catch(error => Observable.throw(error));
+  }
 }

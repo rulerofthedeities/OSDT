@@ -18,6 +18,9 @@ import {Field} from '../../models/fields/field.model';
             [ngStyle]="{'color':data[field.key] ? 'green' : 'red'}">
           </span>
         </span>
+        <span *ngSwitchCase="'date'">
+          {{data[field.key] | date:'longDate' }}
+        </span>
         <span *ngSwitchDefault>
           {{data[field.key] | formatField:field }}
         </span>

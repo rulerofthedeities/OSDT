@@ -45,5 +45,22 @@ module.exports = {
         });
       }
     );
+  },
+  getCats: function(req, res) {
+  var query = req.query.search, 
+      max = req.query.max ? parseInt(req.query.max, 10) : 20;
+  Recipient
+    .aggregate([
+      {$unwind: "$categories" },
+      {$match: {categories: {$regex:query, $options:"i"}}},
+      {$group: {_id:"$categories"}},
+      {$sort: {_id: 1}},
+      {$limit: max},
+      {$project: {_id:0, name:"$_id"}}
+    ], function(err, docs) {
+      response.handleError(err, res, 500, 'Error loading categories', function(){
+        response.handleSuccess(res, docs, 200, 'Loaded categories');
+      });
+    });
   }
 }
