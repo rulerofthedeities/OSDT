@@ -52,7 +52,7 @@ import {FieldsService} from '../services/fields.service';
               [placeholder]="donationFieldsAssoc['amount'].placeholder"
               formControlName="amount"
               [id]="amount"
-              type="text">
+              type="number">
           </div>
           <div class="col-xs-5">
             <select 
@@ -65,7 +65,14 @@ import {FieldsService} from '../services/fields.service';
               </option>
             </select>
           </div>
+           <div class="col-xs-offset-2">
+            <field-messages 
+              [control]="donationForm.controls.amount"
+              [label]="donationFieldsAssoc['amount'].label">
+            </field-messages>
+          </div>
         </div>
+
 
         <div class="form-group">
           <auto-field 
@@ -133,7 +140,8 @@ import {FieldsService} from '../services/fields.service';
       background-color: #eff5f5;
       padding:6px;
       margin-bottom:12px;
-    }`]
+    }`],
+  styleUrls:[`client/components/form.css`]
 })
 
 export class EditDonation implements OnInit {

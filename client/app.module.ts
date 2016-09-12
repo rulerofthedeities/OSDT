@@ -13,6 +13,7 @@ import {RecipientService} from './services/recipient.service';
 import {DonationService} from './services/donation.service';
 import {ErrorService} from './services/error.service';
 import {FieldsService} from './services/fields.service';
+import {ValidationService} from './services/validation.service';
 
 import {FormatFieldPipe} from './pipes/format-field.pipe';
 
@@ -36,6 +37,7 @@ import {AuthMenu} from './components/auth/auth-menu.component';
 import {SignUp} from './components/auth/sign-up.component';
 import {SignIn} from './components/auth/sign-in.component';
 import {LogOut} from './components/auth/log-out.component';
+import {FieldMessages} from './components/common/field-messages.component';
 
 
 @NgModule({
@@ -53,7 +55,8 @@ import {LogOut} from './components/auth/log-out.component';
     DonationService,
     ErrorService,
     AuthService,
-    FieldsService
+    FieldsService,
+    ValidationService
   ],
   declarations: [
     AppComponent,
@@ -68,6 +71,7 @@ import {LogOut} from './components/auth/log-out.component';
     DonationNewRecipient,
     EqualValidator,
     EmailValidator,
+    FieldMessages,
     AuthMenu,
     SignUp,
     SignIn,

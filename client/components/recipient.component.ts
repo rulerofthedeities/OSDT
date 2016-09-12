@@ -49,10 +49,12 @@ import {ErrorService} from '../services/error.service';
         </div>
 
         <div class="col-xs-offset-2">
-          Search Categories:
-          <input type="text"
-            (keyup)="searchCats(searchcats.value)"
-            #searchcats>
+          <div class="searchcats">
+            Search Categories:
+            <input type="text"
+              (keyup)="searchCats(searchcats.value)"
+              #searchcats>
+          </div>
           <ul class="cats list-unstyled">
             <li *ngFor="let cat of cats" 
               (click)="addCategory(cat.name)"
@@ -132,6 +134,9 @@ import {ErrorService} from '../services/error.service';
     }
     .cats {
       margin-top:6px;
+    }
+    .searchcats {
+      font-size:0.8em;
     }
   `]
 })

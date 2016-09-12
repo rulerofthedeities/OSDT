@@ -79,10 +79,13 @@ import {Field} from '../../models/fields/field.model';
         </div>
 
       </div>
-      <div class="errorMessage" *ngIf="!isValid">{{field.label}} is required</div>
-
+      <field-messages 
+        [control]="form.controls[field.key]"
+        [label]="field.label">
+      </field-messages>
     </div>
-  `
+  `,
+  styleUrls:[`client/components/form.css`]
 })
 
 export class AutoFormField {

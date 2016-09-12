@@ -21,6 +21,7 @@ var recipient_service_1 = require('./services/recipient.service');
 var donation_service_1 = require('./services/donation.service');
 var error_service_1 = require('./services/error.service');
 var fields_service_1 = require('./services/fields.service');
+var validation_service_1 = require('./services/validation.service');
 var format_field_pipe_1 = require('./pipes/format-field.pipe');
 var equal_validator_directive_1 = require('./directives/equal-validator.directive');
 var email_validator_directive_1 = require('./directives/email-validator.directive');
@@ -41,6 +42,7 @@ var auth_menu_component_1 = require('./components/auth/auth-menu.component');
 var sign_up_component_1 = require('./components/auth/sign-up.component');
 var sign_in_component_1 = require('./components/auth/sign-in.component');
 var log_out_component_1 = require('./components/auth/log-out.component');
+var field_messages_component_1 = require('./components/common/field-messages.component');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -60,7 +62,8 @@ var AppModule = (function () {
                 donation_service_1.DonationService,
                 error_service_1.ErrorService,
                 auth_service_1.AuthService,
-                fields_service_1.FieldsService
+                fields_service_1.FieldsService,
+                validation_service_1.ValidationService
             ],
             declarations: [
                 app_component_1.AppComponent,
@@ -75,6 +78,7 @@ var AppModule = (function () {
                 donation_new_recipient_component_1.DonationNewRecipient,
                 equal_validator_directive_1.EqualValidator,
                 email_validator_directive_1.EmailValidator,
+                field_messages_component_1.FieldMessages,
                 auth_menu_component_1.AuthMenu,
                 sign_up_component_1.SignUp,
                 sign_in_component_1.SignIn,
