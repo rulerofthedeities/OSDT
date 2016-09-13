@@ -74,7 +74,7 @@ import {ErrorService} from '../services/error.service';
 
         <button 
           type="click"
-          (click)="submitForm(recipientForm.value, 'doc')"
+          (click)="submitForm(recipientForm.value, 'docRecipient')"
           [disabled]="!recipientForm.valid" 
           class="btn btn-success col-xs-offset-2">
           <span class="fa fa-check"></span>
@@ -83,7 +83,7 @@ import {ErrorService} from '../services/error.service';
 
         <button 
           type="submit"
-          (click)="submitForm(recipientForm.value, 'view')"
+          (click)="submitForm(recipientForm.value, 'viewRecipient')"
           [disabled]="!recipientForm.valid" 
           class="btn btn-success">
           <span class="fa fa-check"></span>
@@ -251,7 +251,7 @@ export class EditRecipient implements OnInit {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
-    this.prevNavState = this.editMode ? 'doc' : 'view';
+    this.prevNavState = this.editMode ? 'docRecipient' : 'viewRecipient';
   }
 
   close() {

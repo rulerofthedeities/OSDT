@@ -109,7 +109,7 @@ export class Recipients implements OnInit, OnDestroy {
   paramSubscription: Subscription;
   isEdit = false;
   isNew = false;
-  prevNavState = 'view'; //view if closing/canceling must lead back to view
+  prevNavState = 'viewRecipient'; //view if closing/canceling must lead back to view
 
   constructor(
     private recipientService: RecipientService,
@@ -136,9 +136,10 @@ export class Recipients implements OnInit, OnDestroy {
         recipients => {
           this.recipients = recipients;
           this.paramSubscription = this.route.params.subscribe(params => {
-          if (params['id']) {
-            this.setInitialDonations(params['id']);
-          }});
+            if (params['id']) {
+              this.setInitialDonations(params['id']);
+            }
+          });
         },
         error => this.errorService.handleError(error)
       );
@@ -171,11 +172,12 @@ export class Recipients implements OnInit, OnDestroy {
     let i = 0;
     this.recipients.forEach(recipient => {
       if(recipientId === recipient._id && recipient.cnt > 0) {
-      this.toggleDonations(i);
-    };
+        this.toggleDonations(i);
+      };
       i++;
-  });
+    });
   }
+
   ngOnDestroy() {
     this.paramSubscription.unsubscribe();
   }

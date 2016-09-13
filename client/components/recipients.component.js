@@ -24,7 +24,7 @@ var Recipients = (function () {
         this.selectedDonations = null;
         this.isEdit = false;
         this.isNew = false;
-        this.prevNavState = 'view'; //view if closing/canceling must lead back to view
+        this.prevNavState = 'viewRecipient'; //view if closing/canceling must lead back to view
     }
     Recipients.prototype.ngOnInit = function () {
         var _this = this;

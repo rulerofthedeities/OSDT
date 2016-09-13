@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 import {Donation} from '../models/donation.model';
 import {Recipient} from '../models/recipient.model';
 import {Field} from '../models/fields/field.model';
@@ -99,7 +100,7 @@ import {FieldsService} from '../services/fields.service';
 
       <button 
         type="button"
-        (click)="submitForm(donationForm.value, 'doc')"
+        (click)="submitForm(donationForm.value, 'docDonation')"
         [disabled]="!donationForm.valid" 
         class="btn btn-success col-xs-offset-2">
         <span class="fa fa-check"></span>
@@ -108,7 +109,7 @@ import {FieldsService} from '../services/fields.service';
 
       <button 
         type="button"
-        (click)="submitForm(donationForm.value, 'view')"
+        (click)="submitForm(donationForm.value, subView ? 'viewRecipient' : 'viewDonation')"
         [disabled]="!donationForm.valid" 
         class="btn btn-success">
         <span class="fa fa-check"></span>
@@ -160,11 +161,12 @@ export class EditDonation implements OnInit {
   @Input() donation: Donation;
   @Input() recipientId: string;
   @Input() editMode: boolean;
-  @Input() prevNavState: string;
+  @Input() subView: boolean;
   donationFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
   donationFieldsOrder: Field<any>[];
   donationForm: FormGroup;
   currentRecipient: Recipient;
+  prevNavState: string;
   isNew = false;
 
   constructor (
@@ -172,10 +174,12 @@ export class EditDonation implements OnInit {
     private recipientService: RecipientService,
     private errorService: ErrorService,
     private fieldsService: FieldsService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.prevNavState = this.subView ? 'viewRecipient' : 'viewDonation';
 
     this.donationService.closeToDoc.subscribe(
       closedDonation => {
@@ -220,14 +224,14 @@ export class EditDonation implements OnInit {
       donation._id = this.donation._id;
       this.donationService.updateDonation(donation)
         .subscribe(
-            donation => {this.donationService.closeDonation(target, donation);},
+            donation => {this.close(donation, target);},
             error => this.errorService.handleError(error)
         );
     } else {
       //Add donation
       this.donationService.addDonation(donation, this.recipientId)
         .subscribe(
-            donation => {this.donationService.closeDonation(target, donation);},
+            donation => {this.close(donation, target);},
             error => this.errorService.handleError(error)
         );
     }
@@ -239,10 +243,15 @@ export class EditDonation implements OnInit {
 
   toggleEditMode() {
     this.editMode = !this.editMode;
-    this.prevNavState = this.editMode ? 'doc' : 'view';
+    this.prevNavState = this.editMode ? 'docDonation' : (this.subView ? 'viewRecipient' : 'viewDonation');
   }
 
-  close() {
-    this.donationService.closeDonation(this.prevNavState);
+  close(donation?: Donation, target?: string) {
+    let targetPage = target || this.prevNavState;
+    if (this.subView && targetPage === 'viewRecipient') {
+      this.router.navigate(['/recipients/donations/' + this.recipientId]);
+    } else {
+      this.donationService.closeDonation(targetPage, donation || this.donation);
+    }
   }
 }

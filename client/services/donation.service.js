@@ -47,10 +47,10 @@ var DonationService = (function () {
     DonationService.prototype.closeDonation = function (targetState, donation) {
         if (donation === void 0) { donation = null; }
         switch (targetState) {
-            case 'view':
+            case 'viewDonation':
                 this.closeToView.emit(donation);
                 break;
-            case 'doc':
+            case 'docDonation':
             default:
                 this.closeToDoc.emit(donation);
                 break;

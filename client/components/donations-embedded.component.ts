@@ -91,6 +91,13 @@ export class EmbeddedDonations implements OnInit {
   }
 
   openDonation(donation: Donation, editMode: boolean) {
-    this.router.navigate(['/donations', donation._id], {queryParams: {'edit': editMode ? 1 : 0}});
+    let params = {};
+    if (editMode) {
+      params['edit'] = 1;
+    }
+    if (this.isSubview) {
+      params['sub'] = 1;
+    }
+    this.router.navigate(['/donations', donation._id], {queryParams: params});
   }
 }

@@ -42,7 +42,7 @@ import {Subscription}   from 'rxjs/Subscription';
           [donation]="currentDonation"
           [recipientId]="recipientId || recipientIds[selectedDonation]?.id"
           [editMode]="isEdit"
-          [prevNavState]="'view'">
+          [subView]="isSubView">
         </donation>
       </div>
     </div>
@@ -59,6 +59,7 @@ export class Donations implements OnInit {
   recipientId: string;
   recipientIds: any[];//for all donations -> one recipientId per donation
   isEdit = false;
+  isSubView = false; //the donation document was opened from the recipient view
   isNew = false;
 
   constructor(
@@ -70,13 +71,18 @@ export class Donations implements OnInit {
 
   ngOnInit() {
     this.paramSubscription = this.route.params.subscribe(params => {
-    if (params['id']) {
-      this.getDonation(params['id']);
-    }});
+      if (params['id']) {
+        this.getDonation(params['id']);
+      }
+    });
     this.querySubscription = this.route.queryParams.subscribe(params => {
-    if (params['edit']) {
-      this.isEdit = params['edit'] === '1' ? true : false;
-    }});
+      if (params['edit']) {
+        this.isEdit = params['edit'] === '1' ? true : false;
+      }
+      if (params['sub']) {
+        this.isSubView = params['sub'] === '1' ? true : false;
+      }
+    });
 
     this.donationService.closeToView.subscribe(
       closedDonation => {

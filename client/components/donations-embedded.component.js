@@ -42,7 +42,14 @@ var EmbeddedDonations = (function () {
         this.selectedDonation = i;
     };
     EmbeddedDonations.prototype.openDonation = function (donation, editMode) {
-        this.router.navigate(['/donations', donation._id], { queryParams: { 'edit': editMode ? 1 : 0 } });
+        var params = {};
+        if (editMode) {
+            params['edit'] = 1;
+        }
+        if (this.isSubview) {
+            params['sub'] = 1;
+        }
+        this.router.navigate(['/donations', donation._id], { queryParams: params });
     };
     __decorate([
         core_1.Input(), 

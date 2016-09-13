@@ -45,10 +45,10 @@ export class RecipientService {
 
   closeRecipient(targetState: string, recipient: Recipient = null) {
     switch (targetState) {
-      case 'view':
+      case 'viewRecipient':
         this.closeToView.emit(recipient);
         break;
-      case 'doc':
+      case 'docRecipient':
       default:
         this.closeToDoc.emit(recipient);
         break;

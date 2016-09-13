@@ -43,10 +43,10 @@ export class DonationService {
 
   closeDonation(targetState: string, donation: Donation = null) {
     switch (targetState) {
-      case 'view':
+      case 'viewDonation':
         this.closeToView.emit(donation);
         break;
-      case 'doc':
+      case 'docDonation':
       default:
         this.closeToDoc.emit(donation);
         break;

@@ -49,10 +49,10 @@ var RecipientService = (function () {
     RecipientService.prototype.closeRecipient = function (targetState, recipient) {
         if (recipient === void 0) { recipient = null; }
         switch (targetState) {
-            case 'view':
+            case 'viewRecipient':
                 this.closeToView.emit(recipient);
                 break;
-            case 'doc':
+            case 'docRecipient':
             default:
                 this.closeToDoc.emit(recipient);
                 break;
