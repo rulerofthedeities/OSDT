@@ -5,8 +5,9 @@ var express = require('express'),
     compression = require('compression'),
     path = require('path'),
     bodyParser = require('body-parser'),
+    mongoose = require('mongoose'),
     routes = require('./server/routes'),
-    mongoose = require('mongoose');
+    xchange = require('./server/controllers/xchange');
 
 //config
 app.set('port', process.env.PORT || 5000);
@@ -43,5 +44,10 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/km-osdt', options, function(err) {
   app.listen(app.get('port'), function() { 
     console.log('Server up: http://localhost:' + app.get('port'));
+
   });
 });
+
+//Schedule Currency Exchange Rate fetch
+
+xchange.scheduleRates();
