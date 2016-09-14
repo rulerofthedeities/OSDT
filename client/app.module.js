@@ -64,7 +64,8 @@ var AppModule = (function () {
                 error_service_1.ErrorService,
                 auth_service_1.AuthService,
                 fields_service_1.FieldsService,
-                validation_service_1.ValidationService
+                validation_service_1.ValidationService,
+                { provide: forms_1.NG_VALIDATORS, useExisting: core_1.forwardRef(function () { return email_validator_directive_1.EmailValidator; }), multi: true }
             ],
             declarations: [
                 app_component_1.AppComponent,

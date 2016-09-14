@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require('@angular/core');
-var forms_1 = require('@angular/forms');
 var EqualValidator = (function () {
     function EqualValidator(validateEqual, reverse) {
         this.validateEqual = validateEqual;
@@ -31,7 +30,8 @@ var EqualValidator = (function () {
         // self value
         var v = c.value;
         // control vlaue
-        var e = c.root.find(this.validateEqual);
+        //let e = c.root.find(this.validateEqual);
+        var e = c.root.value[this.validateEqual];
         // value not equal
         if (e && v !== e.value && !this.isReverse) {
             return { validateEqual: false };
@@ -50,10 +50,7 @@ var EqualValidator = (function () {
     };
     EqualValidator = __decorate([
         core_1.Directive({
-            selector: '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]',
-            providers: [
-                core_1.provide(forms_1.NG_VALIDATORS, { useExisting: core_1.forwardRef(function () { return EqualValidator; }), multi: true })
-            ]
+            selector: '[validateEqual][formControlName],[validateEqual][formControl],[validateEqual][ngModel]'
         }),
         __param(0, core_1.Attribute('validateEqual')),
         __param(1, core_1.Attribute('reverse')), 

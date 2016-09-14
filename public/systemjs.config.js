@@ -5,7 +5,6 @@ var isPublic = typeof window != "undefined";
     var map = {
       'app':                    'client', // 'dist',
       '@angular':               (isPublic) ? 'node/@angular' : 'node_modules/@angular',
-      '@angular/router':        (isPublic) ? 'node/@angular/router' : 'node_modules/@angular/router',
       'rxjs':                   (isPublic) ? 'node/rxjs' : 'node_modules/rxjs',
       'ng2-bootstrap':          (isPublic) ? 'node/ng2-bootstrap' : 'node_modules/ng2-bootstrap',
       'moment':                 (isPublic) ? 'node/moment/moment.js' : 'node_modules/moment/moment.js'
@@ -21,11 +20,10 @@ var isPublic = typeof window != "undefined";
       'forms',
       'compiler',
       'core',
+      'router',
       'http',
       'platform-browser',
-      'platform-browser-dynamic',
-      'router-deprecated',
-      'upgrade',
+      'platform-browser-dynamic'
     ];
     // Individual files (~300 requests):
     function packIndex(pkgName) {

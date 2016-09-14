@@ -1,11 +1,8 @@
-import { Directive, forwardRef, provide, Attribute } from '@angular/core';
-import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
+import {Directive, Attribute} from '@angular/core';
+import {Validator, AbstractControl} from '@angular/forms';
 
 @Directive({
-    selector: '[validateEmail][formControlName],[validateEmail][formControl],[validateEmail][ngModel]',
-    providers: [
-        provide(NG_VALIDATORS, { useExisting: forwardRef(() => EmailValidator), multi: true })
-    ]
+    selector: '[validateEmail][formControlName],[validateEmail][formControl],[validateEmail][ngModel]'
 })
 export class EmailValidator implements Validator {
   constructor(@Attribute('validateEmail') validateEmail: string) {;}

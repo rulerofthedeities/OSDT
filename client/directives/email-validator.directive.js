@@ -12,7 +12,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require('@angular/core');
-var forms_1 = require('@angular/forms');
 var EmailValidator = (function () {
     function EmailValidator(validateEmail) {
         ;
@@ -28,10 +27,7 @@ var EmailValidator = (function () {
     };
     EmailValidator = __decorate([
         core_1.Directive({
-            selector: '[validateEmail][formControlName],[validateEmail][formControl],[validateEmail][ngModel]',
-            providers: [
-                core_1.provide(forms_1.NG_VALIDATORS, { useExisting: core_1.forwardRef(function () { return EmailValidator; }), multi: true })
-            ]
+            selector: '[validateEmail][formControlName],[validateEmail][formControl],[validateEmail][ngModel]'
         }),
         __param(0, core_1.Attribute('validateEmail')), 
         __metadata('design:paramtypes', [String])

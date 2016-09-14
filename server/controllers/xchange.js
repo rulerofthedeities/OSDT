@@ -1,14 +1,13 @@
 'use strict';
 var CronJob = require('cron').CronJob,
-    Exchange = require('../models/exchange');
+    Exchange = require('../models/exchange'),
+    request = require("request");
 
 function scheduleExchangeRates() {
   var daily = '00 35 11 * * *';
-  var hourly = '00 35 * * * *';
-  var everyminute = '0 * * * * *';
-  var job = new CronJob(hourly, function() {
+  var hourly = '00 55 * * * *';
+  var job = new CronJob(daily, function() {
       loadExchangeRates();
-      saveExchangeRates(rates);
     }, function () {
       /* This function is executed when the job stops */
     },
@@ -17,7 +16,6 @@ function scheduleExchangeRates() {
   );
   job.start();
 }
-
 
 function loadExchangeRates() {
   console.log('Fetching exchange rates', new Date());
@@ -32,7 +30,7 @@ function loadExchangeRates() {
       } else {
         console.log('error retrieving exchange rates', error);
       }
-  })
+  });
 }
 
 function saveExchangeRates(rates) {

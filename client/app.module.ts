@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders, forwardRef, Provider} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, NG_VALIDATORS} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {HttpModule} from '@angular/http';
 import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
@@ -57,8 +57,9 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     ErrorService,
     AuthService,
     FieldsService,
-    ValidationService
-  ],
+    ValidationService,
+    {provide: NG_VALIDATORS, useExisting: forwardRef(() => EmailValidator), multi: true}
+    ],
   declarations: [
     AppComponent,
     Navbar,
