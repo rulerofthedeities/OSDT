@@ -21,7 +21,6 @@ export class EqualValidator implements Validator {
     let v = c.value;
 
     // control vlaue
-    //let e = c.root.find(this.validateEqual);
     let e = c.root.value[this.validateEqual];
 
     // value not equal

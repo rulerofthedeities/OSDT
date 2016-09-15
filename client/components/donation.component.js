@@ -16,12 +16,15 @@ var donation_service_1 = require('../services/donation.service');
 var recipient_service_1 = require('../services/recipient.service');
 var error_service_1 = require('../services/error.service');
 var fields_service_1 = require('../services/fields.service');
+var xchange_service_1 = require('../services/xchange.service');
+var moment = require('moment');
 var EditDonation = (function () {
-    function EditDonation(donationService, recipientService, errorService, fieldsService, formBuilder, router) {
+    function EditDonation(donationService, recipientService, errorService, fieldsService, xchangeService, formBuilder, router) {
         this.donationService = donationService;
         this.recipientService = recipientService;
         this.errorService = errorService;
         this.fieldsService = fieldsService;
+        this.xchangeService = xchangeService;
         this.formBuilder = formBuilder;
         this.router = router;
         this.donationFieldsAssoc = {};
@@ -53,7 +56,7 @@ var EditDonation = (function () {
             'amount': [this.donation.amount, forms_1.Validators.required],
             'note': [this.donation.note],
             'currency': [this.donation.currency, forms_1.Validators.required],
-            'dtPaid': [this.isNew ? new Date() : this.donation.dtPaid, forms_1.Validators.required]
+            'dtPaid': [this.isNew ? moment().startOf('day').toDate() : this.donation.dtPaid, forms_1.Validators.required]
         });
     };
     EditDonation.prototype.getRecipient = function (recipientId) {
@@ -62,17 +65,37 @@ var EditDonation = (function () {
     };
     EditDonation.prototype.submitForm = function (donation, target) {
         var _this = this;
-        if (this.donation._id) {
-            //Update donation
-            donation._id = this.donation._id;
-            this.donationService.updateDonation(donation)
-                .subscribe(function (donation) { _this.close(donation, target); }, function (error) { return _this.errorService.handleError(error); });
+        if (donation.amount !== this.donation.amount) {
+            //get currencies from field list
+            var currencyField = this.donationFieldsAssoc['currency'], currencies = currencyField['options'].map(function (option) { return option.key; }), timestamp = moment(donation.dtPaid).unix();
+            //fetch exchange rate and save
+            this.xchangeService.getExchangeRate(timestamp, currencies).subscribe(function (rate) {
+                donation.rates = rate[0].rates;
+                _this.saveDonation(donation, target);
+            }, function (error) { return _this.errorService.handleError(error); });
         }
         else {
-            //Add donation
-            this.donationService.addDonation(donation, this.recipientId)
-                .subscribe(function (donation) { _this.close(donation, target); }, function (error) { return _this.errorService.handleError(error); });
+            this.saveDonation(donation, target);
         }
+    };
+    EditDonation.prototype.saveDonation = function (donation, target) {
+        if (this.donation._id) {
+            this.updateDonation(donation, target);
+        }
+        else {
+            this.addDonation(donation, target);
+        }
+    };
+    EditDonation.prototype.updateDonation = function (donation, target) {
+        var _this = this;
+        donation._id = this.donation._id;
+        this.donationService.updateDonation(donation)
+            .subscribe(function (donation) { _this.close(donation, target); }, function (error) { return _this.errorService.handleError(error); });
+    };
+    EditDonation.prototype.addDonation = function (donation, target) {
+        var _this = this;
+        this.donationService.addDonation(donation, this.recipientId)
+            .subscribe(function (donation) { _this.close(donation, target); }, function (error) { return _this.errorService.handleError(error); });
     };
     EditDonation.prototype.onDateChanged = function (newdt) {
         this.donationForm.patchValue({ dtPaid: newdt });
@@ -113,7 +136,7 @@ var EditDonation = (function () {
             styles: ["\n    .fa {font-size: 1.2em;}\n    .doc {\n      border:1px solid Gainsboro;\n      border-radius:5px;\n      background-color: #eff5f5;\n      padding:6px;\n      margin-bottom:12px;\n    }"],
             styleUrls: ["client/components/form.css"]
         }), 
-        __metadata('design:paramtypes', [donation_service_1.DonationService, recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder, router_1.Router])
+        __metadata('design:paramtypes', [donation_service_1.DonationService, recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, xchange_service_1.XchangeService, forms_1.FormBuilder, router_1.Router])
     ], EditDonation);
     return EditDonation;
 }());

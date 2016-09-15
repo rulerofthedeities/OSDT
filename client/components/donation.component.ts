@@ -8,6 +8,8 @@ import {DonationService} from '../services/donation.service';
 import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
 import {FieldsService} from '../services/fields.service';
+import {XchangeService} from '../services/xchange.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'donation',
@@ -174,6 +176,7 @@ export class EditDonation implements OnInit {
     private recipientService: RecipientService,
     private errorService: ErrorService,
     private fieldsService: FieldsService,
+    private xchangeService: XchangeService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
@@ -207,7 +210,7 @@ export class EditDonation implements OnInit {
       'amount': [this.donation.amount, Validators.required],
       'note': [this.donation.note],
       'currency': [this.donation.currency, Validators.required],
-      'dtPaid': [this.isNew ? new Date() : this.donation.dtPaid, Validators.required]
+      'dtPaid': [this.isNew ? moment().startOf('day').toDate() : this.donation.dtPaid, Validators.required]
     });
   }
 
@@ -219,22 +222,47 @@ export class EditDonation implements OnInit {
   }
 
   submitForm(donation: Donation, target: string) {
-    if (this.donation._id) {
-      //Update donation
-      donation._id = this.donation._id;
-      this.donationService.updateDonation(donation)
-        .subscribe(
-            donation => {this.close(donation, target);},
-            error => this.errorService.handleError(error)
-        );
+    if (donation.amount !== this.donation.amount) {
+      //get currencies from field list
+      const currencyField = this.donationFieldsAssoc['currency'],
+            currencies = currencyField['options'].map(option => option.key),
+            timestamp = moment(donation.dtPaid).unix();
+      //fetch exchange rate and save
+      this.xchangeService.getExchangeRate(timestamp, currencies).subscribe(
+        rate => {
+          donation.rates = rate[0].rates;
+          this.saveDonation(donation, target);
+        },
+        error => this.errorService.handleError(error)
+      );
     } else {
-      //Add donation
-      this.donationService.addDonation(donation, this.recipientId)
+      this.saveDonation(donation, target);
+    }
+  }
+
+  saveDonation(donation: Donation, target: string) {
+    if (this.donation._id) {
+      this.updateDonation(donation, target);
+    } else {
+      this.addDonation(donation, target);
+    }
+  }
+
+  updateDonation(donation: Donation, target: string) {
+    donation._id = this.donation._id;
+    this.donationService.updateDonation(donation)
+      .subscribe(
+          donation => {this.close(donation, target);},
+          error => this.errorService.handleError(error)
+      );
+  }
+
+  addDonation(donation: Donation, target: string) {
+    this.donationService.addDonation(donation, this.recipientId)
         .subscribe(
             donation => {this.close(donation, target);},
             error => this.errorService.handleError(error)
         );
-    }
   }
 
   onDateChanged(newdt: Date) {

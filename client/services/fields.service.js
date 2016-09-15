@@ -44,6 +44,7 @@ var FieldsService = (function () {
             new field_textbox_model_1.TextboxField({
                 key: 'amount',
                 label: 'Amount',
+                placeholder: 'Enter the amount paid',
                 type: 'number',
                 order: 2
             }),

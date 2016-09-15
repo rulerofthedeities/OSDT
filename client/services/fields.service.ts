@@ -41,6 +41,7 @@ export class FieldsService {
       new TextboxField({
         key: 'amount',
         label: 'Amount',
+        placeholder: 'Enter the amount paid',
         type: 'number',
         order: 2
       }),

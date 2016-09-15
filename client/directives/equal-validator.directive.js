@@ -30,7 +30,6 @@ var EqualValidator = (function () {
         // self value
         var v = c.value;
         // control vlaue
-        //let e = c.root.find(this.validateEqual);
         var e = c.root.value[this.validateEqual];
         // value not equal
         if (e && v !== e.value && !this.isReverse) {

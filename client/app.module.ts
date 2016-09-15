@@ -1,4 +1,4 @@
-import {NgModule, ModuleWithProviders, forwardRef, Provider} from '@angular/core';
+import {NgModule, forwardRef} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule, NG_VALIDATORS} from '@angular/forms';
 import {RouterModule} from '@angular/router';
@@ -14,6 +14,7 @@ import {DonationService} from './services/donation.service';
 import {ErrorService} from './services/error.service';
 import {FieldsService} from './services/fields.service';
 import {ValidationService} from './services/validation.service';
+import {XchangeService} from './services/xchange.service';
 
 import {FormatFieldPipe} from './pipes/format-field.pipe';
 
@@ -57,9 +58,10 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     ErrorService,
     AuthService,
     FieldsService,
+    XchangeService,
     ValidationService,
     {provide: NG_VALIDATORS, useExisting: forwardRef(() => EmailValidator), multi: true}
-    ],
+  ],
   declarations: [
     AppComponent,
     Navbar,

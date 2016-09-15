@@ -1,6 +1,8 @@
 'use strict';
-var CronJob = require('cron').CronJob,
+var mongoose = require('mongoose'),
+    response = require("../response"),
     Exchange = require('../models/exchange'),
+    CronJob = require('cron').CronJob,
     request = require("request");
 
 function scheduleExchangeRates() {
@@ -48,5 +50,23 @@ function saveExchangeRates(rates) {
 module.exports = {
   scheduleRates: function() {
     scheduleExchangeRates();
+  },
+  getExchangeRate: function(req, res) {
+    var timestamp = req.params.time,
+        currencies = req.body,
+        projection = {_id:0};
+        
+    if (!currencies || !timestamp) {
+      response.handleError({message:'invalid timestamp or currencies'}, res, 500, 'Error loading exchange rates', function(){});
+    }
+    currencies.forEach(function(currency) {projection['rates.'+ currency] = 1})
+    Exchange
+      .find({timestamp:{$lte:timestamp}}, projection)
+      .sort({timestamp:-1}).limit(1)
+      .exec(function(err, rates) {
+        response.handleError(err, res, 500, 'Error loading exchange rates', function(){
+          response.handleSuccess(res, rates, 200, 'Loaded exchange rates');
+        });
+      });
   }
 }

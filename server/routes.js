@@ -2,6 +2,7 @@ var path = require("path"),
     currencies = require("./controllers/currencies"),
     recipients = require("./controllers/recipients"),
     donations = require("./controllers/donations"),
+    xchange = require("./controllers/xchange"),
     users = require("./controllers/users");
 
 module.exports.initialize = function(app, router) {
@@ -12,6 +13,7 @@ module.exports.initialize = function(app, router) {
   });
 
   router.get('/currencies', currencies.load);
+  router.post('/xchange/:time', xchange.getExchangeRate);
 
   router.get('/donations', donations.load);
   router.get('/donations/recipients/:id', donations.load);

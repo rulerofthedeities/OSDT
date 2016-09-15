@@ -56,7 +56,7 @@ var Donations = (function () {
     };
     Donations.prototype.addDonation = function () {
         this.isNew = true;
-        this.currentDonation = new donation_model_1.Donation('EUR', 10, 'creditcard', new Date(), '');
+        this.currentDonation = new donation_model_1.Donation('EUR', null, 'creditcard', new Date(), '');
     };
     Donations.prototype.cancelNewDonation = function () {
         this.currentDonation = null;

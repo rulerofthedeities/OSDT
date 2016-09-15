@@ -5,6 +5,7 @@ export class Donation {
     public paymentType: string,
     public dtPaid: Date,
     public note: string,
+    public rates?: Object,
     public _id?: string
   ) {}
 }

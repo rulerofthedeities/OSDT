@@ -106,7 +106,7 @@ export class Donations implements OnInit {
 
   addDonation() {
     this.isNew = true;
-    this.currentDonation = new Donation('EUR', 10, 'creditcard', new Date(),'');
+    this.currentDonation = new Donation('EUR', null, 'creditcard', new Date(),'');
   }
 
   cancelNewDonation() {
