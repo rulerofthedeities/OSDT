@@ -12,7 +12,7 @@ exports.routes = [
     { path: 'recipients', component: recipients_component_1.Recipients },
     { path: 'recipients/donations/:id', component: recipients_component_1.Recipients },
     { path: 'currencies', component: currencies_component_1.Currencies },
-    { path: 'donations', component: donations_component_1.Donations },
+    { path: 'donations', component: donations_component_1.Donations, resolve: { currencies: currencies_resolver_1.CurrenciesResolver } },
     { path: 'donations/:id', component: donations_component_1.Donations, resolve: { currencies: currencies_resolver_1.CurrenciesResolver } },
     {
         path: 'auth',

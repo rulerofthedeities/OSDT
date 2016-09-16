@@ -13,7 +13,7 @@ export const routes: Routes = [
   {path: 'recipients', component: Recipients},
   {path: 'recipients/donations/:id', component: Recipients},
   {path: 'currencies', component: Currencies},
-  {path: 'donations', component: Donations},
+  {path: 'donations', component: Donations, resolve: {currencies:CurrenciesResolver}},
   {path: 'donations/:id', component: Donations, resolve: {currencies:CurrenciesResolver}},
   {
     path: 'auth',

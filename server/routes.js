@@ -13,6 +13,7 @@ module.exports.initialize = function(app, router) {
   });
 
   router.get('/currencies', currencies.load);
+  router.patch('/currencies/:id', currencies.setDefault);
   router.post('/xchange/:time', xchange.getExchangeRate);
 
   router.get('/donations', donations.load);

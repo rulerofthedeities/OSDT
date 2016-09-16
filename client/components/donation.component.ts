@@ -14,8 +14,8 @@ import * as moment from 'moment';
 @Component({
   selector: 'donation',
   template: `
-    <alert type="info">
-      <button *ngIf="!editMode"
+    <alert type="info" *ngIf="!editMode">
+      <button
         class="btn btn-primary" 
         type="button"
         (click)="toggleEditMode()">

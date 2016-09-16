@@ -21,6 +21,12 @@ var CurrencyService = (function () {
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
+    CurrencyService.prototype.setDefault = function (currencyCode) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        return this._http.patch('/api/currencies/' + currencyCode, null, { headers: headers })
+            .map(function (response) { return response.json().obj; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
     CurrencyService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
