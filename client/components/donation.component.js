@@ -19,13 +19,14 @@ var fields_service_1 = require('../services/fields.service');
 var xchange_service_1 = require('../services/xchange.service');
 var moment = require('moment');
 var EditDonation = (function () {
-    function EditDonation(donationService, recipientService, errorService, fieldsService, xchangeService, formBuilder, router) {
+    function EditDonation(donationService, recipientService, errorService, fieldsService, xchangeService, formBuilder, route, router) {
         this.donationService = donationService;
         this.recipientService = recipientService;
         this.errorService = errorService;
         this.fieldsService = fieldsService;
         this.xchangeService = xchangeService;
         this.formBuilder = formBuilder;
+        this.route = route;
         this.router = router;
         this.donationFieldsAssoc = {};
         this.isNew = false;
@@ -46,7 +47,7 @@ var EditDonation = (function () {
             this.isNew = !this.donation._id;
         }
         this.buildForm();
-        var fields = this.fieldsService.getFields('donation');
+        var fields = this.fieldsService.getFields('donation', this.route.snapshot.data['currencies']);
         this.donationFieldsAssoc = fields.assoc;
         this.donationFieldsOrder = fields.ordered;
     };
@@ -136,7 +137,7 @@ var EditDonation = (function () {
             styles: ["\n    .fa {font-size: 1.2em;}\n    .doc {\n      border:1px solid Gainsboro;\n      border-radius:5px;\n      background-color: #eff5f5;\n      padding:6px;\n      margin-bottom:12px;\n    }"],
             styleUrls: ["client/components/form.css"]
         }), 
-        __metadata('design:paramtypes', [donation_service_1.DonationService, recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, xchange_service_1.XchangeService, forms_1.FormBuilder, router_1.Router])
+        __metadata('design:paramtypes', [donation_service_1.DonationService, recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, xchange_service_1.XchangeService, forms_1.FormBuilder, router_1.ActivatedRoute, router_1.Router])
     ], EditDonation);
     return EditDonation;
 }());

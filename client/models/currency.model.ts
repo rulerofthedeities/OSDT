@@ -4,6 +4,6 @@ export class Currency {
     public _id: string,
     public name: string,
     public code: string,
-    public symbol: string
+    public symbol?: string
   ) {}
 }

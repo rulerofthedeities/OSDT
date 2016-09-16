@@ -6,6 +6,7 @@ import {SignUp} from './components/auth/sign-up.component';
 import {SignIn} from './components/auth/sign-in.component';
 import {LogOut} from './components/auth/log-out.component';
 import {AuthMenu} from './components/auth/auth-menu.component';
+import {CurrenciesResolver} from './resolves/currencies.resolver';
 
 export const routes: Routes = [
   {path: '', component: Recipients},
@@ -13,7 +14,7 @@ export const routes: Routes = [
   {path: 'recipients/donations/:id', component: Recipients},
   {path: 'currencies', component: Currencies},
   {path: 'donations', component: Donations},
-  {path: 'donations/:id', component: Donations},
+  {path: 'donations/:id', component: Donations, resolve: {currencies:CurrenciesResolver}},
   {
     path: 'auth',
     component: AuthMenu,
@@ -30,4 +31,3 @@ export const routes: Routes = [
     ]
   },
 ];
-

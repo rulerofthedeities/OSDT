@@ -53,11 +53,11 @@ module.exports = {
   },
   getExchangeRate: function(req, res) {
     var timestamp = req.params.time,
-        currencies = req.body,
+        currencies = req.body.currencies,
         projection = {_id:0};
-        
+
     if (!currencies || !timestamp) {
-      response.handleError({message:'invalid timestamp or currencies'}, res, 500, 'Error loading exchange rates', function(){});
+      response.handleError({message:'Invalid timestamp or currencies'}, res, 500, 'Error loading exchange rates', function(){});
     }
     currencies.forEach(function(currency) {projection['rates.'+ currency] = 1})
     Exchange

@@ -6,11 +6,12 @@ import {DropdownField} from '../models/fields/field-dropdown.model';
 import {RadioField} from '../models/fields/field-radio.model';
 import {CheckboxField} from '../models/fields/field-checkbox.model';
 import {DateField} from '../models/fields/field-date.model';
+import {Currency} from '../models/currency.model';
 
 @Injectable()
 export class FieldsService {
 
-  getFields(formName: string) {
+  getFields(formName: string, currencies?: Currency[]) {
     let fields: Field<any>[][] = [];
 
     //Donation
@@ -31,10 +32,7 @@ export class FieldsService {
       new DropdownField({
         key: 'currency',
         label: 'Currency',
-        options: [
-          {key: 'EUR', display: 'Euro'},
-          {key: 'USD', display: 'US Dollar'}
-        ],
+        options: currencies.map(currency => {return {key:currency.code, display:currency.name};}),
         order: 3
       }),
 
@@ -110,4 +108,5 @@ export class FieldsService {
   getFieldsOrdered(fields: Field<any>[]): Field<any>[] {
     return fields.sort((a, b) => a.order - b.order);
   }
+
 }

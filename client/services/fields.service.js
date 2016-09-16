@@ -17,7 +17,7 @@ var field_date_model_1 = require('../models/fields/field-date.model');
 var FieldsService = (function () {
     function FieldsService() {
     }
-    FieldsService.prototype.getFields = function (formName) {
+    FieldsService.prototype.getFields = function (formName, currencies) {
         var fields = [];
         //Donation
         fields['donation'] = [
@@ -35,10 +35,7 @@ var FieldsService = (function () {
             new field_dropdown_model_1.DropdownField({
                 key: 'currency',
                 label: 'Currency',
-                options: [
-                    { key: 'EUR', display: 'Euro' },
-                    { key: 'USD', display: 'US Dollar' }
-                ],
+                options: currencies.map(function (currency) { return { key: currency.code, display: currency.name }; }),
                 order: 3
             }),
             new field_textbox_model_1.TextboxField({

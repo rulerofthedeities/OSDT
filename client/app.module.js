@@ -23,6 +23,7 @@ var error_service_1 = require('./services/error.service');
 var fields_service_1 = require('./services/fields.service');
 var validation_service_1 = require('./services/validation.service');
 var xchange_service_1 = require('./services/xchange.service');
+var currencies_resolver_1 = require('./resolves/currencies.resolver');
 var format_field_pipe_1 = require('./pipes/format-field.pipe');
 var equal_validator_directive_1 = require('./directives/equal-validator.directive');
 var email_validator_directive_1 = require('./directives/email-validator.directive');
@@ -67,6 +68,7 @@ var AppModule = (function () {
                 fields_service_1.FieldsService,
                 xchange_service_1.XchangeService,
                 validation_service_1.ValidationService,
+                currencies_resolver_1.CurrenciesResolver,
                 { provide: forms_1.NG_VALIDATORS, useExisting: core_1.forwardRef(function () { return email_validator_directive_1.EmailValidator; }), multi: true }
             ],
             declarations: [

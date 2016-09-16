@@ -16,7 +16,7 @@ var XchangeService = (function () {
         this._http = _http;
     }
     XchangeService.prototype.getExchangeRate = function (timestamp, currencies) {
-        var body = JSON.stringify(currencies);
+        var body = JSON.stringify({ currencies: currencies });
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.post('/api/xchange/' + timestamp, body, { headers: headers })
             .map(function (response) { return response.json().obj; })

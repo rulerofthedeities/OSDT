@@ -8,7 +8,7 @@ export class XchangeService {
   constructor(private _http: Http) {}
 
   getExchangeRate(timestamp: number, currencies: string[]) {
-    const body = JSON.stringify(currencies);
+    const body = JSON.stringify({currencies});
     const headers = new Headers({'Content-Type': 'application/json'});
     return this._http.post('/api/xchange/' + timestamp, body, {headers:headers})
       .map(response => response.json().obj)

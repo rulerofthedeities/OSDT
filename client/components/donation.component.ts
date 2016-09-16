@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {Donation} from '../models/donation.model';
 import {Recipient} from '../models/recipient.model';
 import {Field} from '../models/fields/field.model';
@@ -178,6 +178,7 @@ export class EditDonation implements OnInit {
     private fieldsService: FieldsService,
     private xchangeService: XchangeService,
     private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
@@ -199,7 +200,7 @@ export class EditDonation implements OnInit {
       this.isNew = !this.donation._id;
     }
     this.buildForm();
-    let fields = this.fieldsService.getFields('donation');
+    let fields = this.fieldsService.getFields('donation', this.route.snapshot.data['currencies']);
     this.donationFieldsAssoc = fields.assoc;
     this.donationFieldsOrder = fields.ordered;
   }
