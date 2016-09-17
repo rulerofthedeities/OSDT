@@ -30,6 +30,7 @@ import {AutoFormField} from './components/common/auto-form-field.component';
 import {AutoFormRead} from './components/common/auto-form-read.component';
 import {AutoForm} from './components/common/auto-form.component';
 import {Currencies} from './components/currencies.component';
+import {Dashboard} from './components/dashboard.component';
 import {Recipients} from './components/recipients.component';
 import {EditRecipient} from './components/recipient.component';
 import {Donations} from './components/donations.component';
@@ -70,6 +71,7 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     Navbar,
     ErrorMessage,
     Currencies,
+    Dashboard,
     Recipients,
     EditRecipient,
     Donations,

@@ -34,6 +34,7 @@ var auto_form_field_component_1 = require('./components/common/auto-form-field.c
 var auto_form_read_component_1 = require('./components/common/auto-form-read.component');
 var auto_form_component_1 = require('./components/common/auto-form.component');
 var currencies_component_1 = require('./components/currencies.component');
+var dashboard_component_1 = require('./components/dashboard.component');
 var recipients_component_1 = require('./components/recipients.component');
 var recipient_component_1 = require('./components/recipient.component');
 var donations_component_1 = require('./components/donations.component');
@@ -76,6 +77,7 @@ var AppModule = (function () {
                 navbar_component_1.Navbar,
                 error_message_component_1.ErrorMessage,
                 currencies_component_1.Currencies,
+                dashboard_component_1.Dashboard,
                 recipients_component_1.Recipients,
                 recipient_component_1.EditRecipient,
                 donations_component_1.Donations,

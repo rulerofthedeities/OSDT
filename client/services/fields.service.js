@@ -35,7 +35,7 @@ var FieldsService = (function () {
             new field_dropdown_model_1.DropdownField({
                 key: 'currency',
                 label: 'Currency',
-                options: currencies.map(function (currency) { return { key: currency.code, display: currency.name }; }),
+                options: currencies ? currencies.map(function (currency) { return { key: currency.code, display: currency.name }; }) : null,
                 order: 3
             }),
             new field_textbox_model_1.TextboxField({

@@ -8,7 +8,8 @@ var donationSchema = new Schema(
     paymentType: String,
     dtPaid: {type: Date, required: true},
     note: String,
-    rates: Object
+    rates: Object,
+    values: Object
   }
 );
 

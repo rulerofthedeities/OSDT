@@ -146,6 +146,8 @@ import * as moment from 'moment';
     </div>
 
     Closure will lead to: {{prevNavState}}
+
+    rates: {{rates |json}}
   `,
   styles:[`
     .fa {font-size: 1.2em;}
@@ -223,6 +225,8 @@ export class EditDonation implements OnInit {
   }
 
   submitForm(donation: Donation, target: string) {
+    donation.rates = this.donation.rates;
+    donation.values = this.donation.values;
     if (donation.amount !== this.donation.amount) {
       //get currencies from field list
       const currencyField = this.donationFieldsAssoc['currency'],
@@ -242,6 +246,9 @@ export class EditDonation implements OnInit {
   }
 
   saveDonation(donation: Donation, target: string) {
+    if (donation.currency !== this.donation.currency || donation.amount !== this.donation.amount) {
+      donation.values = this.calculateAmountsPerCurrency(donation);
+    }
     if (this.donation._id) {
       this.updateDonation(donation, target);
     } else {
@@ -273,6 +280,23 @@ export class EditDonation implements OnInit {
   toggleEditMode() {
     this.editMode = !this.editMode;
     this.prevNavState = this.editMode ? 'docDonation' : (this.subView ? 'viewRecipient' : 'viewDonation');
+  }
+
+  calculateAmountsPerCurrency(donation: Donation): Object {
+    let values = {},
+        amount = donation.amount,
+        rates = donation.rates,
+        donationCurrency = donation.currency;
+    for (let currency in rates) {
+        // skip loop if the property is from prototype
+        if(!rates.hasOwnProperty(currency)) continue;
+        if (currency === donationCurrency) {
+          values[currency] = amount;
+        } else {
+          values[currency] = amount * rates[currency] / rates[donationCurrency];
+        }
+    }
+    return values;
   }
 
   close(donation?: Donation, target?: string) {

@@ -1,7 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {Donation} from '../models/donation.model';
+import {Recipient} from '../models/recipient.model';
+import {Currency} from '../models/currency.model';
 import {DonationService} from '../services/donation.service';
+import {CurrencyService} from '../services/currency.service';
 import {ErrorService} from '../services/error.service';
 
 @Component({
@@ -9,12 +12,22 @@ import {ErrorService} from '../services/error.service';
   template: `
     <div *ngIf="!currentDonation">
       <table class="table table-striped" [ngClass]="{'small': isSubview}">
+        <thead *ngIf="!isSubview">
+          <tr>
+            <th></th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Recipient</th>
+            <th>Note</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           <tr *ngFor="let donation of donations; let i=index"
             on-mouseover="selectDonationIndex(i)"
             [ngClass]="{'info':i===selectedDonation}">
             <td>{{i+1}}</td>
-            <td class="hover" (click)="openDonation(donation, false)">
+            <td *ngIf="isSubview" class="hover" (click)="openDonation(donation, false)">
               {{recipientIds ? recipientIds[i].name : ''}}
             </td>
             <td class="hover" (click)="openDonation(donation, false)">
@@ -22,6 +35,9 @@ import {ErrorService} from '../services/error.service';
             </td>
             <td class="hover" (click)="openDonation(donation, false)">
               {{donation.dtPaid|date:'shortDate'}}
+            </td>
+            <td class="hover" (click)="openDonation(donation, false)">
+              {{recipients[i].name}}
             </td>
             <td class="hover" (click)="openDonation(donation, false)">
               {{donation.note}}
@@ -55,12 +71,15 @@ export class EmbeddedDonations implements OnInit {
   @Input() recipientId: string = '';
   @Input() isSubview: boolean = false;
   donations: Donation[];
+  recipients: Recipient[];
+  currencies: Currency[];
   currentDonation: Donation = null;
   selectedDonation: number = null;
   isEdit = false;
 
   constructor(
     private donationService: DonationService,
+    private currencyService: CurrencyService,
     private errorService: ErrorService,
     private router: Router
   ) {}
@@ -81,7 +100,10 @@ export class EmbeddedDonations implements OnInit {
   getDonations(recipientId: string) {
     this.donationService.getDonations(recipientId)
       .subscribe(
-        donations => {this.donations = donations.map(donation => donation.donation);},
+        donations => {
+          this.donations = donations.map(donation => donation.donation);
+          this.recipients = donations.map(donation => donation.recipient);
+        },
         error => this.errorService.handleError(error)
       );
   }
@@ -100,4 +122,5 @@ export class EmbeddedDonations implements OnInit {
     }
     this.router.navigate(['/donations', donation._id], {queryParams: params});
   }
+
 }

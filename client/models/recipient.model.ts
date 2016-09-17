@@ -5,6 +5,7 @@ export class Recipient {
   public reminder: Reminder[];
   public donations: Donation[];
   public cnt: number;
+  public total: number;
 
   constructor(
     public userId: string,

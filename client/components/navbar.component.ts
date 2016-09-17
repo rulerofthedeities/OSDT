@@ -27,6 +27,11 @@ import {Component} from '@angular/core';
     >
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
+          <a routerLink="dashboard" class="item">
+            Dashboard
+          </a>
+        </li>
+        <li routerLinkActive="active">
           <a routerLink="recipients" class="item">
             Recipients
           </a>

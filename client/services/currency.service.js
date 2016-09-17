@@ -27,6 +27,19 @@ var CurrencyService = (function () {
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
+    CurrencyService.prototype.getDefaultCurrency = function () {
+        return this._http.get('/api/currencies')
+            .map(function (response) {
+            var defaultCurrency = response.json().obj.filter(function (currency) { return currency.isDefault === true; });
+            if (defaultCurrency.length > 0) {
+                return defaultCurrency[0];
+            }
+            else {
+                return null;
+            }
+        })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
     CurrencyService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

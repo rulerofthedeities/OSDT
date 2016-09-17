@@ -20,4 +20,18 @@ export class CurrencyService {
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
+
+  getDefaultCurrency() {
+    return this._http.get('/api/currencies')
+      .map(response => {
+        let defaultCurrency = response.json().obj.filter(currency => currency.isDefault === true);
+        if (defaultCurrency.length > 0) {
+          return defaultCurrency[0];
+        } else {
+          return null;
+        }
+      })
+      .catch(error => Observable.throw(error));
+  }
+
 }

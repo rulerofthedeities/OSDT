@@ -32,7 +32,7 @@ export class FieldsService {
       new DropdownField({
         key: 'currency',
         label: 'Currency',
-        options: currencies.map(currency => {return {key:currency.code, display:currency.name};}),
+        options: currencies ? currencies.map(currency => {return {key:currency.code, display:currency.name};}) : null,
         order: 3
       }),
 
