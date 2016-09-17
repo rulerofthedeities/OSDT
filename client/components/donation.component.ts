@@ -146,8 +146,8 @@ import * as moment from 'moment';
     </div>
 
     Closure will lead to: {{prevNavState}}
-
-    rates: {{rates |json}}
+    
+    rates: <pre>{{donation.values |json}}</pre>
   `,
   styles:[`
     .fa {font-size: 1.2em;}

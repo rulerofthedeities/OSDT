@@ -11,6 +11,7 @@ import {AuthService} from './services/auth.service';
 import {CurrencyService} from './services/currency.service';
 import {RecipientService} from './services/recipient.service';
 import {DonationService} from './services/donation.service';
+import {DashboardService} from './services/dashboard.service';
 import {ErrorService} from './services/error.service';
 import {FieldsService} from './services/fields.service';
 import {ValidationService} from './services/validation.service';
@@ -58,6 +59,7 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     CurrencyService,
     RecipientService,
     DonationService,
+    DashboardService,
     ErrorService,
     AuthService,
     FieldsService,

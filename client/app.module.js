@@ -19,6 +19,7 @@ var auth_service_1 = require('./services/auth.service');
 var currency_service_1 = require('./services/currency.service');
 var recipient_service_1 = require('./services/recipient.service');
 var donation_service_1 = require('./services/donation.service');
+var dashboard_service_1 = require('./services/dashboard.service');
 var error_service_1 = require('./services/error.service');
 var fields_service_1 = require('./services/fields.service');
 var validation_service_1 = require('./services/validation.service');
@@ -64,6 +65,7 @@ var AppModule = (function () {
                 currency_service_1.CurrencyService,
                 recipient_service_1.RecipientService,
                 donation_service_1.DonationService,
+                dashboard_service_1.DashboardService,
                 error_service_1.ErrorService,
                 auth_service_1.AuthService,
                 fields_service_1.FieldsService,

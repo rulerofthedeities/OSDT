@@ -3,6 +3,7 @@ var path = require("path"),
     recipients = require("./controllers/recipients"),
     donations = require("./controllers/donations"),
     xchange = require("./controllers/xchange"),
+    stats = require("./controllers/stats"),
     users = require("./controllers/users");
 
 module.exports.initialize = function(app, router) {
@@ -27,6 +28,11 @@ module.exports.initialize = function(app, router) {
   router.post('/recipients', recipients.add);
   router.put('/recipients', recipients.update);
   router.get('/cats', recipients.getCats);
+
+  router.get('/stats/totals', stats.getTotals);
+  router.get('/stats/totals/:currency', stats.getTotals);
+  router.get('/stats/lists', stats.getLists);
+  router.get('/stats/lists/:currency', stats.getLists);
 
   router.post('/user/signin', users.signin);
   router.post('/user/signup', users.signup);
