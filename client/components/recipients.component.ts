@@ -179,6 +179,8 @@ export class Recipients implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.paramSubscription.unsubscribe();
+    if (this.paramSubscription) {
+      this.paramSubscription.unsubscribe();
+    }
   }
 }

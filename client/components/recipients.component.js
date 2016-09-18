@@ -78,7 +78,9 @@ var Recipients = (function () {
         });
     };
     Recipients.prototype.ngOnDestroy = function () {
-        this.paramSubscription.unsubscribe();
+        if (this.paramSubscription) {
+            this.paramSubscription.unsubscribe();
+        }
     };
     Recipients = __decorate([
         core_1.Component({
