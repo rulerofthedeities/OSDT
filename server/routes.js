@@ -19,6 +19,8 @@ module.exports.initialize = function(app, router) {
   router.post('/user/signup', users.signup);
   router.get('/user/check', users.check);
 
+  router.post('/xchange/:time', xchange.getExchangeRate);
+
   router.use('/', function(req, res, next) {
     jwt.verify(req.query.token, 'secret', function(err, decoded) {
       response.handleError(err, res, 401, 'Authentication failed', function(){
@@ -29,10 +31,9 @@ module.exports.initialize = function(app, router) {
   });
 
   router.get('/settings', users.getSettings);
+  
   router.patch('/currencies/:id', users.setDefaultCurrency);
-
   router.get('/currencies', currencies.load);
-  router.post('/xchange/:time', xchange.getExchangeRate);
 
   router.get('/donations', donations.load);
   router.get('/donations/recipients/:id', donations.load);

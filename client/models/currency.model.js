@@ -5,7 +5,6 @@ var Currency = (function () {
         this.name = name;
         this.code = code;
         this.symbol = symbol;
-        this.isDefault = false;
     }
     return Currency;
 }());

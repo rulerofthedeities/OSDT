@@ -183,11 +183,11 @@ export class Dashboard implements OnInit {
   ngOnInit() {
     this.settingsService.getDefaultCurrency().subscribe(
       currency => {
-        this.dashboardService.getTotals(currency.code).subscribe(
+        this.dashboardService.getTotals(currency).subscribe(
           totals => {this.totals = totals;this.calcTotals();},
           error => this.errorService.handleError(error)
         );
-        this.dashboardService.getLists(currency.code).subscribe(
+        this.dashboardService.getLists(currency).subscribe(
           lists => {this.lists = lists;},
           error => this.errorService.handleError(error)
         );

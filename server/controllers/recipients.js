@@ -4,13 +4,19 @@ var Recipient = require("../models/recipient"),
 
 module.exports = {
   load: function(req, res) {
-    var pipeline = [
-      {$project: {cnt: {$size:'$donations'}, name:1, isActive:1}},
-      {$sort:{name:1}}
-    ];
+    var userId = req.decoded.user._id,
+        filter = {},
+        pipeline = [
+          {$project: {cnt: {$size:'$donations'}, name:1, isActive:1}},
+          {$sort:{name:1}}
+        ];
+
+    filter['userId'] = userId;
     if (req.query.active === "1"){
-      pipeline.unshift({$match:{isActive:true}});
+      filter['isActive'] = true;
     }
+    pipeline.unshift({$match:filter});
+
     Recipient.aggregate(pipeline, function(err, docs) {
       response.handleError(err, res, 500, 'Error loading recipients', function(){
         response.handleSuccess(res, docs, 200, 'Loaded recipients');
@@ -18,14 +24,17 @@ module.exports = {
     });
   },
   loadOne: function(req, res) {
-    Recipient.findById(req.params.id, {donations:0}, function(err, doc) {
+    var userId = req.decoded.user._id;
+    Recipient.find({_id:req.params.id, userId:userId}, {donations:0}, function(err, doc) {
+      console.log('doc', doc[0]);
       response.handleError(err, res, 500, 'Error loading recipient', function(){
-        response.handleSuccess(res, doc, 200, 'Loaded recipient');
+        response.handleSuccess(res, doc[0], 200, 'Loaded recipient');
       });
     });
   },
   add: function(req, res) {
     var recipient = new Recipient(req.body);
+    recipient.userId = req.decoded.user._id;
     recipient.save(function(err, result) {
       response.handleError(err, res, 500, 'Error adding recipient', function(){
         response.handleSuccess(res, result, 200, 'Added recipient');
@@ -33,8 +42,9 @@ module.exports = {
     });
   },
   update: function(req, res) {
-    var doc = req.body;
-    Recipient.findByIdAndUpdate(doc._id, {$set: {
+    var doc = req.body,
+        userId = req.decoded.user._id;
+    Recipient.update({_id:doc._id, userId: userId}, {$set: {
       name: doc.name, 
       description: doc.description, 
       isActive: doc.isActive, 
@@ -48,9 +58,12 @@ module.exports = {
   },
   getCats: function(req, res) {
   var query = req.query.search, 
-      max = req.query.max ? parseInt(req.query.max, 10) : 20;
+      max = req.query.max ? parseInt(req.query.max, 10) : 20,
+      userId = req.decoded.user._id;
+
   Recipient
     .aggregate([
+      {$match: {userId: userId}},
       {$unwind: "$categories" },
       {$match: {categories: {$regex:query, $options:"i"}}},
       {$group: {_id:"$categories"}},

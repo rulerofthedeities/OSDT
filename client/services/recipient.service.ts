@@ -1,44 +1,51 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Http, Headers} from '@angular/http';
-import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {Recipient} from '../models/recipient.model';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class RecipientService {
   closeToView = new EventEmitter<Recipient>();
   closeToDoc = new EventEmitter<Recipient>();
 
-  constructor(private _http: Http) {}
+  constructor(
+    private _http: Http,
+    private authService: AuthService
+  ) {}
 
   getRecipients(activeOnly: boolean) {
     let url = '/api/recipients';
-    url += activeOnly ? '?active=1': '';
-    return this._http.get(url)
+    const token = this.authService.getToken();
+    const active = activeOnly ? '&active=1': '';
+    return this._http.get(url + token + active)
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
   getRecipient(recipientId: string) {
-    return this._http.get('/api/recipients/' + recipientId)
+    const token = this.authService.getToken();
+    return this._http.get('/api/recipients/' + recipientId + token)
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
   addRecipient(recipient: Recipient) {
     recipient.name = this.toProperCase(recipient.name);//for sorting
+    const token = this.authService.getToken();
     const body = JSON.stringify(recipient);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.post('/api/recipients', body, {headers:headers})
+    return this._http.post('/api/recipients' + token, body, {headers:headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
   updateRecipient(recipient: Recipient) {
     recipient.name = this.toProperCase(recipient.name);//for sorting
+    const token = this.authService.getToken();
     const body = JSON.stringify(recipient);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.put('/api/recipients', body, {headers:headers})
+    return this._http.put('/api/recipients' + token, body, {headers:headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
@@ -60,7 +67,8 @@ export class RecipientService {
   }
 
   searchCategories(search: string) {
-    return this._http.get('/api/cats?search=' + search)
+    const token = this.authService.getToken();
+    return this._http.get('/api/cats' + token + '&search=' + search)
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }

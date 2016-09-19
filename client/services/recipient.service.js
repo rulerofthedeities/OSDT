@@ -10,39 +10,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
-require('rxjs/Rx');
 var Observable_1 = require('rxjs/Observable');
+var auth_service_1 = require('./auth.service');
 var RecipientService = (function () {
-    function RecipientService(_http) {
+    function RecipientService(_http, authService) {
         this._http = _http;
+        this.authService = authService;
         this.closeToView = new core_1.EventEmitter();
         this.closeToDoc = new core_1.EventEmitter();
     }
     RecipientService.prototype.getRecipients = function (activeOnly) {
         var url = '/api/recipients';
-        url += activeOnly ? '?active=1' : '';
-        return this._http.get(url)
+        var token = this.authService.getToken();
+        var active = activeOnly ? '&active=1' : '';
+        return this._http.get(url + token + active)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.getRecipient = function (recipientId) {
-        return this._http.get('/api/recipients/' + recipientId)
+        var token = this.authService.getToken();
+        return this._http.get('/api/recipients/' + recipientId + token)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.addRecipient = function (recipient) {
         recipient.name = this.toProperCase(recipient.name); //for sorting
+        var token = this.authService.getToken();
         var body = JSON.stringify(recipient);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.post('/api/recipients', body, { headers: headers })
+        return this._http.post('/api/recipients' + token, body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.updateRecipient = function (recipient) {
         recipient.name = this.toProperCase(recipient.name); //for sorting
+        var token = this.authService.getToken();
         var body = JSON.stringify(recipient);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.put('/api/recipients', body, { headers: headers })
+        return this._http.put('/api/recipients' + token, body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
@@ -62,13 +67,14 @@ var RecipientService = (function () {
         return word[0].toUpperCase() + word.slice(1);
     };
     RecipientService.prototype.searchCategories = function (search) {
-        return this._http.get('/api/cats?search=' + search)
+        var token = this.authService.getToken();
+        return this._http.get('/api/cats' + token + '&search=' + search)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, auth_service_1.AuthService])
     ], RecipientService);
     return RecipientService;
 }());

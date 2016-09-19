@@ -10,27 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
-require('rxjs/Rx');
 var Observable_1 = require('rxjs/Observable');
+var auth_service_1 = require('./auth.service');
 var DashboardService = (function () {
-    function DashboardService(_http) {
+    function DashboardService(_http, authService) {
         this._http = _http;
+        this.authService = authService;
     }
     DashboardService.prototype.getTotals = function (currency) {
-        var url = '/api/stats/totals/' + currency;
+        var token = this.authService.getToken();
+        var url = '/api/stats/totals/' + currency + token;
         return this._http.get(url)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DashboardService.prototype.getLists = function (currency) {
-        var url = '/api/stats/lists/' + currency;
+        var token = this.authService.getToken();
+        var url = '/api/stats/lists/' + currency + token;
         return this._http.get(url)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DashboardService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, auth_service_1.AuthService])
     ], DashboardService);
     return DashboardService;
 }());
