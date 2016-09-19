@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../services/dashboard.service';
-import {CurrencyService} from '../services/currency.service';
+import {SettingsService} from '../services/settings.service';
 import {ErrorService} from '../services/error.service';
 
 @Component({
@@ -176,12 +176,12 @@ export class Dashboard implements OnInit {
 
   constructor(
     private dashboardService: DashboardService,
-    private currencyService: CurrencyService,
+    private settingsService: SettingsService,
     private errorService: ErrorService
   ) {}
 
   ngOnInit() {
-    this.currencyService.getDefaultCurrency().subscribe(
+    this.settingsService.getDefaultCurrency().subscribe(
       currency => {
         this.dashboardService.getTotals(currency.code).subscribe(
           totals => {this.totals = totals;this.calcTotals();},

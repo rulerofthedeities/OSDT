@@ -16,6 +16,7 @@ import {ErrorService} from './services/error.service';
 import {FieldsService} from './services/fields.service';
 import {ValidationService} from './services/validation.service';
 import {XchangeService} from './services/xchange.service';
+import {SettingsService} from './services/settings.service';
 
 import {CurrenciesResolver} from './resolves/currencies.resolver';
 
@@ -65,6 +66,7 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     FieldsService,
     XchangeService,
     ValidationService,
+    SettingsService,
     CurrenciesResolver,
     {provide: NG_VALIDATORS, useExisting: forwardRef(() => EmailValidator), multi: true}
   ],

@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'navbar',
@@ -27,34 +29,48 @@ import {Component} from '@angular/core';
     >
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
-          <a routerLink="dashboard" class="item">
-            Dashboard
-          </a>
+          <a routerLink="dashboard" class="item">Dashboard</a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="recipients" class="item">
-            Recipients
-          </a>
+          <a routerLink="recipients" class="item">Recipients</a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="donations" class="item">
-            Donations
-          </a>
+          <a routerLink="donations" class="item">Donations</a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="currencies" class="item">
-            Currencies
-          </a>
+          <a routerLink="currencies" class="item">Currencies</a>
         </li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Login</a></li>
+      <ul class="nav navbar-nav navbar-right loginout">
+        <li *ngIf="!isLoggedIn()" routerLinkActive="active">
+          <a routerLink="auth" class="item">Login</a>
+        </li>
+        <li *ngIf="isLoggedIn()" routerLinkActive="active">
+          <a (click)="onLogout()" class="item">Logout</a>
+        </li>
       </ul>
     </div>
   </nav>
-  `
+  `,
+  styles: [`
+    .loginout {cursor: pointer;}
+  `]
 })
 
 export class Navbar {
   isCollapsed: boolean = true;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/auth/signin']);
+  }
 }

@@ -16,6 +16,9 @@ var AuthService = (function () {
     function AuthService(http) {
         this.http = http;
     }
+    AuthService.prototype.getToken = function () {
+        return localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+    };
     AuthService.prototype.signup = function (user) {
         var body = JSON.stringify(user);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -32,14 +35,9 @@ var AuthService = (function () {
     };
     AuthService.prototype.logout = function () {
         localStorage.clear();
+        console.log('user logged out');
     };
     AuthService.prototype.isLoggedIn = function () {
-        if (localStorage.getItem('token') !== null) {
-            console.log('user is logged in');
-        }
-        else {
-            console.log('user is logged out');
-        }
         return localStorage.getItem('token') !== null;
     };
     AuthService.prototype.checkEmail = function (email) {

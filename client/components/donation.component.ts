@@ -84,6 +84,7 @@ import * as moment from 'moment';
           </auto-field>
         </div>
       </form>
+      
       <div class="form-horizontal">
         <div class="form-group">
           <label 

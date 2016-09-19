@@ -22,7 +22,7 @@ exports.routes = [
         children: [
             {
                 path: '',
-                redirectTo: '/auth/signup',
+                redirectTo: '/auth/signin',
                 pathMatch: 'full',
                 component: auth_menu_component_1.AuthMenu
             },
@@ -30,6 +30,6 @@ exports.routes = [
             { path: 'signin', component: sign_in_component_1.SignIn },
             { path: 'logout', component: log_out_component_1.LogOut }
         ]
-    },
+    }
 ];
 //# sourceMappingURL=routes.js.map

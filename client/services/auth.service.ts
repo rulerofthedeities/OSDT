@@ -9,6 +9,10 @@ import {User} from '../models/user.model';
 export class AuthService {
   constructor (private http: Http) {}
 
+  getToken(): string {
+    return localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+  }
+
   signup(user: User) {
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
@@ -27,14 +31,10 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
+    console.log('user logged out');
   }
 
   isLoggedIn() {
-    if (localStorage.getItem('token') !== null) {
-      console.log('user is logged in');
-    } else {
-      console.log('user is logged out');
-    }
     return localStorage.getItem('token') !== null;
   }
 

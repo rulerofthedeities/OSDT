@@ -3,22 +3,21 @@ import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
+  selector: 'logout',
   template: `
-    <section>
-      <button (click)="onLogout()">Logout</button>
-    </section>
+    <a (click)="onLogout()" class="item">Logout</a>
   `
 })
 
 export class LogOut {
 
-    constructor(
-      private authService: AuthService,
-      private router: Router
-    ) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-    onLogout() {
-      this.authService.logout();
-      this.router.navigate(['/auth/signin']);
-    }
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/auth/signin']);
+  }
 }

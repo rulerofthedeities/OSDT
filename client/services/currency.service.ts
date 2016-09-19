@@ -1,36 +1,20 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
-import 'rxjs/Rx';
+import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class CurrencyService {
 
-  constructor(private _http: Http) {}
+  constructor(
+    private _http: Http,
+    private authService: AuthService
+  ) {}
 
   getCurrencies() {
-    return this._http.get('/api/currencies')
+    const token = this.authService.getToken();
+    return this._http.get('/api/currencies' + token)
       .map(response => response.json().obj)
-      .catch(error => Observable.throw(error));
-  }
-
-  setDefault(currencyCode: string) {
-    const headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.patch('/api/currencies/' + currencyCode, null, {headers})
-      .map(response => response.json().obj)
-      .catch(error => Observable.throw(error));
-  }
-
-  getDefaultCurrency() {
-    return this._http.get('/api/currencies')
-      .map(response => {
-        let defaultCurrency = response.json().obj.filter(currency => currency.isDefault === true);
-        if (defaultCurrency.length > 0) {
-          return defaultCurrency[0];
-        } else {
-          return null;
-        }
-      })
       .catch(error => Observable.throw(error));
   }
 

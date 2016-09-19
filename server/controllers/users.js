@@ -80,5 +80,26 @@ module.exports = {
         });
       })
     }
+  },
+  getSettings: function(req, res) {
+    if (req.decoded.user) {
+      var userId = req.decoded.user._id;
+      User.findById(userId, function (err, user) {
+        response.handleError(err, res, 500, 'Error fetching user settings', function(){
+          response.handleSuccess(res, user.settings, 200, 'Fetched user settings');
+        });
+      });
+    }
+  },
+  setDefaultCurrency: function(req, res) {
+    if (req.decoded.user) {
+      var userId = req.decoded.user._id;
+      var currency = req.params.id;
+      User.findByIdAndUpdate(userId, {$set:{'settings.defaultCurrency':currency}}, function(err, settings) {
+        response.handleError(err, res, 500, 'Error setting new default currency', function(){
+          response.handleSuccess(res, currency, 200, 'Updated default currency');
+        })
+      })
+    }
   }
 }

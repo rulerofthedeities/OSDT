@@ -9,25 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var auth_service_1 = require('./auth.service');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
-var auth_service_1 = require('./auth.service');
-var CurrencyService = (function () {
-    function CurrencyService(_http, authService) {
-        this._http = _http;
+var SettingsService = (function () {
+    function SettingsService(authService, _http) {
         this.authService = authService;
+        this._http = _http;
     }
-    CurrencyService.prototype.getCurrencies = function () {
+    SettingsService.prototype.getDefaultCurrency = function () {
         var token = this.authService.getToken();
-        return this._http.get('/api/currencies' + token)
+        return this._http.get('/api/settings' + token)
+            .map(function (settings) { return settings.json().obj['defaultCurrency']; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    SettingsService.prototype.setDefaultCurrency = function (currencyCode) {
+        var token = this.authService.getToken();
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        return this._http.patch('/api/currencies/' + currencyCode + token, null, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
-    CurrencyService = __decorate([
+    SettingsService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http, auth_service_1.AuthService])
-    ], CurrencyService);
-    return CurrencyService;
+        __metadata('design:paramtypes', [auth_service_1.AuthService, http_1.Http])
+    ], SettingsService);
+    return SettingsService;
 }());
-exports.CurrencyService = CurrencyService;
-//# sourceMappingURL=currency.service.js.map
+exports.SettingsService = SettingsService;
+//# sourceMappingURL=settings.service.js.map

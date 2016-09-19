@@ -93,7 +93,6 @@ var getRecentDonations = function(callback) {
 
 var getTopDonations = function(callback) {
   var sort = JSON.parse('{"donation.values.' + defaultCurrency + '":-1}');
-  console.log(sort);
   var pipeline = [
     {$project: {donation:"$donations", "recipient":{id:"$_id", name:"$name"}}},
     {$unwind: "$donation"},

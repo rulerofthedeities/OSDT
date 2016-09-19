@@ -10,10 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var currency_service_1 = require('../services/currency.service');
+var settings_service_1 = require('../services/settings.service');
 var error_service_1 = require('../services/error.service');
 var Currencies = (function () {
-    function Currencies(currencyService, errorService) {
+    function Currencies(currencyService, settingsService, errorService) {
         this.currencyService = currencyService;
+        this.settingsService = settingsService;
         this.errorService = errorService;
         this.currencies = [];
         this.selectedCurrency = null;
@@ -23,34 +25,26 @@ var Currencies = (function () {
     };
     Currencies.prototype.getCurrencies = function () {
         var _this = this;
-        this.currencyService.getCurrencies()
-            .subscribe(function (currencies) { _this.currencies = currencies; }, function (error) { return _this.errorService.handleError(error); });
+        this.settingsService.getDefaultCurrency().subscribe(function (defaultCurrency) {
+            console.log('defaultCurrency', defaultCurrency);
+            _this.defaultCurrency = defaultCurrency;
+            _this.currencyService.getCurrencies().subscribe(function (currencies) { _this.currencies = currencies; }, function (error) { return _this.errorService.handleError(error); });
+        }, function (error) { return _this.errorService.handleError(error); });
     };
     Currencies.prototype.selectCurrencyIndex = function (i) {
         this.selectedCurrency = i;
     };
-    Currencies.prototype.setDefault = function (currencyId) {
+    Currencies.prototype.setDefault = function (currencyCode) {
         var _this = this;
-        this.setDefaultInView(currencyId);
-        this.currencyService.setDefault(currencyId).subscribe(function (currency) {
-            if (currency._id !== currencyId) {
-                _this.setDefaultInView(currencyId);
-            }
-        }, function (error) {
-            _this.errorService.handleError(error);
-            _this.setDefaultInView(currencyId);
-        });
-    };
-    Currencies.prototype.setDefaultInView = function (currencyId) {
-        this.currencies.filter(function (currency) { return currency.isDefault === true; }).forEach(function (currency) { return currency.isDefault = false; });
-        this.currencies.filter(function (currency) { return currency._id === currencyId; }).forEach(function (currency) { return currency.isDefault = true; });
+        this.defaultCurrency = currencyCode;
+        this.settingsService.setDefaultCurrency(currencyCode).subscribe(function (defaultCurrency) { _this.defaultCurrency = defaultCurrency; console.log('new currency received', defaultCurrency); }, function (error) { return _this.errorService.handleError(error); });
     };
     Currencies = __decorate([
         core_1.Component({
-            template: "\n    <table class=\"table table-striped\">\n      <thead>\n        <tr>\n          <th class=\"text-center\">Default</th>\n          <th>Name</th>\n          <th>Code</th>\n          <th>Symbol</th>\n          <th></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let currency of currencies; let i=index\"\n          on-mouseover=\"selectCurrencyIndex(i)\">\n          <td class=\"text-center\">\n            <span [ngClass]=\"{'fa fa-check':currency.isDefault}\"></span>\n          </td>\n          <td>{{currency.name}}</td>\n          <td>{{currency.code}}</td>\n          <td>{{currency.symbol}}</td>\n          <td>\n            <button \n              class=\"btn btn-default btn-sm\"\n              type=\"button\" \n              [disabled]=\"currency.isDefault\" \n              (click)=\"setDefault(currency._id)\">\n              Set as default\n            </button>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  ",
+            template: "\n    <table class=\"table table-striped\">\n      <thead>\n        <tr>\n          <th class=\"text-center\">Default</th>\n          <th>Name</th>\n          <th>Code</th>\n          <th>Symbol</th>\n          <th></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let currency of currencies; let i=index\"\n          on-mouseover=\"selectCurrencyIndex(i)\">\n          <td class=\"text-center\">\n            <span [ngClass]=\"{'fa fa-check':defaultCurrency == currency.code}\"></span>\n          </td>\n          <td>{{currency.name}}</td>\n          <td>{{currency.code}}</td>\n          <td>{{currency.symbol}}</td>\n          <td>\n            <button \n              class=\"btn btn-default btn-sm\"\n              type=\"button\" \n              [disabled]=\"currency.isDefault\" \n              (click)=\"setDefault(currency.code)\">\n              Set as default\n            </button>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  ",
             styles: ["\n    .hover:hover {cursor:pointer;}\n    tr:nth-child(odd) >td {\n      background-color:#faebeb;\n    }\n    tr:nth-child(even) >td {\n      background-color:#fdfdff;\n    }\n    tr:hover >td{\n     background-color:#ccffcc;\n    }\n    .fa{\n      font-size:1.2em;\n      color:green;\n    }\n  "]
         }), 
-        __metadata('design:paramtypes', [currency_service_1.CurrencyService, error_service_1.ErrorService])
+        __metadata('design:paramtypes', [currency_service_1.CurrencyService, settings_service_1.SettingsService, error_service_1.ErrorService])
     ], Currencies);
     return Currencies;
 }());

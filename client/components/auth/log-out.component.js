@@ -22,7 +22,8 @@ var LogOut = (function () {
     };
     LogOut = __decorate([
         core_1.Component({
-            template: "\n    <section>\n      <button (click)=\"onLogout()\">Logout</button>\n    </section>\n  "
+            selector: 'logout',
+            template: "\n    <a (click)=\"onLogout()\" class=\"item\">Logout</a>\n  "
         }), 
         __metadata('design:paramtypes', [auth_service_1.AuthService, router_1.Router])
     ], LogOut);

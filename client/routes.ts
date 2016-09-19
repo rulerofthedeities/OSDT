@@ -23,7 +23,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/auth/signup',
+        redirectTo: '/auth/signin',
         pathMatch: 'full',
         component: AuthMenu
       },
@@ -31,5 +31,5 @@ export const routes: Routes = [
       {path: 'signin', component: SignIn},
       {path: 'logout', component: LogOut}
     ]
-  },
+  }
 ];
