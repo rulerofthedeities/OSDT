@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var mongooseUniqueValidator = require('mongoose-unique-validator');
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    mongooseUniqueValidator = require('mongoose-unique-validator');
 
 var settingsSchema = new Schema(
   { 
-    defaultCurrency: {type: String, required: true}
+    defaultCurrency: {type: String, required: true, default: false}
   }
 );
 

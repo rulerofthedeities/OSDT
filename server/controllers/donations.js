@@ -5,16 +5,21 @@ var mongoose = require('mongoose'),
 
 module.exports = {
   load: function(req, res) {
-    var pipeline = [
-      {$project: {donation:"$donations", "recipient":{id:"$_id", name:"$name"}}},
-      {$unwind: "$donation"},
-      {$sort: {"donation.dtPaid" : -1}}
-    ];
+    var userId = mongoose.Types.ObjectId(req.decoded.user._id),
+        filter = {},
+        pipeline = [
+          {$project: {donation:"$donations", "recipient":{id:"$_id", name:"$name"}}},
+          {$unwind: "$donation"},
+          {$sort: {"donation.dtPaid" : -1}}
+        ];
+
+    filter['userId'] = userId;
     if (req.params.id) {
       //Filter by recipient Id if it exists
-      var mongoId = mongoose.Types.ObjectId(req.params.id);
-      pipeline.unshift({$match:{_id: mongoId}});
+      filter['_id'] = mongoose.Types.ObjectId(req.params.id);
     };
+    pipeline.unshift({$match:filter});
+
     Recipient.aggregate(pipeline, function(err, donations) {
       response.handleError(err, res, 500, 'Error loading donations', function(){
         response.handleSuccess(res, donations, 200, 'Loaded donations');
@@ -22,16 +27,18 @@ module.exports = {
     });
   },
   loadOne: function(req, res) {
-    var donationId = mongoose.Types.ObjectId(req.params.id);
-    Recipient.findOne({"donations._id": donationId}, {"donations.$":1}, function(err, donation) {
+    var userId = mongoose.Types.ObjectId(req.decoded.user._id),
+        donationId = mongoose.Types.ObjectId(req.params.id);
+    Recipient.findOne({userId: userId, "donations._id": donationId}, {"donations.$":1}, function(err, donation) {
       response.handleError(err, res, 500, 'Error loading donation', function(){
         response.handleSuccess(res, donation, 200, 'Loaded donation');
       });
     });
   },
   add: function(req, res) {
-    var recipientId =  mongoose.Types.ObjectId(req.body.recipientId);
-    Recipient.findById(recipientId, function(err, doc) {
+    var userId = mongoose.Types.ObjectId(req.decoded.user._id),
+        recipientId =  mongoose.Types.ObjectId(req.body.recipientId);
+    Recipient.findOne({userId: userId, recipientId: recipientId}, function(err, doc) {
       response.handleError(err, res, 500, 'Error finding recipient "' + req.body.recipientId + '"', function(){
         doc.donations.push(req.body.donation);
         doc.save(function(err, result) {
@@ -43,14 +50,15 @@ module.exports = {
     });
   },
   update: function(req, res) {
-    var donationId = req.body._id;
+    var userId = mongoose.Types.ObjectId(req.decoded.user._id),
+        donationId = mongoose.Types.ObjectId(req.body._id);
 
     Recipient.findOneAndUpdate(
-      {"donations._id": donationId},
+      {userId: userId, "donations._id": donationId},
       {$set: {"donations.$": req.body}},
       function(err, doc) {
         response.handleError(err, res, 500, 'Error updating donation', function(){
-          var subdoc = doc.donations.id(donationId);
+          var subdoc = doc.donations.id(req.body._id);
           response.handleSuccess(res, subdoc, 200, 'Updated donation');
         });
       }

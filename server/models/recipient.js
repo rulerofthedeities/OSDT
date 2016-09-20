@@ -15,7 +15,7 @@ var donationSchema = new Schema(
 
 var recipientSchema = new Schema(
   { 
-    userId: {type: String, required: true},
+    userId: {type: Schema.Types.ObjectId, required: true},
     name: {type: String, required: true, index: {unique: true}},
     description: {type: String, required: false},
     categories: [String],

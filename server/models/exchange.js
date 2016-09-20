@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
-var schema = new Schema(
+var xchangeSchema = new Schema(
   { 
     disclaimer: {type: String},
     license: {type: String},
@@ -15,4 +15,4 @@ var schema = new Schema(
   }
 );
 
-module.exports = mongoose.model('ExchangeRate', schema);
+module.exports = mongoose.model('ExchangeRate', xchangeSchema);

@@ -1,10 +1,11 @@
 'use strict';
-var Recipient = require("../models/recipient"),
+var mongoose = require('mongoose'),
+    Recipient = require("../models/recipient"),
     response = require("../response");
 
 module.exports = {
   load: function(req, res) {
-    var userId = req.decoded.user._id,
+    var userId = mongoose.Types.ObjectId(req.decoded.user._id),
         filter = {},
         pipeline = [
           {$project: {cnt: {$size:'$donations'}, name:1, isActive:1}},
@@ -24,7 +25,7 @@ module.exports = {
     });
   },
   loadOne: function(req, res) {
-    var userId = req.decoded.user._id;
+    var userId = mongoose.Types.ObjectId(req.decoded.user._id);
     Recipient.find({_id:req.params.id, userId:userId}, {donations:0}, function(err, doc) {
       console.log('doc', doc[0]);
       response.handleError(err, res, 500, 'Error loading recipient', function(){
@@ -34,7 +35,7 @@ module.exports = {
   },
   add: function(req, res) {
     var recipient = new Recipient(req.body);
-    recipient.userId = req.decoded.user._id;
+    recipient.userId = mongoose.Types.ObjectId(req.decoded.user._id);
     recipient.save(function(err, result) {
       response.handleError(err, res, 500, 'Error adding recipient', function(){
         response.handleSuccess(res, result, 200, 'Added recipient');
@@ -43,7 +44,7 @@ module.exports = {
   },
   update: function(req, res) {
     var doc = req.body,
-        userId = req.decoded.user._id;
+        userId = mongoose.Types.ObjectId(req.decoded.user._id);
     Recipient.update({_id:doc._id, userId: userId}, {$set: {
       name: doc.name, 
       description: doc.description, 
@@ -59,7 +60,7 @@ module.exports = {
   getCats: function(req, res) {
   var query = req.query.search, 
       max = req.query.max ? parseInt(req.query.max, 10) : 20,
-      userId = req.decoded.user._id;
+      userId = mongoose.Types.ObjectId(req.decoded.user._id);
 
   Recipient
     .aggregate([

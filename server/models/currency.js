@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
-var schema = new Schema(
+var currencySchema = new Schema(
   { 
     name: {type: String, required: true},
     code: {type: String, required: true},
@@ -12,4 +12,4 @@ var schema = new Schema(
   }
 );
 
-module.exports = mongoose.model('Currency', schema);
+module.exports = mongoose.model('Currency', currencySchema);
