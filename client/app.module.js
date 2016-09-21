@@ -27,8 +27,6 @@ var xchange_service_1 = require('./services/xchange.service');
 var settings_service_1 = require('./services/settings.service');
 var currencies_resolver_1 = require('./resolves/currencies.resolver');
 var format_field_pipe_1 = require('./pipes/format-field.pipe');
-var equal_validator_directive_1 = require('./directives/equal-validator.directive');
-var email_validator_directive_1 = require('./directives/email-validator.directive');
 var app_component_1 = require('./components/app.component');
 var navbar_component_1 = require('./components/navbar.component');
 var error_message_component_1 = require('./components/common/error-message.component');
@@ -73,8 +71,7 @@ var AppModule = (function () {
                 xchange_service_1.XchangeService,
                 validation_service_1.ValidationService,
                 settings_service_1.SettingsService,
-                currencies_resolver_1.CurrenciesResolver,
-                { provide: forms_1.NG_VALIDATORS, useExisting: core_1.forwardRef(function () { return email_validator_directive_1.EmailValidator; }), multi: true }
+                currencies_resolver_1.CurrenciesResolver
             ],
             declarations: [
                 app_component_1.AppComponent,
@@ -88,8 +85,8 @@ var AppModule = (function () {
                 donations_embedded_component_1.EmbeddedDonations,
                 donation_component_1.EditDonation,
                 donation_new_recipient_component_1.DonationNewRecipient,
-                equal_validator_directive_1.EqualValidator,
-                email_validator_directive_1.EmailValidator,
+                EqualValidator,
+                EmailValidator,
                 field_messages_component_1.FieldMessages,
                 auth_menu_component_1.AuthMenu,
                 sign_up_component_1.SignUp,

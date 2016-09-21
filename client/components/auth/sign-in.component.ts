@@ -63,7 +63,7 @@ import {User} from '../../models/user.model';
               Password is required
             </small>
 
-            <div style="margin-top: 25px" class="input-group">
+            <div style="margin-top: 25px" class="input-group" *ngIf="false">
               <div class="checkbox">
                 <label>
                   <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
@@ -71,7 +71,7 @@ import {User} from '../../models/user.model';
               </div>
             </div>
 
-            <div style="margin-top:10px" class="form-group">
+            <div style="margin-top:25px" class="form-group">
                 <div class="col-sm-12 controls">
                   <button type="submit"
                     class="btn btn-success"

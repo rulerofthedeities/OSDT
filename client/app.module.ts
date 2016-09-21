@@ -1,6 +1,6 @@
-import {NgModule, forwardRef} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule, ReactiveFormsModule, NG_VALIDATORS} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {HttpModule} from '@angular/http';
 import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
@@ -21,9 +21,6 @@ import {SettingsService} from './services/settings.service';
 import {CurrenciesResolver} from './resolves/currencies.resolver';
 
 import {FormatFieldPipe} from './pipes/format-field.pipe';
-
-import {EqualValidator} from './directives/equal-validator.directive';
-import {EmailValidator} from './directives/email-validator.directive';
 
 import {AppComponent} from './components/app.component';
 import {Navbar} from './components/navbar.component';
@@ -67,9 +64,8 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     XchangeService,
     ValidationService,
     SettingsService,
-    CurrenciesResolver,
-    {provide: NG_VALIDATORS, useExisting: forwardRef(() => EmailValidator), multi: true}
-  ],
+    CurrenciesResolver
+    ],
   declarations: [
     AppComponent,
     Navbar,

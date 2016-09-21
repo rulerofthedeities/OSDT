@@ -22,17 +22,21 @@ function scheduleExchangeRates() {
 function loadExchangeRates() {
   console.log('Fetching exchange rates', new Date());
   var api_key = process.env.OPENEXCHANGERATES_API;
-  var url = "https://openexchangerates.org/api/latest.json?app_id=" + api_key;
-  request({
-    url: url,
-    json: true
-  }, function (error, response, body) {
-      if (!error && response.statusCode === 200) {
-        saveExchangeRates(body);
-      } else {
-        console.log('error retrieving exchange rates', error);
-      }
-  });
+  if (api_key) {
+    var url = "https://openexchangerates.org/api/latest.json?app_id=" + api_key;
+    request({
+      url: url,
+      json: true
+    }, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+          saveExchangeRates(body);
+        } else {
+          console.log('error retrieving exchange rates', error);
+        }
+    });
+  } else {
+    console.log('Error: no api key for openexchangerates found');
+  }
 }
 
 function saveExchangeRates(rates) {
@@ -42,7 +46,7 @@ function saveExchangeRates(rates) {
   var exchangeRates = new Exchange(rates);
   exchangeRates.save(function(err, result) {
     if (err) {
-      console.log('Error saving exchange rates', err);
+      console.log('Error saving exchange rates', rates, err);
     }
   });
 }

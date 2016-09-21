@@ -19,8 +19,7 @@ var AuthMenu = (function () {
     };
     AuthMenu = __decorate([
         core_1.Component({
-            template: "\n  <ul class=\"nav nav-tabs\">\n    <li routerLinkActive=\"active\">\n      <a [routerLink]=\"['signup']\">Signup</a>\n    </li>\n    <li routerLinkActive=\"active\" *ngIf=\"!isLoggedIn()\">\n      <a [routerLink]=\"['signin']\">Signin</a>\n    </li>\n    <li routerLinkActive=\"active\" *ngIf=\"isLoggedIn()\">\n      <a [routerLink]=\"['logout']\">Logout</a>\n    </li>\n  </ul> \n  <router-outlet></router-outlet>\n  ",
-            styles: ["\n    .active {border:1px dashed blue;}\n  "]
+            template: "\n  <router-outlet></router-outlet>\n  "
         }), 
         __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], AuthMenu);
