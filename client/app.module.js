@@ -85,8 +85,6 @@ var AppModule = (function () {
                 donations_embedded_component_1.EmbeddedDonations,
                 donation_component_1.EditDonation,
                 donation_new_recipient_component_1.DonationNewRecipient,
-                EqualValidator,
-                EmailValidator,
                 field_messages_component_1.FieldMessages,
                 auth_menu_component_1.AuthMenu,
                 sign_up_component_1.SignUp,

@@ -78,8 +78,6 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     EmbeddedDonations,
     EditDonation,
     DonationNewRecipient,
-    EqualValidator,
-    EmailValidator,
     FieldMessages,
     AuthMenu,
     SignUp,

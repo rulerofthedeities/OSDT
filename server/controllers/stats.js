@@ -21,7 +21,8 @@ var getDonationsCount = function(callback) {
         {$group:{_id:null,count:{$sum:1}}}
       ];
   Recipient.aggregate(pipeline, function(err, count) {
-    callback(err, count[0].count);
+    var total = count[0] ? count[0].count : 0;
+    callback(err, total);
   });
 }
 

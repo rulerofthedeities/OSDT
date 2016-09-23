@@ -9,7 +9,8 @@ var addUser = function(req, res, callback) {
     var user = new User({
       userName: req.body.userName,
       password: hash,
-      email: req.body.email
+      email: req.body.email,
+      settings: {defaultCurrency: 'EUR'}
     });
     user.save(function (err, result) {
       callback(err, result);

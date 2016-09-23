@@ -45,11 +45,6 @@ var AuthService = (function () {
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
     };
-    AuthService.prototype.checkUserName = function (userName) {
-        return this.http.get('/api/user/check?user=' + userName)
-            .map(function (response) { return response.json(); })
-            .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
-    };
     AuthService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
