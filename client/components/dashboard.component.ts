@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {DashboardService} from '../services/dashboard.service';
 import {SettingsService} from '../services/settings.service';
+import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
 
 @Component({
   template: `
+  <section protected>
     <div class="row" id="top">
       <div class="col-xs-6">
         <div class="panel panel-primary">
@@ -154,11 +156,7 @@ import {ErrorService} from '../services/error.service';
         </div>
       </div>
     </div>
-
-    <!--
-    <pre>{{totals|json}}</pre>
-    <pre>{{lists|json}}</pre>
-    -->
+  </section>
   `,
   styles:[`
     #top .main {font-size:32px;}
@@ -177,23 +175,29 @@ export class Dashboard implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private settingsService: SettingsService,
+    private authService: AuthService,
     private errorService: ErrorService
   ) {}
 
   ngOnInit() {
-    this.settingsService.getDefaultCurrency().subscribe(
-      currency => {
-        this.dashboardService.getTotals(currency).subscribe(
-          totals => {this.totals = totals;this.calcTotals();},
-          error => this.errorService.handleError(error)
-        );
-        this.dashboardService.getLists(currency).subscribe(
-          lists => {this.lists = lists;},
-          error => this.errorService.handleError(error)
-        );
-      },
-      error => this.errorService.handleError(error)
-    );
+    if (this.authService.isLoggedIn()) {
+      this.settingsService.getDefaultCurrency().subscribe(
+        currency => {
+          this.dashboardService.getTotals(currency).subscribe(
+            totals => {
+              this.totals = totals;
+              this.calcTotals();
+            },
+            error => this.errorService.handleError(error)
+          );
+          this.dashboardService.getLists(currency).subscribe(
+            lists => {this.lists = lists;},
+            error => this.errorService.handleError(error)
+          );
+        },
+        error => this.errorService.handleError(error)
+      );
+    }
   }
 
   calcTotals() {

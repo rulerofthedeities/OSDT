@@ -1,12 +1,14 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {RecipientService} from '../services/recipient.service';
+import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
 import {Recipient} from '../models/recipient.model';
 import {Subscription}   from 'rxjs/Subscription';
 
 @Component({
   template: `
+  <section protected>
     <div *ngIf="!currentRecipient">
       <alert type="info">
         <button
@@ -85,6 +87,7 @@ import {Subscription}   from 'rxjs/Subscription';
       [editMode]="isNew || isEdit"
       [prevNavState]=prevNavState>
     </recipient>
+  </section>
   `,
   styles:[`
   .hover:hover {cursor:pointer;}
@@ -114,20 +117,23 @@ export class Recipients implements OnInit, OnDestroy {
   constructor(
     private recipientService: RecipientService,
     private errorService: ErrorService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.getRecipients();
+    if (this.authService.isLoggedIn()) {
+      this.getRecipients();
 
-    this.recipientService.closeToView.subscribe(
-      closedRecipient => {
-        if (closedRecipient) {
-          this.getRecipients();
+      this.recipientService.closeToView.subscribe(
+        closedRecipient => {
+          if (closedRecipient) {
+            this.getRecipients();
+          }
+          this.currentRecipient = null;
         }
-        this.currentRecipient = null;
-      }
-    );
+      );
+    }
   }
 
   getRecipients() {

@@ -17,7 +17,7 @@ export class AuthService {
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post('/api/user/signup', body, {headers: headers})
-      .map(response => response.json())
+      .map(response => response.json().obj)
       .catch(error => Observable.throw(error.json()));
   }
 
@@ -25,22 +25,15 @@ export class AuthService {
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
     return this.http.post('/api/user/signin', body, {headers: headers})
-      .map(response => response.json())
+      .map(response => response.json().obj)
       .catch(error => Observable.throw(error.json()));
   }
 
   logout() {
     localStorage.clear();
-    console.log('user logged out');
   }
 
   isLoggedIn() {
     return localStorage.getItem('token') !== null;
-  }
-
-  checkEmail(email: string) {
-    return this.http.get('/api/user/check?mail=' + email)
-      .map(response => response.json())
-      .catch(error => Observable.throw(error.json()));
   }
 }

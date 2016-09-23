@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DonationService} from '../services/donation.service';
+import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
 import {Donation} from '../models/donation.model';
 import {Subscription}   from 'rxjs/Subscription';
 
 @Component({
   template: `
+  <section protected>
     <div *ngIf="!currentDonation">
       <alert type="info">
         <button 
@@ -46,6 +48,7 @@ import {Subscription}   from 'rxjs/Subscription';
         </donation>
       </div>
     </div>
+  </section>
   `
 })
 
@@ -64,34 +67,37 @@ export class Donations implements OnInit {
 
   constructor(
     private donationService: DonationService,
+    private authService: AuthService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.paramSubscription = this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.getDonation(params['id']);
-      }
-    });
-    this.querySubscription = this.route.queryParams.subscribe(params => {
-      if (params['edit']) {
-        this.isEdit = params['edit'] === '1' ? true : false;
-      }
-      if (params['sub']) {
-        this.isSubView = params['sub'] === '1' ? true : false;
-      }
-    });
-
-    this.donationService.closeToView.subscribe(
-      closedDonation => {
-        this.currentDonation = null; //in case of new
-        if (this.router.url !== '/donations') {
-          this.router.navigate(['/donations']);
+    if (this.authService.isLoggedIn()) {
+      this.paramSubscription = this.route.params.subscribe(params => {
+        if (params['id']) {
+          this.getDonation(params['id']);
         }
-      }
-    );
+      });
+      this.querySubscription = this.route.queryParams.subscribe(params => {
+        if (params['edit']) {
+          this.isEdit = params['edit'] === '1' ? true : false;
+        }
+        if (params['sub']) {
+          this.isSubView = params['sub'] === '1' ? true : false;
+        }
+      });
+
+      this.donationService.closeToView.subscribe(
+        closedDonation => {
+          this.currentDonation = null; //in case of new
+          if (this.router.url !== '/donations') {
+            this.router.navigate(['/donations']);
+          }
+        }
+      );
+    }
   }
 
   getDonation(donationId: string) {
@@ -106,7 +112,7 @@ export class Donations implements OnInit {
 
   addDonation() {
     this.isNew = true;
-    this.currentDonation = new Donation('EUR', null, 'creditcard', new Date(),'');
+    this.currentDonation = new Donation('EUR', null, 'creditcard', new Date(), '');
   }
 
   cancelNewDonation() {
@@ -121,7 +127,11 @@ export class Donations implements OnInit {
   }
 
   ngOnDestroy() {
-    this.querySubscription.unsubscribe();
-    this.paramSubscription.unsubscribe();
+    if (this.querySubscription) {
+      this.querySubscription.unsubscribe();
+    }
+    if (this.paramSubscription) {
+      this.paramSubscription.unsubscribe();
+    }
   }
 }

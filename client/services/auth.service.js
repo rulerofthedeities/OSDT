@@ -23,27 +23,21 @@ var AuthService = (function () {
         var body = JSON.stringify(user);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this.http.post('/api/user/signup', body, { headers: headers })
-            .map(function (response) { return response.json(); })
+            .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
     };
     AuthService.prototype.signin = function (user) {
         var body = JSON.stringify(user);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this.http.post('/api/user/signin', body, { headers: headers })
-            .map(function (response) { return response.json(); })
+            .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
     };
     AuthService.prototype.logout = function () {
         localStorage.clear();
-        console.log('user logged out');
     };
     AuthService.prototype.isLoggedIn = function () {
         return localStorage.getItem('token') !== null;
-    };
-    AuthService.prototype.checkEmail = function (email) {
-        return this.http.get('/api/user/check?mail=' + email)
-            .map(function (response) { return response.json(); })
-            .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
     };
     AuthService = __decorate([
         core_1.Injectable(), 

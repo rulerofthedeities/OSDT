@@ -28,27 +28,24 @@ var findUser = function(req, res, callback) {
     }
     bcrypt.compare(req.body.password, doc.password, function(err, result) {
       if (result !== true) {
-        callback({error:'Invalid password'}, doc, 401, 'Could not sign you in')
+        callback({error:'Invalid password'}, doc, 401, 'Could not sign you in');
+      } else {
+        var token = jwt.sign({user: doc}, 'secret', {expiresIn: 7200});
+        callback(null, {message: 'Success', token: token, userId: doc._id});
       }
-      var token = jwt.sign({user: doc}, 'secret', {expiresIn: 7200});
-      res.status(200).json({
-          message: 'Success',
-          token: token,
-          userId: doc._id
-      });
     });
   })
 };
 
 var isUniqueEmail = function(req, res, options, callback) {
   User.findOne({email:options.mail}, function(err, doc) {
-    callback(err, doc !==null);
+    callback(err, doc !== null);
   });
 }
 
 var isUniqueUser = function(req, res, options, callback) {
   User.findOne({userName:options.user}, function(err, doc) {
-    callback(err, doc !==null);
+    callback(err, doc !== null);
   });
 }
 
@@ -62,7 +59,9 @@ module.exports = {
   },
   signin: function(req, res) {
     findUser(req, res, function(err, result, errno, errmsg) {
-      response.handleError(err, res, errno, errmsg, function(){});
+      response.handleError(err, res, errno, errmsg, function(){
+        response.handleSuccess(res, result, 200, 'Signed in successfully');
+      });
     });
   },
   check: function(req, res) {

@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {CurrencyService} from '../services/currency.service';
 import {SettingsService} from '../services/settings.service';
+import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
 import {Currency} from '../models/currency.model';
 
 @Component({
   template: `
+  <section protected>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -37,6 +39,7 @@ import {Currency} from '../models/currency.model';
         </tr>
       </tbody>
     </table>
+  </section>
   `,
   styles:[`
     .hover:hover {cursor:pointer;}
@@ -64,17 +67,19 @@ export class Currencies implements OnInit {
   constructor(
     private currencyService: CurrencyService,
     private settingsService: SettingsService,
+    private authService:AuthService,
     private errorService: ErrorService
   ) {}
 
   ngOnInit() {
-    this.getCurrencies();
+    if (this.authService.isLoggedIn()) {
+      this.getCurrencies();
+    }
   }
 
   getCurrencies() {
     this.settingsService.getDefaultCurrency().subscribe(
       defaultCurrency => {
-        console.log('defaultCurrency', defaultCurrency);
         this.defaultCurrency = defaultCurrency;
         this.currencyService.getCurrencies().subscribe(
           currencies => {this.currencies = currencies;},
@@ -92,7 +97,7 @@ export class Currencies implements OnInit {
   setDefault(currencyCode: string) {
     this.defaultCurrency = currencyCode;
     this.settingsService.setDefaultCurrency(currencyCode).subscribe(
-      defaultCurrency => {this.defaultCurrency = defaultCurrency;console.log('new currency received', defaultCurrency);},
+      defaultCurrency => {this.defaultCurrency = defaultCurrency;},
       error => this.errorService.handleError(error)
     );
   }

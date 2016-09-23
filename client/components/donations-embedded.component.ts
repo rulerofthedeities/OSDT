@@ -5,6 +5,7 @@ import {Recipient} from '../models/recipient.model';
 import {Currency} from '../models/currency.model';
 import {DonationService} from '../services/donation.service';
 import {CurrencyService} from '../services/currency.service';
+import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
 
 @Component({
@@ -80,21 +81,24 @@ export class EmbeddedDonations implements OnInit {
   constructor(
     private donationService: DonationService,
     private currencyService: CurrencyService,
+    private authService: AuthService,
     private errorService: ErrorService,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.getDonations(this.recipientId);
+    if (this.authService.isLoggedIn()) {
+      this.getDonations(this.recipientId);
 
-    this.donationService.closeToView.subscribe(
-      closedDonation => {
-        if (closedDonation) {
-          this.getDonations('');
+      this.donationService.closeToView.subscribe(
+        closedDonation => {
+          if (closedDonation) {
+            this.getDonations('');
+          }
+          this.currentDonation = null;
         }
-        this.currentDonation = null;
-      }
-    );
+      );
+    }
   }
 
   getDonations(recipientId: string) {

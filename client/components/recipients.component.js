@@ -11,12 +11,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var recipient_service_1 = require('../services/recipient.service');
+var auth_service_1 = require('../services/auth.service');
 var error_service_1 = require('../services/error.service');
 var recipient_model_1 = require('../models/recipient.model');
 var Recipients = (function () {
-    function Recipients(recipientService, errorService, route) {
+    function Recipients(recipientService, errorService, authService, route) {
         this.recipientService = recipientService;
         this.errorService = errorService;
+        this.authService = authService;
         this.route = route;
         this.recipients = [];
         this.currentRecipient = null;
@@ -28,13 +30,15 @@ var Recipients = (function () {
     }
     Recipients.prototype.ngOnInit = function () {
         var _this = this;
-        this.getRecipients();
-        this.recipientService.closeToView.subscribe(function (closedRecipient) {
-            if (closedRecipient) {
-                _this.getRecipients();
-            }
-            _this.currentRecipient = null;
-        });
+        if (this.authService.isLoggedIn()) {
+            this.getRecipients();
+            this.recipientService.closeToView.subscribe(function (closedRecipient) {
+                if (closedRecipient) {
+                    _this.getRecipients();
+                }
+                _this.currentRecipient = null;
+            });
+        }
     };
     Recipients.prototype.getRecipients = function () {
         var _this = this;
@@ -84,10 +88,10 @@ var Recipients = (function () {
     };
     Recipients = __decorate([
         core_1.Component({
-            template: "\n    <div *ngIf=\"!currentRecipient\">\n      <alert type=\"info\">\n        <button\n          type=\"button\"\n          (click)=\"addRecipient()\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-plus\"></span>\n          Add Recipient\n        </button>\n      </alert>\n\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th></th>\n            <th>Active</th>\n            <th>Recipient name</th>\n            <th>#of donations</th>\n            <th></th>\n          </tr>\n        </thead>\n        <tbody>\n          <template ngFor [ngForOf]=\"recipients\" let-recipient let-i=\"index\">\n            <tr class=\"recipients\"\n              on-mouseover=\"selectRecipientIndex(i)\"\n              [ngClass]=\"{'info':i===selectedRecipient}\">\n              <td>{{i+1}}</td>\n              <td>\n                <span \n                  class=\"fa\" \n                  [ngClass]=\"{'fa-check':recipient.isActive,'fa-times':!recipient.isActive}\"\n                  [ngStyle]=\"{'color':recipient.isActive ? 'green' : 'red'}\">\n                </span>\n              </td>\n              <td class=\"hover\" (click)=\"selectRecipient(recipient)\">\n                {{recipient.name}}\n              </td>\n              <td>\n                <span (click)=\"toggleDonations(i)\" class=\"hover\">\n                  <span [ngStyle]=\"{'color':recipient.cnt > 0 ? 'black' : 'darkred'}\">\n                  {{recipient.cnt}}\n                  </span>\n                  <span \n                    *ngIf=\"recipient.cnt > 0\"\n                    class=\"fa\"\n                    [ngClass]=\"{\n                      'fa-plus-square-o':selectedDonations!==i,\n                      'fa-minus-square-o':selectedDonations===i\n                    }\">\n                  </span>\n                </span>\n              </td>\n              <td>\n                <button class=\"btn btn-default btn-sm\"\n                  (click)=\"editRecipient(recipient)\">\n                  <span class=\"fa fa-pencil\"></span> Edit\n                </button>\n              </td>\n            </tr>\n            <tr *ngIf=\"selectedDonations===i\" class=\"donations\">\n              <td colspan=\"2\"></td>\n              <td colspan=\"3\">\n                <donations\n                  [isSubview]=\"true\"\n                  [recipientId]=\"recipients[selectedDonations]._id\">\n                </donations>\n              </td>\n            </tr>\n          </template>\n        </tbody>\n      </table>\n    </div>\n\n    <recipient *ngIf=\"currentRecipient\"\n      [recipient]=\"currentRecipient\"\n      [editMode]=\"isNew || isEdit\"\n      [prevNavState]=prevNavState>\n    </recipient>\n  ",
+            template: "\n  <section protected>\n    <div *ngIf=\"!currentRecipient\">\n      <alert type=\"info\">\n        <button\n          type=\"button\"\n          (click)=\"addRecipient()\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-plus\"></span>\n          Add Recipient\n        </button>\n      </alert>\n\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th></th>\n            <th>Active</th>\n            <th>Recipient name</th>\n            <th>#of donations</th>\n            <th></th>\n          </tr>\n        </thead>\n        <tbody>\n          <template ngFor [ngForOf]=\"recipients\" let-recipient let-i=\"index\">\n            <tr class=\"recipients\"\n              on-mouseover=\"selectRecipientIndex(i)\"\n              [ngClass]=\"{'info':i===selectedRecipient}\">\n              <td>{{i+1}}</td>\n              <td>\n                <span \n                  class=\"fa\" \n                  [ngClass]=\"{'fa-check':recipient.isActive,'fa-times':!recipient.isActive}\"\n                  [ngStyle]=\"{'color':recipient.isActive ? 'green' : 'red'}\">\n                </span>\n              </td>\n              <td class=\"hover\" (click)=\"selectRecipient(recipient)\">\n                {{recipient.name}}\n              </td>\n              <td>\n                <span (click)=\"toggleDonations(i)\" class=\"hover\">\n                  <span [ngStyle]=\"{'color':recipient.cnt > 0 ? 'black' : 'darkred'}\">\n                  {{recipient.cnt}}\n                  </span>\n                  <span \n                    *ngIf=\"recipient.cnt > 0\"\n                    class=\"fa\"\n                    [ngClass]=\"{\n                      'fa-plus-square-o':selectedDonations!==i,\n                      'fa-minus-square-o':selectedDonations===i\n                    }\">\n                  </span>\n                </span>\n              </td>\n              <td>\n                <button class=\"btn btn-default btn-sm\"\n                  (click)=\"editRecipient(recipient)\">\n                  <span class=\"fa fa-pencil\"></span> Edit\n                </button>\n              </td>\n            </tr>\n            <tr *ngIf=\"selectedDonations===i\" class=\"donations\">\n              <td colspan=\"2\"></td>\n              <td colspan=\"3\">\n                <donations\n                  [isSubview]=\"true\"\n                  [recipientId]=\"recipients[selectedDonations]._id\">\n                </donations>\n              </td>\n            </tr>\n          </template>\n        </tbody>\n      </table>\n    </div>\n\n    <recipient *ngIf=\"currentRecipient\"\n      [recipient]=\"currentRecipient\"\n      [editMode]=\"isNew || isEdit\"\n      [prevNavState]=prevNavState>\n    </recipient>\n  </section>\n  ",
             styles: ["\n  .hover:hover {cursor:pointer;}\n  tr:nth-child(odd) >td {\n    background-color:#fffae6;\n  }\n  tr:nth-child(even) >td {\n    background-color:snow;\n  }\n  tr.recipients:hover >td{\n   background-color:#ccffcc;\n  }\n  .fa{font-size:1.2em}\n  "]
         }), 
-        __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, router_1.ActivatedRoute])
+        __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, auth_service_1.AuthService, router_1.ActivatedRoute])
     ], Recipients);
     return Recipients;
 }());

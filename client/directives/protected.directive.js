@@ -9,26 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var currency_service_1 = require('../services/currency.service');
+var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var auth_service_1 = require('../services/auth.service');
-var CurrenciesResolver = (function () {
-    function CurrenciesResolver(currencyService, authService) {
-        this.currencyService = currencyService;
+var ProtectedDirective = (function () {
+    function ProtectedDirective(authService, router, location) {
         this.authService = authService;
+        this.router = router;
+        this.location = location;
     }
-    CurrenciesResolver.prototype.resolve = function (route, state) {
-        if (this.authService.isLoggedIn()) {
-            return this.currencyService.getCurrencies();
-        }
-        else {
-            return null;
+    ProtectedDirective.prototype.ngOnInit = function () {
+        if (!this.authService.isLoggedIn()) {
+            this.location.replaceState('/'); // clears browser history so they can't navigate with back button
+            this.router.navigate(['/auth/signin']);
         }
     };
-    CurrenciesResolver = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [currency_service_1.CurrencyService, auth_service_1.AuthService])
-    ], CurrenciesResolver);
-    return CurrenciesResolver;
+    ProtectedDirective = __decorate([
+        core_1.Directive({
+            selector: '[protected]'
+        }), 
+        __metadata('design:paramtypes', [auth_service_1.AuthService, router_1.Router, common_1.Location])
+    ], ProtectedDirective);
+    return ProtectedDirective;
 }());
-exports.CurrenciesResolver = CurrenciesResolver;
-//# sourceMappingURL=currencies.resolver.js.map
+exports.ProtectedDirective = ProtectedDirective;
+//# sourceMappingURL=protected.directive.js.map

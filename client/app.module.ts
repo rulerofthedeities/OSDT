@@ -18,6 +18,8 @@ import {ValidationService} from './services/validation.service';
 import {XchangeService} from './services/xchange.service';
 import {SettingsService} from './services/settings.service';
 
+import {ProtectedDirective} from './directives/protected.directive';
+
 import {CurrenciesResolver} from './resolves/currencies.resolver';
 
 import {FormatFieldPipe} from './pipes/format-field.pipe';
@@ -86,6 +88,7 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     AutoFormField,
     AutoFormRead,
     AutoForm,
+    ProtectedDirective,
     FormatFieldPipe,
     KmDatepicker
   ],
