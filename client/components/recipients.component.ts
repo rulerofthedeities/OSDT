@@ -27,6 +27,17 @@ import {Subscription}   from 'rxjs/Subscription';
           Edit Recipient
         </button>
 
+        <button *ngIf="activeRecipient !== null"
+          type="button"
+          (click)="toggleActive()"
+          class="btn btn-primary">
+          <span class="fa"
+            [ngClass]="{'fa-check':!recipients[activeRecipient].isActive,'fa-times':recipients[activeRecipient].isActive}"
+            [ngStyle]="{'color':!recipients[activeRecipient].isActive ? 'green' : 'red'}">
+          </span>
+          {{recipients[activeRecipient].isActive ? 'Set Inactive' : 'Set Active'}}
+        </button>
+
         <button *ngIf="activeRecipient !== null && recipients[activeRecipient].isActive"
           type="button"
           (click)="addDonation()"
@@ -105,6 +116,7 @@ import {Subscription}   from 'rxjs/Subscription';
       [editMode]="isNew || isEdit"
       [prevNavState]=prevNavState>
     </recipient>
+
   </section>
   `,
   styles:[`
@@ -194,6 +206,18 @@ export class Recipients implements OnInit, OnDestroy {
 
   setActiveRecipient(i: number) {
     this.activeRecipient = i;
+  }
+
+  toggleActive() {
+    if (this.activeRecipient !== null) {
+      let recipient = this.recipients[this.activeRecipient];
+      let newActiveState = !recipient.isActive;
+      recipient.isActive = newActiveState;
+      this.recipientService.setActiveState(recipient._id, newActiveState).subscribe(
+        active => {console.log(active);recipient.isActive = active;},
+        error => this.errorService.handleError(error)
+      );
+    }
   }
 
   addRecipient() {

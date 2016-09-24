@@ -56,6 +56,17 @@ module.exports = {
       }
     );
   },
+  updateActive: function(req, res) {
+    var recipientId = mongoose.Types.ObjectId(req.body.recipientId),
+        userId = mongoose.Types.ObjectId(req.decoded.user._id),
+        active = req.body.active;
+    Recipient.update({ _id: recipientId, userId: userId}, {$set: {isActive: active }}, function(err, doc){
+      response.handleError(err, res, 500, 'Error updating recipient', function(){
+          response.handleSuccess(res, active, 200, 'Updated recipient');
+        });
+      }
+    );
+  },
   getCats: function(req, res) {
   var query = req.query.search, 
       max = req.query.max ? parseInt(req.query.max, 10) : 20,

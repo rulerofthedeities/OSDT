@@ -21,8 +21,7 @@ var RecipientService = (function () {
     }
     RecipientService.prototype.getRecipients = function (activeOnly) {
         var url = '/api/recipients';
-        var token = this.authService.getToken();
-        var active = activeOnly ? '&active=1' : '';
+        var token = this.authService.getToken(), active = activeOnly ? '&active=1' : '';
         return this._http.get(url + token + active)
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
@@ -35,19 +34,21 @@ var RecipientService = (function () {
     };
     RecipientService.prototype.addRecipient = function (recipient) {
         recipient.name = this.toProperCase(recipient.name); //for sorting
-        var token = this.authService.getToken();
-        var body = JSON.stringify(recipient);
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var token = this.authService.getToken(), body = JSON.stringify(recipient), headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.post('/api/recipients' + token, body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.updateRecipient = function (recipient) {
         recipient.name = this.toProperCase(recipient.name); //for sorting
-        var token = this.authService.getToken();
-        var body = JSON.stringify(recipient);
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var token = this.authService.getToken(), body = JSON.stringify(recipient), headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         return this._http.put('/api/recipients' + token, body, { headers: headers })
+            .map(function (response) { return response.json().obj; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    RecipientService.prototype.setActiveState = function (recipientId, active) {
+        var token = this.authService.getToken(), body = JSON.stringify({ recipientId: recipientId, active: active }), headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        return this._http.patch('/api/recipients' + token, body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };

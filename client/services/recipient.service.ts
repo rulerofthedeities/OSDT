@@ -16,8 +16,8 @@ export class RecipientService {
 
   getRecipients(activeOnly: boolean) {
     let url = '/api/recipients';
-    const token = this.authService.getToken();
-    const active = activeOnly ? '&active=1': '';
+    const token = this.authService.getToken(),
+          active = activeOnly ? '&active=1': '';
     return this._http.get(url + token + active)
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
@@ -32,9 +32,9 @@ export class RecipientService {
 
   addRecipient(recipient: Recipient) {
     recipient.name = this.toProperCase(recipient.name);//for sorting
-    const token = this.authService.getToken();
-    const body = JSON.stringify(recipient);
-    const headers = new Headers({'Content-Type': 'application/json'});
+    const token = this.authService.getToken(),
+          body = JSON.stringify(recipient),
+          headers = new Headers({'Content-Type': 'application/json'});
     return this._http.post('/api/recipients' + token, body, {headers:headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
@@ -42,10 +42,19 @@ export class RecipientService {
 
   updateRecipient(recipient: Recipient) {
     recipient.name = this.toProperCase(recipient.name);//for sorting
-    const token = this.authService.getToken();
-    const body = JSON.stringify(recipient);
-    const headers = new Headers({'Content-Type': 'application/json'});
+    const token = this.authService.getToken(),
+          body = JSON.stringify(recipient),
+          headers = new Headers({'Content-Type': 'application/json'});
     return this._http.put('/api/recipients' + token, body, {headers:headers})
+      .map(response => response.json().obj)
+      .catch(error => Observable.throw(error));
+  }
+
+  setActiveState(recipientId, active) {
+    const token = this.authService.getToken(),
+          body = JSON.stringify({recipientId, active}),
+          headers = new Headers({'Content-Type': 'application/json'});
+    return this._http.patch('/api/recipients' + token, body, {headers:headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }

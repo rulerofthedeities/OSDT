@@ -45,6 +45,7 @@ module.exports.initialize = function(app, router) {
   router.get('/recipients/:id', recipients.loadOne);
   router.post('/recipients', recipients.add);
   router.put('/recipients', recipients.update);
+  router.patch('/recipients', recipients.updateActive);
   router.get('/cats', recipients.getCats);
 
   router.get('/stats/totals', stats.getTotals);
