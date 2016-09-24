@@ -48,6 +48,14 @@ export class DonationService {
       .catch(error => Observable.throw(error));
   }
 
+  removeDonation(donationId: string, recipientId: string) {
+    const token = this.authService.getToken();
+    console.log('deleting', '/api/donations/' + donationId + '/' + recipientId + token);
+    return this._http.delete('/api/donations/' + donationId + '/' + recipientId + token)
+      .map(response => response.json())
+      .catch(error => Observable.throw(error));
+  }
+
   closeDonation(targetState: string, donation: Donation = null) {
     switch (targetState) {
       case 'viewDonation':

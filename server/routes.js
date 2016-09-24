@@ -40,6 +40,7 @@ module.exports.initialize = function(app, router) {
   router.get('/donations/:id', donations.loadOne);
   router.post('/donations', donations.add);
   router.put('/donations', donations.update);
+  router.delete('/donations/:donationId/:recipientId', donations.remove);
 
   router.get('/recipients', recipients.load);
   router.get('/recipients/:id', recipients.loadOne);

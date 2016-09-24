@@ -49,6 +49,13 @@ var DonationService = (function () {
             .map(function (response) { return donation; }) //server does not return latest state!
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
+    DonationService.prototype.removeDonation = function (donationId, recipientId) {
+        var token = this.authService.getToken();
+        console.log('deleting', '/api/donations/' + donationId + '/' + recipientId + token);
+        return this._http.delete('/api/donations/' + donationId + '/' + recipientId + token)
+            .map(function (response) { return response.json(); })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
     DonationService.prototype.closeDonation = function (targetState, donation) {
         if (donation === void 0) { donation = null; }
         switch (targetState) {

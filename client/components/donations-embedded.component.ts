@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
 import {Donation} from '../models/donation.model';
 import {Recipient} from '../models/recipient.model';
@@ -12,6 +12,43 @@ import {ErrorService} from '../services/error.service';
   selector: 'donations',
   template: `
     <div *ngIf="!currentDonation">
+
+      <alert type="info" *ngIf="!recipientId">
+        <button 
+          type="button"
+          (click)="addDonation()"
+          class="btn btn-primary">
+          <span class="fa fa-plus"></span>
+          Add Donation
+        </button>
+
+        <button *ngIf="activeDonation !== null"
+          type="button"
+          (click)="openDonation(null, donations[activeDonation], true)"
+          class="btn btn-primary">
+          <span class="fa fa-pencil"></span>
+          Edit
+        </button>
+
+        <button *ngIf="activeDonation !== null"
+          type="button"
+          (click)="copyDonation(donations[activeDonation])"
+          class="btn btn-primary">
+          <span class="fa fa-files-o"></span>
+          Copy
+        </button>
+
+        <button *ngIf="activeDonation !== null"
+          type="button"
+          (click)="deleteDonation(activeDonation)"
+          class="btn btn-danger">
+          <span class="fa fa-trash-o"></span>
+          Delete
+        </button>
+
+      </alert>
+
+
       <table class="table table-striped" [ngClass]="{'small': isSubview}">
         <thead *ngIf="!isSubview">
           <tr>
@@ -26,26 +63,28 @@ import {ErrorService} from '../services/error.service';
         <tbody>
           <tr *ngFor="let donation of donations; let i=index"
             on-mouseover="selectDonationIndex(i)"
-            [ngClass]="{'info':i===selectedDonation}">
+            class="hover"
+            (click)="i===activeDonation || recipientId ? openDonation($event, donation, false) : setActiveDonationIndex(i)"
+            [ngClass]="{'info':i===selectedDonation,'active':i===activeDonation && !recipientId}">
             <td>{{i+1}}</td>
-            <td *ngIf="isSubview" class="hover" (click)="openDonation(donation, false)">
+            <td *ngIf="isSubview">
               {{recipientIds ? recipientIds[i].name : ''}}
             </td>
-            <td class="hover" (click)="openDonation(donation, false)">
+            <td>
               {{donation.amount}} {{donation.currency}}
             </td>
-            <td class="hover" (click)="openDonation(donation, false)">
+            <td>
               {{donation.dtPaid|date:'shortDate'}}
             </td>
-            <td class="hover" (click)="openDonation(donation, false)">
+            <td>
               {{recipients[i].name}}
             </td>
-            <td class="hover" (click)="openDonation(donation, false)">
+            <td>
               {{donation.note}}
             </td>
             <td>
               <button class="btn btn-default btn-sm"
-                (click)="openDonation(donation, true)">
+                (click)="openDonation($event, donation, true)">
                 <span class="fa fa-pencil"></span> Edit
               </button>
             </td>
@@ -65,17 +104,23 @@ import {ErrorService} from '../services/error.service';
     tr:hover >td{
      background-color:#ccffcc;
     }
+    tr.active {
+      outline: thin solid green;
+      cursor: pointer;
+    }
   `]
 })
 
 export class EmbeddedDonations implements OnInit {
   @Input() recipientId: string = '';
   @Input() isSubview: boolean = false;
+  @Output() addNewDonation = new EventEmitter<Donation>();
   donations: Donation[];
   recipients: Recipient[];
   currencies: Currency[];
   currentDonation: Donation = null;
   selectedDonation: number = null;
+  activeDonation: number = null;
   isEdit = false;
 
   constructor(
@@ -116,7 +161,31 @@ export class EmbeddedDonations implements OnInit {
     this.selectedDonation = i;
   }
 
-  openDonation(donation: Donation, editMode: boolean) {
+  setActiveDonationIndex(i: number) {
+    this.activeDonation = i;
+  }
+
+  addDonation() {
+    this.addNewDonation.emit(null);
+  }
+
+  copyDonation(donation: Donation) {
+    this.addNewDonation.emit(donation);
+  }
+
+  deleteDonation(donationIndex: number) {
+    console.log('donation', this.donations[donationIndex], this.recipients[donationIndex]);
+    this.donationService.removeDonation(this.donations[donationIndex]._id, this.recipients[donationIndex]._id).subscribe(
+      data => {;},
+      error => this.errorService.handleError(error)
+    );
+    this.donations.splice(donationIndex, 1);
+  }
+
+  openDonation(event: MouseEvent, donation: Donation, editMode: boolean) {
+    if (event) {
+      event.stopPropagation();
+    }
     let params = {};
     if (editMode) {
       params['edit'] = 1;

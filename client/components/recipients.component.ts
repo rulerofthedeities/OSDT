@@ -63,9 +63,9 @@ import {Subscription}   from 'rxjs/Subscription';
             <tr class="recipients"
               on-mouseover="selectRecipientIndex(i)"
               [ngClass]="{'info':i===selectedRecipient,'active':i===activeRecipient}"
-              (click)="i===activeRecipient ? selectRecipient(recipient) : setActiveRecipient(i)">
-              <td (click)="setActiveRecipient(i)">{{i+1}}</td>
-              <td (click)="setActiveRecipient(i)">
+              (click)="i===activeRecipient ? selectRecipient(recipient) : setActiveRecipientIndex(i)">
+              <td>{{i+1}}</td>
+              <td>
                 <span 
                   class="fa" 
                   [ngClass]="{'fa-check':recipient.isActive,'fa-times':!recipient.isActive}"
@@ -204,7 +204,7 @@ export class Recipients implements OnInit, OnDestroy {
     this.selectedRecipient = i;
   }
 
-  setActiveRecipient(i: number) {
+  setActiveRecipientIndex(i: number) {
     this.activeRecipient = i;
   }
 

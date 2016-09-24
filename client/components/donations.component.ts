@@ -10,17 +10,8 @@ import {Subscription}   from 'rxjs/Subscription';
   template: `
   <section protected>
     <div *ngIf="!currentDonation">
-      <alert type="info">
-        <button 
-          type="button"
-          (click)="addDonation()"
-          class="btn btn-primary">
-          <span class="fa fa-plus"></span>
-          Add Donation
-        </button>
-      </alert>
-
-      <donations>
+      <donations
+        (addNewDonation)="createDonation($event)">
       </donations>
     </div>
 
@@ -42,7 +33,7 @@ import {Subscription}   from 'rxjs/Subscription';
       <div *ngIf="!isNew || recipientId">
         <donation
           [donation]="currentDonation"
-          [recipientId]="recipientId || recipientIds[selectedDonation]?.id"
+          [recipientId]="recipientId"
           [editMode]="isEdit"
           [subView]="isSubView">
         </donation>
@@ -53,14 +44,10 @@ import {Subscription}   from 'rxjs/Subscription';
 })
 
 export class Donations implements OnInit {
-  donations: Donation[];
   currentDonation: Donation = null;
-  selectedDonation: number = null;
   paramSubscription: Subscription;
   querySubscription: Subscription;
-  donationId: string;
   recipientId: string;
-  recipientIds: any[];//for all donations -> one recipientId per donation
   isEdit = false;
   isSubView = false; //the donation document was opened from the recipient view
   isNew = false;
@@ -114,6 +101,19 @@ export class Donations implements OnInit {
         },
         error => this.errorService.handleError(error)
       );
+  }
+
+  createDonation(donation: Donation) {
+    console.log('creating donation', donation);
+    if (donation) {
+      //Copy existing donation
+      this.isNew = true;
+      this.isEdit = true;
+      this.currentDonation = new Donation(donation.currency, donation.amount, donation.paymentType, new Date(), donation.note);
+    } else {
+      //new donation
+      this.addDonation();
+    }
   }
 
   addDonation() {

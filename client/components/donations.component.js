@@ -22,7 +22,6 @@ var Donations = (function () {
         this.route = route;
         this.router = router;
         this.currentDonation = null;
-        this.selectedDonation = null;
         this.isEdit = false;
         this.isSubView = false; //the donation document was opened from the recipient view
         this.isNew = false;
@@ -64,6 +63,19 @@ var Donations = (function () {
             _this.recipientId = result._id;
         }, function (error) { return _this.errorService.handleError(error); });
     };
+    Donations.prototype.createDonation = function (donation) {
+        console.log('creating donation', donation);
+        if (donation) {
+            //Copy existing donation
+            this.isNew = true;
+            this.isEdit = true;
+            this.currentDonation = new donation_model_1.Donation(donation.currency, donation.amount, donation.paymentType, new Date(), donation.note);
+        }
+        else {
+            //new donation
+            this.addDonation();
+        }
+    };
     Donations.prototype.addDonation = function () {
         this.isNew = true;
         this.isEdit = true;
@@ -88,7 +100,7 @@ var Donations = (function () {
     };
     Donations = __decorate([
         core_1.Component({
-            template: "\n  <section protected>\n    <div *ngIf=\"!currentDonation\">\n      <alert type=\"info\">\n        <button \n          type=\"button\"\n          (click)=\"addDonation()\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-plus\"></span>\n          Add Donation\n        </button>\n      </alert>\n\n      <donations>\n      </donations>\n    </div>\n\n    <div *ngIf=\"currentDonation\">\n      <div *ngIf=\"isNew && !recipientId\">\n        <new-recipient\n          (selectedRecipientId)=\"onSelectedRecipientId($event)\">\n        </new-recipient>\n\n        <button\n          class=\"btn btn-warning\" \n          type=\"button\"\n          (click)=\"cancelNewDonation()\">\n          <span class=\"fa fa-times\"></span>\n          Cancel\n        </button>\n      </div>\n\n      <div *ngIf=\"!isNew || recipientId\">\n        <donation\n          [donation]=\"currentDonation\"\n          [recipientId]=\"recipientId || recipientIds[selectedDonation]?.id\"\n          [editMode]=\"isEdit\"\n          [subView]=\"isSubView\">\n        </donation>\n      </div>\n    </div>\n  </section>\n  "
+            template: "\n  <section protected>\n    <div *ngIf=\"!currentDonation\">\n      <donations\n        (addNewDonation)=\"createDonation($event)\">\n      </donations>\n    </div>\n\n    <div *ngIf=\"currentDonation\">\n      <div *ngIf=\"isNew && !recipientId\">\n        <new-recipient\n          (selectedRecipientId)=\"onSelectedRecipientId($event)\">\n        </new-recipient>\n\n        <button\n          class=\"btn btn-warning\" \n          type=\"button\"\n          (click)=\"cancelNewDonation()\">\n          <span class=\"fa fa-times\"></span>\n          Cancel\n        </button>\n      </div>\n\n      <div *ngIf=\"!isNew || recipientId\">\n        <donation\n          [donation]=\"currentDonation\"\n          [recipientId]=\"recipientId\"\n          [editMode]=\"isEdit\"\n          [subView]=\"isSubView\">\n        </donation>\n      </div>\n    </div>\n  </section>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, auth_service_1.AuthService, error_service_1.ErrorService, router_1.ActivatedRoute, router_1.Router])
     ], Donations);
