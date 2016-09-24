@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RecipientService} from '../services/recipient.service';
 import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
@@ -18,6 +18,23 @@ import {Subscription}   from 'rxjs/Subscription';
           <span class="fa fa-plus"></span>
           Add Recipient
         </button>
+
+        <button *ngIf="activeRecipient !== null"
+          type="button"
+          (click)="editRecipient(recipients[activeRecipient])"
+          class="btn btn-primary">
+          <span class="fa fa-pencil"></span>
+          Edit Recipient
+        </button>
+
+        <button *ngIf="activeRecipient !== null && recipients[activeRecipient].isActive"
+          type="button"
+          (click)="addDonation()"
+          class="btn btn-primary">
+          <span class="fa fa-plus"></span>
+          Add Donation
+        </button>
+
       </alert>
 
       <table class="table table-striped">
@@ -34,20 +51,21 @@ import {Subscription}   from 'rxjs/Subscription';
           <template ngFor [ngForOf]="recipients" let-recipient let-i="index">
             <tr class="recipients"
               on-mouseover="selectRecipientIndex(i)"
-              [ngClass]="{'info':i===selectedRecipient}">
-              <td>{{i+1}}</td>
-              <td>
+              [ngClass]="{'info':i===selectedRecipient,'active':i===activeRecipient}"
+              (click)="i===activeRecipient ? selectRecipient(recipient) : setActiveRecipient(i)">
+              <td (click)="setActiveRecipient(i)">{{i+1}}</td>
+              <td (click)="setActiveRecipient(i)">
                 <span 
                   class="fa" 
                   [ngClass]="{'fa-check':recipient.isActive,'fa-times':!recipient.isActive}"
                   [ngStyle]="{'color':recipient.isActive ? 'green' : 'red'}">
                 </span>
               </td>
-              <td class="hover" (click)="selectRecipient(recipient)">
+              <td>
                 {{recipient.name}}
               </td>
               <td>
-                <span (click)="toggleDonations(i)" class="hover">
+                <span (click)="toggleDonations($event, i)" class="hover">
                   <span [ngStyle]="{'color':recipient.cnt > 0 ? 'black' : 'darkred'}">
                   {{recipient.cnt}}
                   </span>
@@ -90,6 +108,9 @@ import {Subscription}   from 'rxjs/Subscription';
   </section>
   `,
   styles:[`
+  tr {
+    cursor:default;
+  }
   .hover:hover {cursor:pointer;}
   tr:nth-child(odd) >td {
     background-color:#fffae6;
@@ -97,8 +118,12 @@ import {Subscription}   from 'rxjs/Subscription';
   tr:nth-child(even) >td {
     background-color:snow;
   }
-  tr.recipients:hover >td{
-   background-color:#ccffcc;
+  tr.recipients:hover >td {
+    background-color:#ccffcc;
+  }
+  tr.recipients.active {
+    outline: thin solid green;
+    cursor: pointer;
   }
   .fa{font-size:1.2em}
   `]
@@ -108,6 +133,7 @@ export class Recipients implements OnInit, OnDestroy {
   recipients:Recipient[] = [];
   currentRecipient: Recipient = null;
   selectedRecipient: number = null;
+  activeRecipient: number = null; // defines view buttons
   selectedDonations: number = null;
   paramSubscription: Subscription;
   isEdit = false;
@@ -118,7 +144,8 @@ export class Recipients implements OnInit, OnDestroy {
     private recipientService: RecipientService,
     private errorService: ErrorService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -165,20 +192,33 @@ export class Recipients implements OnInit, OnDestroy {
     this.selectedRecipient = i;
   }
 
+  setActiveRecipient(i: number) {
+    this.activeRecipient = i;
+  }
+
   addRecipient() {
     this.isNew = true;
     this.currentRecipient = new Recipient('demoUser', '', '', [], true);
   }
 
-  toggleDonations(i) {
+  toggleDonations(event: MouseEvent, i: number) {
+    if (event) {
+      event.stopPropagation();
+    }
     this.selectedDonations = this.selectedDonations === i ? null : i;
+  }
+
+  addDonation() {
+    if (this.activeRecipient !== null) {
+      this.router.navigate(['/donations'], {queryParams: {new: this.recipients[this.activeRecipient]._id}});
+    }
   }
 
   setInitialDonations(recipientId: string) {
     let i = 0;
     this.recipients.forEach(recipient => {
       if(recipientId === recipient._id && recipient.cnt > 0) {
-        this.toggleDonations(i);
+        this.toggleDonations(null, i);
       };
       i++;
     });

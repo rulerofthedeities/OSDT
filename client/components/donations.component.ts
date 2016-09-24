@@ -87,6 +87,12 @@ export class Donations implements OnInit {
         if (params['sub']) {
           this.isSubView = params['sub'] === '1' ? true : false;
         }
+        if (params['new']) {
+          console.log('new', params['new']);
+          this.isSubView = true;
+          this.recipientId = params['new'];
+          this.addDonation();
+        }
       });
 
       this.donationService.closeToView.subscribe(
@@ -112,6 +118,7 @@ export class Donations implements OnInit {
 
   addDonation() {
     this.isNew = true;
+    this.isEdit = true;
     this.currentDonation = new Donation('EUR', null, 'creditcard', new Date(), '');
   }
 

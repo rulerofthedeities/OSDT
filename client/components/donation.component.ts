@@ -228,7 +228,7 @@ export class EditDonation implements OnInit {
   submitForm(donation: Donation, target: string) {
     donation.rates = this.donation.rates;
     donation.values = this.donation.values;
-    if (donation.amount !== this.donation.amount) {
+    if (donation.amount !== this.donation.amount || donation.dtPaid !== this.donation.dtPaid) {
       //get currencies from field list
       const currencyField = this.donationFieldsAssoc['currency'],
             currencies = currencyField['options'].map(option => option.key),
@@ -247,7 +247,9 @@ export class EditDonation implements OnInit {
   }
 
   saveDonation(donation: Donation, target: string) {
-    if (donation.currency !== this.donation.currency || donation.amount !== this.donation.amount) {
+    if (donation.currency !== this.donation.currency
+      || donation.amount !== this.donation.amount
+      || donation.dtPaid !== this.donation.dtPaid) {
       donation.values = this.calculateAmountsPerCurrency(donation);
     }
     if (this.donation._id) {

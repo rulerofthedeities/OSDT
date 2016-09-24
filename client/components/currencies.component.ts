@@ -67,7 +67,7 @@ export class Currencies implements OnInit {
   constructor(
     private currencyService: CurrencyService,
     private settingsService: SettingsService,
-    private authService:AuthService,
+    private authService: AuthService,
     private errorService: ErrorService
   ) {}
 

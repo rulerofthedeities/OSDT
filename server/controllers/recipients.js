@@ -27,7 +27,6 @@ module.exports = {
   loadOne: function(req, res) {
     var userId = mongoose.Types.ObjectId(req.decoded.user._id);
     Recipient.find({_id:req.params.id, userId:userId}, {donations:0}, function(err, doc) {
-      console.log('doc', doc[0]);
       response.handleError(err, res, 500, 'Error loading recipient', function(){
         response.handleSuccess(res, doc[0], 200, 'Loaded recipient');
       });

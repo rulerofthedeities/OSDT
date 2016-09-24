@@ -42,6 +42,12 @@ var Donations = (function () {
                 if (params['sub']) {
                     _this.isSubView = params['sub'] === '1' ? true : false;
                 }
+                if (params['new']) {
+                    console.log('new', params['new']);
+                    _this.isSubView = true;
+                    _this.recipientId = params['new'];
+                    _this.addDonation();
+                }
             });
             this.donationService.closeToView.subscribe(function (closedDonation) {
                 _this.currentDonation = null; //in case of new
@@ -60,6 +66,7 @@ var Donations = (function () {
     };
     Donations.prototype.addDonation = function () {
         this.isNew = true;
+        this.isEdit = true;
         this.currentDonation = new donation_model_1.Donation('EUR', null, 'creditcard', new Date(), '');
     };
     Donations.prototype.cancelNewDonation = function () {

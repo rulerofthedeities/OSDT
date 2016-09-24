@@ -38,7 +38,7 @@ module.exports = {
   add: function(req, res) {
     var userId = mongoose.Types.ObjectId(req.decoded.user._id),
         recipientId =  mongoose.Types.ObjectId(req.body.recipientId);
-    Recipient.findOne({userId: userId, recipientId: recipientId}, function(err, doc) {
+    Recipient.findOne({userId: userId, _id: recipientId}, function(err, doc) {
       response.handleError(err, res, 500, 'Error finding recipient "' + req.body.recipientId + '"', function(){
         doc.donations.push(req.body.donation);
         doc.save(function(err, result) {

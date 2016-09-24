@@ -68,7 +68,7 @@ var EditDonation = (function () {
         var _this = this;
         donation.rates = this.donation.rates;
         donation.values = this.donation.values;
-        if (donation.amount !== this.donation.amount) {
+        if (donation.amount !== this.donation.amount || donation.dtPaid !== this.donation.dtPaid) {
             //get currencies from field list
             var currencyField = this.donationFieldsAssoc['currency'], currencies = currencyField['options'].map(function (option) { return option.key; }), timestamp = moment(donation.dtPaid).unix();
             //fetch exchange rate and save
@@ -82,7 +82,9 @@ var EditDonation = (function () {
         }
     };
     EditDonation.prototype.saveDonation = function (donation, target) {
-        if (donation.currency !== this.donation.currency || donation.amount !== this.donation.amount) {
+        if (donation.currency !== this.donation.currency
+            || donation.amount !== this.donation.amount
+            || donation.dtPaid !== this.donation.dtPaid) {
             donation.values = this.calculateAmountsPerCurrency(donation);
         }
         if (this.donation._id) {
