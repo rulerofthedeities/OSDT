@@ -100,6 +100,9 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
     </modal-confirm>
   `,
   styles:[`
+    tr {
+      cursor:default;
+    }
     .hover:hover {cursor:pointer;}
     tr:nth-child(odd) >td {
       background-color:#eff5f5;

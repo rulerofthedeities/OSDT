@@ -313,6 +313,7 @@ export class EditDonation implements OnInit {
     }
     return values;
   }
+
   cancel (confirm: ModalConfirm) {
     if (this.donationForm.dirty) {
       confirm.showModal = true;

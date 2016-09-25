@@ -1,10 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Recipient} from '../models/recipient.model';
 import {Field} from '../models/fields/field.model';
 import {FieldsService} from '../services/fields.service';
 import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
+import {ModalConfirm} from '../components/common/modal-confirm.component';
 
 @Component({
   selector:'recipient',
@@ -93,7 +94,7 @@ import {ErrorService} from '../services/error.service';
         <button
           class="btn btn-warning" 
           type="button"
-          (click)="close()">
+          (click)="cancel(confirm)">
           <span class="fa fa-times"></span>
           Cancel
         </button>
@@ -117,6 +118,13 @@ import {ErrorService} from '../services/error.service';
         Close
       </button>
     </div>
+
+    <modal-confirm #confirm
+      [level]="'warning'"
+      (confirmed)="onCancelConfirmed($event)">
+      <div title>Warning</div>
+      <div message>The recipient has been modified. Are you sure you want to cancel the changes?</div>
+    </modal-confirm>
 
     Closure will lead to: {{prevNavState}}
   `,
@@ -253,6 +261,20 @@ export class EditRecipient implements OnInit {
   toggleEditMode() {
     this.editMode = !this.editMode;
     this.prevNavState = this.editMode ? 'docRecipient' : 'viewRecipient';
+  }
+
+  cancel (confirm: ModalConfirm) {
+    if (this.recipientForm.dirty) {
+      confirm.showModal = true;
+    } else {
+      this.close();
+    }
+  }
+
+  onCancelConfirmed(cancelOk: boolean) {
+    if (cancelOk) {
+      this.close();
+    }
   }
 
   close() {
