@@ -7,6 +7,7 @@ import {DonationService} from '../services/donation.service';
 import {CurrencyService} from '../services/currency.service';
 import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
+import {ModalConfirm} from '../components/common/modal-confirm.component';
 
 @Component({
   selector: 'donations',
@@ -40,7 +41,7 @@ import {ErrorService} from '../services/error.service';
 
         <button *ngIf="activeDonation !== null"
           type="button"
-          (click)="deleteDonation(activeDonation)"
+          (click)="confirmDeletion(confirm)"
           class="btn btn-danger">
           <span class="fa fa-trash-o"></span>
           Delete
@@ -63,9 +64,8 @@ import {ErrorService} from '../services/error.service';
         <tbody>
           <tr *ngFor="let donation of donations; let i=index"
             on-mouseover="selectDonationIndex(i)"
-            class="hover"
             (click)="i===activeDonation || recipientId ? openDonation($event, donation, false) : setActiveDonationIndex(i)"
-            [ngClass]="{'info':i===selectedDonation,'active':i===activeDonation && !recipientId}">
+            [ngClass]="{'info':i===selectedDonation,'active':i===activeDonation && !recipientId, hover:i===activeDonation || recipientId}">
             <td>{{i+1}}</td>
             <td *ngIf="isSubview">
               {{recipientIds ? recipientIds[i].name : ''}}
@@ -92,6 +92,12 @@ import {ErrorService} from '../services/error.service';
         </tbody>
       </table>
     </div>
+
+    <modal-confirm #confirm
+      (confirmed)="onDeletionConfirmed($event)">
+      <div title>Warning</div>
+      <div message>Are you sure you want to delete the selected donation?</div>
+    </modal-confirm>
   `,
   styles:[`
     .hover:hover {cursor:pointer;}
@@ -173,8 +179,17 @@ export class EmbeddedDonations implements OnInit {
     this.addNewDonation.emit(donation);
   }
 
+  confirmDeletion(confirm: ModalConfirm) {
+    confirm.showModal = true;
+  }
+
+  onDeletionConfirmed(deleteOk: boolean) {
+    if (deleteOk) {
+      this.deleteDonation(this.activeDonation);
+    }
+  }
+
   deleteDonation(donationIndex: number) {
-    console.log('donation', this.donations[donationIndex], this.recipients[donationIndex]);
     this.donationService.removeDonation(this.donations[donationIndex]._id, this.recipients[donationIndex]._id).subscribe(
       data => {;},
       error => this.errorService.handleError(error)

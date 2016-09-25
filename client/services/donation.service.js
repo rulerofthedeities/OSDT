@@ -51,7 +51,6 @@ var DonationService = (function () {
     };
     DonationService.prototype.removeDonation = function (donationId, recipientId) {
         var token = this.authService.getToken();
-        console.log('deleting', '/api/donations/' + donationId + '/' + recipientId + token);
         return this._http.delete('/api/donations/' + donationId + '/' + recipientId + token)
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable_1.Observable.throw(error); });

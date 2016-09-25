@@ -50,7 +50,6 @@ export class DonationService {
 
   removeDonation(donationId: string, recipientId: string) {
     const token = this.authService.getToken();
-    console.log('deleting', '/api/donations/' + donationId + '/' + recipientId + token);
     return this._http.delete('/api/donations/' + donationId + '/' + recipientId + token)
       .map(response => response.json())
       .catch(error => Observable.throw(error));

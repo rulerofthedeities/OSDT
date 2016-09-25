@@ -44,7 +44,7 @@ import {SignIn} from './components/auth/sign-in.component';
 import {LogOut} from './components/auth/log-out.component';
 import {FieldMessages} from './components/common/field-messages.component';
 import {KmDatepicker} from './components/common/km-datepicker.component';
-
+import {ModalConfirm} from './components/common/modal-confirm.component';
 
 @NgModule({
   imports: [
@@ -90,7 +90,8 @@ import {KmDatepicker} from './components/common/km-datepicker.component';
     AutoForm,
     ProtectedDirective,
     FormatFieldPipe,
-    KmDatepicker
+    KmDatepicker,
+    ModalConfirm
   ],
   bootstrap: [ AppComponent ]
 })

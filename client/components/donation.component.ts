@@ -145,7 +145,7 @@ import * as moment from 'moment';
         Close
       </button>
     </div>
-
+    
     Closure will lead to: {{prevNavState}}
     
     rates: <pre>{{donation.values |json}}</pre>
