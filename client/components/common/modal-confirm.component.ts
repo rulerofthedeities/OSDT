@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'modal-confirm',
@@ -24,7 +24,8 @@ import {Component, Output, EventEmitter} from '@angular/core';
           </div>
           <div class="modal-footer">
             <button type="button" 
-              class="btn btn-danger" 
+              class="btn" 
+              [ngClass]="['btn-' + level]"
               (click)="onModalYes()">Yes
             </button>
             <button type="button" 
@@ -39,6 +40,7 @@ import {Component, Output, EventEmitter} from '@angular/core';
 })
 
 export class ModalConfirm {
+  @Input() level = 'danger';
   @Output() confirmed = new EventEmitter<boolean>();
   showModal = false;
 

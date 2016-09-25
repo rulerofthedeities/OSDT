@@ -9,6 +9,7 @@ import {RecipientService} from '../services/recipient.service';
 import {ErrorService} from '../services/error.service';
 import {FieldsService} from '../services/fields.service';
 import {XchangeService} from '../services/xchange.service';
+import {ModalConfirm} from '../components/common/modal-confirm.component';
 import * as moment from 'moment';
 
 @Component({
@@ -122,7 +123,7 @@ import * as moment from 'moment';
       <button
         class="btn btn-warning" 
         type="button"
-        (click)="close()">
+        (click)="cancel(confirm)">
         <span class="fa fa-times"></span>
         Cancel
       </button>
@@ -146,6 +147,17 @@ import * as moment from 'moment';
       </button>
     </div>
     
+    <modal-confirm #confirm
+      [level]="'warning'"
+      (confirmed)="onCancelConfirmed($event)">
+      <div title>Warning</div>
+      <div message>The donation has been modified. Are you sure you want to cancel the changes?</div>
+    </modal-confirm>
+
+
+    form dirty: {{donationForm.dirty}}<br>
+    form touched: {{donationForm.touched}}<br>
+
     Closure will lead to: {{prevNavState}}
     
     rates: <pre>{{donation.values |json}}</pre>
@@ -300,6 +312,19 @@ export class EditDonation implements OnInit {
         }
     }
     return values;
+  }
+  cancel (confirm: ModalConfirm) {
+    if (this.donationForm.dirty) {
+      confirm.showModal = true;
+    } else {
+      this.close();
+    }
+  }
+
+  onCancelConfirmed(cancelOk: boolean) {
+    if (cancelOk) {
+      this.close();
+    }
   }
 
   close(donation?: Donation, target?: string) {
