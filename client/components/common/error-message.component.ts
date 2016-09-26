@@ -5,7 +5,7 @@ import {ErrorService} from '../../services/error.service';
 @Component({
     selector: 'error-msg',
     template: `
-      <div *ngIf="showError">
+      <div *ngIf="false">
         <h4 class="modal-title">{{errorData?.title}}</h4>
         <p>{{errorData?.message}}</p>
       </div>
@@ -13,20 +13,20 @@ import {ErrorService} from '../../services/error.service';
 })
 
 export class ErrorMessage implements OnInit {
-  errorDisplay = 'none';
+  showError = false;
   errorData: Error;
 
   constructor (private errorService: ErrorService) {}
 
   onErrorHandled() {
-    this.errorDisplay = 'none';
+    this.showError = false;
   }
 
   ngOnInit() {
     this.errorService.errorOccurred.subscribe(
       errorData => {
           this.errorData = errorData;
-          this.errorDisplay = 'block';
+          this.showError = true;
       }
     );
   }

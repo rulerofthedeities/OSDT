@@ -9,11 +9,19 @@ var ErrorService = (function () {
         console.log('error', error);
         var msg = 'unknown error message';
         var err = 'unknown error';
-        if (error.error) {
-            msg = error.error.message;
-            err = error.error;
-            this.errorOccurred.emit(new error_model_1.Error(error.title, msg, err));
+        var title = 'error';
+        if (error._body) {
+            error = JSON.parse(error._body);
         }
+        if (error.error) {
+            error = error.error;
+        }
+        if (error) {
+            msg = error.message;
+            err = error.error;
+            title = error.title || 'Error';
+        }
+        this.errorOccurred.emit(new error_model_1.Error(title, msg, err));
     };
     return ErrorService;
 }());

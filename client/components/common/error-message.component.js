@@ -13,22 +13,22 @@ var error_service_1 = require('../../services/error.service');
 var ErrorMessage = (function () {
     function ErrorMessage(errorService) {
         this.errorService = errorService;
-        this.errorDisplay = 'none';
+        this.showError = false;
     }
     ErrorMessage.prototype.onErrorHandled = function () {
-        this.errorDisplay = 'none';
+        this.showError = false;
     };
     ErrorMessage.prototype.ngOnInit = function () {
         var _this = this;
         this.errorService.errorOccurred.subscribe(function (errorData) {
             _this.errorData = errorData;
-            _this.errorDisplay = 'block';
+            _this.showError = true;
         });
     };
     ErrorMessage = __decorate([
         core_1.Component({
             selector: 'error-msg',
-            template: "\n      <div *ngIf=\"showError\">\n        <h4 class=\"modal-title\">{{errorData?.title}}</h4>\n        <p>{{errorData?.message}}</p>\n      </div>\n    "
+            template: "\n      <div *ngIf=\"false\">\n        <h4 class=\"modal-title\">{{errorData?.title}}</h4>\n        <p>{{errorData?.message}}</p>\n      </div>\n    "
         }), 
         __metadata('design:paramtypes', [error_service_1.ErrorService])
     ], ErrorMessage);

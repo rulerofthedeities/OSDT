@@ -1,4 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ErrorService} from '../services/error.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'osdt',
@@ -11,4 +13,20 @@ import {Component} from '@angular/core';
   `
 })
 
-export class AppComponent { }
+export class AppComponent implements OnInit {
+
+  constructor(
+    private errorService: ErrorService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.errorService.errorOccurred.subscribe(
+      errorData => {
+        if (errorData.message === 'jwt expired') {
+          this.authService.logout();
+        }
+      }
+    );
+  }
+}

@@ -98,7 +98,6 @@ var EditRecipient = (function () {
         cat[1] = newCat;
         cat = cat.filter(function (c) { return !!c; });
         this.recipientForm.patchValue({ 'categories': cat.join(',') });
-        //(<FormControl>this.recipientForm.controls['categories']).updateValue(cat.join(','));
     };
     EditRecipient.prototype.toggleEditMode = function () {
         this.editMode = !this.editMode;

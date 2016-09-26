@@ -9,15 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var error_service_1 = require('../services/error.service');
+var auth_service_1 = require('../services/auth.service');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(errorService, authService) {
+        this.errorService = errorService;
+        this.authService = authService;
     }
+    AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.errorService.errorOccurred.subscribe(function (errorData) {
+            if (errorData.message === 'jwt expired') {
+                _this.authService.logout();
+            }
+        });
+    };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'osdt',
             template: "\n    <div class=\"container\">\n      <navbar></navbar>\n      <router-outlet></router-outlet>\n      <error-msg></error-msg>\n    </div>\n  "
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [error_service_1.ErrorService, auth_service_1.AuthService])
     ], AppComponent);
     return AppComponent;
 }());

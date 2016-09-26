@@ -255,7 +255,6 @@ export class EditRecipient implements OnInit {
     cat[1] = newCat;
     cat = cat.filter(c => !!c);
     this.recipientForm.patchValue({'categories':cat.join(',')});
-    //(<FormControl>this.recipientForm.controls['categories']).updateValue(cat.join(','));
   }
 
   toggleEditMode() {

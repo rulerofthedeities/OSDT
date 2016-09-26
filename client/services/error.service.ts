@@ -8,10 +8,18 @@ export class ErrorService {
     console.log('error', error);
     var msg = 'unknown error message';
     var err = 'unknown error';
-    if (error.error) {
-      msg = error.error.message;
-      err = error.error;
-      this.errorOccurred.emit(new Error(error.title, msg, err));
+    var title = 'error';
+    if (error._body) {
+      error = JSON.parse(error._body);
     }
+    if (error.error) {
+      error = error.error;
+    }
+    if (error) {
+      msg = error.message;
+      err = error.error;
+      title = error.title || 'Error';
+    }
+    this.errorOccurred.emit(new Error(title, msg, err));
   }
 }
