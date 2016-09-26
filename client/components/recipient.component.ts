@@ -126,7 +126,7 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
       <div message>The recipient has been modified. Are you sure you want to cancel the changes?</div>
     </modal-confirm>
 
-    Closure will lead to: {{prevNavState}}
+    <!-- Closure will lead to: {{prevNavState}} -->
   `,
   styles:[`
     .doc {

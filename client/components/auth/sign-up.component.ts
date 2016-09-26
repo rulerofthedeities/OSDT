@@ -147,10 +147,8 @@ export class SignUp implements OnInit {
 
   onSubmitForm(user: User) {
     if (this.userForm.valid) {
-      console.log('user', user);
       this.authService.signup(user).subscribe(
         data => {
-          console.log('signing in', data);
           this.authService.signin(user).subscribe(
             data => {
               localStorage.setItem('token', data.token);

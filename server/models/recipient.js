@@ -16,7 +16,7 @@ var donationSchema = new Schema(
 var recipientSchema = new Schema(
   { 
     userId: {type: Schema.Types.ObjectId, required: true},
-    name: {type: String, required: true, index: {unique: true}},
+    name: {type: String, required: true},
     description: {type: String, required: false},
     categories: [String],
     isActive: Boolean,
@@ -27,5 +27,8 @@ var recipientSchema = new Schema(
     collection: 'recipients'
   }
 );
+
+recipientSchema.index({userId: 1, name: 1}, {unique: true});
+recipientSchema.index({userId: 1, isActive: 1, name: 1});
 
 module.exports = mongoose.model('Recipient', recipientSchema);

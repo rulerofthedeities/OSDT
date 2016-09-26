@@ -154,13 +154,10 @@ import * as moment from 'moment';
       <div message>The donation has been modified. Are you sure you want to cancel the changes?</div>
     </modal-confirm>
 
-
-    form dirty: {{donationForm.dirty}}<br>
-    form touched: {{donationForm.touched}}<br>
-
+    <!--
     Closure will lead to: {{prevNavState}}
-    
     rates: <pre>{{donation.values |json}}</pre>
+    -->
   `,
   styles:[`
     .fa {font-size: 1.2em;}

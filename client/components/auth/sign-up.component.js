@@ -37,9 +37,7 @@ var SignUp = (function () {
     SignUp.prototype.onSubmitForm = function (user) {
         var _this = this;
         if (this.userForm.valid) {
-            console.log('user', user);
             this.authService.signup(user).subscribe(function (data) {
-                console.log('signing in', data);
                 _this.authService.signin(user).subscribe(function (data) {
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userId', data.userId);
