@@ -159,10 +159,10 @@ import {ErrorService} from '../services/error.service';
   </section>
   `,
   styles:[`
-    #top .main {font-size:32px;}
-    #top .main span.badge {font-size:32px;}
-    #top .sub {font-size:24px;}
-    #top .sub span.badge {font-size:24px;}
+    #top .main {font-size:26px;}
+    #top .main span.badge {font-size:26px;}
+    #top .sub {font-size:18px;}
+    #top .sub span.badge {font-size:18px;}
   `]
 })
 

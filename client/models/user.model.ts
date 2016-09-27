@@ -10,7 +10,7 @@ export class User {
   ) {}
 }
 
-interface UserLocal {
+export interface UserLocal {
   token: string;
   userId: string;
   userName: string;

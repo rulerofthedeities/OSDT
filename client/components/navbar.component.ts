@@ -20,7 +20,9 @@ import {AuthService} from '../services/auth.service';
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand">OSDT</a>
+      <a class="navbar-brand">
+        <img src="assets/img/osdt_logo.png" alt="OSDT" id="logo">OSDT
+      </a>
     </div>
     <!-- Collection of nav links and other content for toggling -->
     <div 
@@ -58,6 +60,14 @@ import {AuthService} from '../services/auth.service';
     .user {
       font-style: italic;
       color:DarkGrey
+    }
+    #logo {
+      width: 32px;
+      height: 32px;
+      float: left;
+      margin-right: 10px;
+      top:-6px;
+      position:relative;
     }
   `]
 })
