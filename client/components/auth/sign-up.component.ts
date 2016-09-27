@@ -151,8 +151,7 @@ export class SignUp implements OnInit {
         data => {
           this.authService.signin(user).subscribe(
             data => {
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('userId', data.userId);
+              this.authService.storeUserData(data);
               this.router.navigateByUrl('/recipients');
             },
             error => this.errorService.handleError(error)

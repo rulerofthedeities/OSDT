@@ -17,7 +17,7 @@ var AuthService = (function () {
         this.http = http;
     }
     AuthService.prototype.getToken = function () {
-        return localStorage.getItem('token') ? '?token=' + localStorage.getItem('token') : '';
+        return localStorage.getItem('km-osdt.token') ? '?token=' + localStorage.getItem('km-osdt.token') : '';
     };
     AuthService.prototype.signup = function (user) {
         var body = JSON.stringify(user);
@@ -37,7 +37,15 @@ var AuthService = (function () {
         localStorage.clear();
     };
     AuthService.prototype.isLoggedIn = function () {
-        return localStorage.getItem('token') !== null;
+        return localStorage.getItem('km-osdt.token') !== null;
+    };
+    AuthService.prototype.getUserName = function () {
+        return localStorage.getItem('km-osdt.userName');
+    };
+    AuthService.prototype.storeUserData = function (data) {
+        localStorage.setItem('km-osdt.token', data.token);
+        localStorage.setItem('km-osdt.userId', data.userId);
+        localStorage.setItem('km-osdt.userName', data.userName);
     };
     AuthService = __decorate([
         core_1.Injectable(), 

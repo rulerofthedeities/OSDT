@@ -34,7 +34,7 @@ var KmDatepicker = (function () {
         core_1.Component({
             selector: 'km-datepicker',
             template: "\n    <div class=\"input-group\" (click)=\"togglePopup()\">\n      <span class=\"input-group-addon\">\n        <span class=\"glyphicon glyphicon-calendar\"></span>\n      </span>\n      <div class=\"form-control\">{{dateModel | date:'longDate'}}</div>\n    </div>\n\n    \n    <datepicker \n      *ngIf=\"showDatepicker\"\n      class=\"popup\"\n      [(ngModel)]=\"dateModel\" \n      showWeeks=\"true\" \n      (ngModelChange)=\"hidePopup($event)\" >\n    </datepicker>\n",
-            styles: ["\n  .popup {\n    position: absolute;\n    background-color: #fff;\n    border-radius: 3px;\n    border: 1px solid #ddd;\n    height: 251px;\n  }\n"]
+            styles: ["\n  .popup {\n    position: absolute;\n    background-color: #fff;\n    border-radius: 3px;\n    border: 1px solid #ddd;\n    height: 251px;\n    z-index:2;\n  }\n"]
         }), 
         __metadata('design:paramtypes', [])
     ], KmDatepicker);

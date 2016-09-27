@@ -176,18 +176,17 @@ export class Recipients implements OnInit, OnDestroy {
   }
 
   getRecipients() {
-    this.recipientService.getRecipients(false)
-      .subscribe(
-        recipients => {
-          this.recipients = recipients;
-          this.paramSubscription = this.route.params.subscribe(params => {
-            if (params['id']) {
-              this.setInitialDonations(params['id']);
-            }
-          });
-        },
-        error => this.errorService.handleError(error)
-      );
+    this.recipientService.getRecipients(false).subscribe(
+      recipients => {
+        this.recipients = recipients;
+        this.paramSubscription = this.route.params.subscribe(params => {
+          if (params['id']) {
+            this.setInitialDonations(params['id']);
+          }
+        });
+      },
+      error => this.errorService.handleError(error)
+    );
   }
 
   editRecipient(recipient: Recipient) {

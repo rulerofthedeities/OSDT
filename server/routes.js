@@ -30,6 +30,7 @@ module.exports.initialize = function(app, router) {
     });
   });
 
+  router.get('/user/name', users.getUserName);
   router.get('/settings', users.getSettings);
   
   router.patch('/currencies/:id', users.setDefaultCurrency);

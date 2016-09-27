@@ -21,6 +21,10 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getExpiredToken();
+  }
+
+  getExpiredToken() {
     this.errorService.errorOccurred.subscribe(
       errorData => {
         if (errorData.message === 'jwt expired') {
@@ -29,4 +33,5 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
 }

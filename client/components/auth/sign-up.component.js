@@ -39,8 +39,7 @@ var SignUp = (function () {
         if (this.userForm.valid) {
             this.authService.signup(user).subscribe(function (data) {
                 _this.authService.signin(user).subscribe(function (data) {
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('userId', data.userId);
+                    _this.authService.storeUserData(data);
                     _this.router.navigateByUrl('/recipients');
                 }, function (error) { return _this.errorService.handleError(error); });
             }, function (error) { return _this.errorService.handleError(error); });

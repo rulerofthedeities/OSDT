@@ -168,7 +168,7 @@ import * as moment from 'moment';
       padding:6px;
       margin-bottom:12px;
     }`],
-  styleUrls:[`client/components/form.css`]
+  styleUrls:[`/client/components/form.css`]
 })
 
 export class EditDonation implements OnInit {

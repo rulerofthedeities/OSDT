@@ -44,8 +44,7 @@ var Recipients = (function () {
     };
     Recipients.prototype.getRecipients = function () {
         var _this = this;
-        this.recipientService.getRecipients(false)
-            .subscribe(function (recipients) {
+        this.recipientService.getRecipients(false).subscribe(function (recipients) {
             _this.recipients = recipients;
             _this.paramSubscription = _this.route.params.subscribe(function (params) {
                 if (params['id']) {

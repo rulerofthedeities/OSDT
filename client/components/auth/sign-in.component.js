@@ -26,8 +26,7 @@ var SignIn = (function () {
         var _this = this;
         this.authService.signin(user)
             .subscribe(function (data) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userId', data.userId);
+            _this.authService.storeUserData(data);
             _this.router.navigateByUrl('/');
         }, function (error) { return _this.errorService.handleError(error); });
     };

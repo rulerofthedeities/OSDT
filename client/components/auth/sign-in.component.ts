@@ -113,8 +113,7 @@ export class SignIn implements OnInit {
     this.authService.signin(user)
       .subscribe(
         data => {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('userId', data.userId);
+          this.authService.storeUserData(data);
           this.router.navigateByUrl('/');
         },
         error => this.errorService.handleError(error)

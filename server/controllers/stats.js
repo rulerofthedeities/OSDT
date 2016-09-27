@@ -120,7 +120,8 @@ var getTopRecipients = function(callback) {
         {$unwind:'$donations'},
         {$group:{_id:'$_id', totalAmount:{$sum:'$donations.values.' + defaultCurrency}, name:{$first: "$name"}}},
         {$project:{totalAmount:1, name:1}},
-        {$sort: {totalAmount: -1}}
+        {$sort: {totalAmount: -1}},
+        {$limit:5}
       ]; 
   Recipient.aggregate(pipeline, function(err, recipients) {
     callback(err, {recipients:recipients, currency: defaultCurrency});

@@ -31,7 +31,7 @@ var findUser = function(req, res, callback) {
         callback({error:'Invalid password'}, doc, 401, 'Could not sign you in');
       } else {
         var token = jwt.sign({user: doc}, 'secret', {expiresIn: 86400});
-        callback(null, {message: 'Success', token: token, userId: doc._id});
+        callback(null, {message: 'Success', token: token, userId: doc._id, userName:doc.userName});
       }
     });
   })
@@ -80,6 +80,16 @@ module.exports = {
         });
       })
     }
+  },
+  getUserName: function(req, res) {
+    console.log('getting user name');
+    var userId = req.decoded.user._id;
+    User.findById(userId, function (err, user) {
+    console.log('user name', user.userName);
+      response.handleError(err, res, 500, 'Error fetching user name', function(){
+        response.handleSuccess(res, user.userName, 200, 'Fetched user name');
+      });
+    });
   },
   getSettings: function(req, res) {
     var userId = req.decoded.user._id;

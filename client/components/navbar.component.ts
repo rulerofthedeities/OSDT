@@ -5,6 +5,7 @@ import {AuthService} from '../services/auth.service';
 @Component({
   selector: 'navbar',
   template: `
+  <div class="small text-right user">{{getUserName()}}</div>
   <nav role="navigation" class="navbar navbar-default">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -54,6 +55,10 @@ import {AuthService} from '../services/auth.service';
   `,
   styles: [`
     .loginout {cursor: pointer;}
+    .user {
+      font-style: italic;
+      color:DarkGrey
+    }
   `]
 })
 
@@ -73,4 +78,9 @@ export class Navbar {
     this.authService.logout();
     this.router.navigate(['/auth/signin']);
   }
+
+  getUserName() {
+    return this.authService.getUserName();
+  }
+
 }

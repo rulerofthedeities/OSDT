@@ -17,6 +17,9 @@ var AppComponent = (function () {
         this.authService = authService;
     }
     AppComponent.prototype.ngOnInit = function () {
+        this.getExpiredToken();
+    };
+    AppComponent.prototype.getExpiredToken = function () {
         var _this = this;
         this.errorService.errorOccurred.subscribe(function (errorData) {
             if (errorData.message === 'jwt expired') {
