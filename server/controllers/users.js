@@ -82,7 +82,6 @@ module.exports = {
     }
   },
   getUserName: function(req, res) {
-    console.log('getting user name');
     var userId = req.decoded.user._id;
     User.findById(userId, function (err, user) {
     console.log('user name', user.userName);

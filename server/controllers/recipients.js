@@ -3,6 +3,12 @@ var mongoose = require('mongoose'),
     Recipient = require("../models/recipient"),
     response = require("../response");
 
+var isUniqueRecipient = function(req, res, options, callback) {
+  Recipient.findOne({userId:options.userId, name: options.name}, function(err, doc) {
+    callback(err, doc !== null);
+  });
+}
+
 module.exports = {
   load: function(req, res) {
     var userId = mongoose.Types.ObjectId(req.decoded.user._id),
@@ -66,6 +72,17 @@ module.exports = {
         });
       }
     );
+  },
+  check: function(req, res) {
+    var name = req.query.name,
+        userId = mongoose.Types.ObjectId(req.decoded.user._id);
+    if (name) {
+      isUniqueRecipient(req, res, {name:name, userId: userId}, function(err, exists){
+        response.handleError(err, res, 500, 'Error validating Recipient name', function(){
+          response.handleSuccess(res, exists, 200, 'Validated Recipient name');
+        });
+      })
+    }
   },
   getCats: function(req, res) {
   var query = req.query.search, 

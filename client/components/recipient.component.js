@@ -10,16 +10,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var forms_1 = require('@angular/forms');
+var http_1 = require('@angular/http');
 var recipient_model_1 = require('../models/recipient.model');
 var fields_service_1 = require('../services/fields.service');
 var recipient_service_1 = require('../services/recipient.service');
+var validation_service_1 = require('../services/validation.service');
+var auth_service_1 = require('../services/auth.service');
 var error_service_1 = require('../services/error.service');
 var EditRecipient = (function () {
-    function EditRecipient(recipientService, errorService, fieldsService, formBuilder) {
+    function EditRecipient(recipientService, errorService, fieldsService, authService, formBuilder, http) {
         this.recipientService = recipientService;
         this.errorService = errorService;
         this.fieldsService = fieldsService;
+        this.authService = authService;
         this.formBuilder = formBuilder;
+        this.http = http;
         this.recipientFieldsAssoc = {};
     }
     EditRecipient.prototype.ngOnInit = function () {
@@ -42,7 +47,7 @@ var EditRecipient = (function () {
     };
     EditRecipient.prototype.buildForm = function () {
         this.recipientForm = this.formBuilder.group({
-            'name': [this.recipient.name, forms_1.Validators.required],
+            'name': [this.recipient.name, forms_1.Validators.required, validation_service_1.ValidationService.checkUniqueRecipient(this.http, this.authService)],
             'description': [this.recipient.description],
             'categories': [this.recipient.categories],
             'isActive': [this.recipient.isActive]
@@ -137,7 +142,7 @@ var EditRecipient = (function () {
             template: "\n    <alert type=\"info\">\n      <button *ngIf=\"!editMode\"\n        class=\"btn btn-primary\" \n        type=\"button\"\n        (click)=\"toggleEditMode()\">\n        <span class=\"fa fa-pencil\"></span>\n        Edit Mode\n      </button>\n    </alert>\n    \n    <div class=\"doc\" *ngIf=\"editMode && recipientForm\">\n      <form\n        [formGroup]=\"recipientForm\" \n        class=\"form-horizontal\">\n\n        <div class=\"form-group\">\n          <auto-field \n            [field]=\"recipientFieldsAssoc['name']\"\n            [data]=\"recipient\"\n            [form]=\"recipientForm\">\n          </auto-field>\n        </div>\n\n        <div class=\"form-group\">\n          <auto-field \n            [field]=\"recipientFieldsAssoc['description']\"\n            [data]=\"recipient\"\n            [form]=\"recipientForm\">\n          </auto-field>\n        </div>\n\n        <div class=\"form-group\">\n          <auto-field \n            [field]=\"recipientFieldsAssoc['categories']\"\n            [data]=\"recipient\"\n            [form]=\"recipientForm\">\n          </auto-field>\n        </div>\n\n        <div class=\"col-xs-offset-2\">\n          <div class=\"searchcats\">\n            Search Categories:\n            <input type=\"text\"\n              (keyup)=\"searchCats(searchcats.value)\"\n              #searchcats>\n          </div>\n          <ul class=\"cats list-unstyled\">\n            <li *ngFor=\"let cat of cats\" \n              (click)=\"addCategory(cat.name)\"\n              class=\"label label-warning\">\n                {{cat.name}}\n            </li>\n          </ul>\n        </div>\n\n        <div class=\"form-group\">\n          <auto-field \n            [field]=\"recipientFieldsAssoc['isActive']\"\n            [data]=\"recipient\"\n            [form]=\"recipientForm\">\n          </auto-field>\n        </div>\n\n        <button \n          type=\"click\"\n          (click)=\"submitForm(recipientForm.value, 'docRecipient')\"\n          [disabled]=\"!recipientForm.valid\" \n          class=\"btn btn-success col-xs-offset-2\">\n          <span class=\"fa fa-check\"></span>\n          Save\n        </button>\n\n        <button \n          type=\"submit\"\n          (click)=\"submitForm(recipientForm.value, 'viewRecipient')\"\n          [disabled]=\"!recipientForm.valid\" \n          class=\"btn btn-success\">\n          <span class=\"fa fa-check\"></span>\n          Save & Close\n        </button>\n\n        <button\n          class=\"btn btn-warning\" \n          type=\"button\"\n          (click)=\"cancel(confirm)\">\n          <span class=\"fa fa-times\"></span>\n          Cancel\n        </button>\n      </form>\n    </div>\n    \n    <div *ngIf=\"!editMode\">\n      <div class=\"doc\">\n        <auto-form-read\n          [fields]=\"recipientFieldsOrder\"\n          [data]=\"recipient\"\n          >\n        </auto-form-read>\n      </div>\n\n      <button\n        class=\"btn btn-warning\" \n        type=\"button\"\n        (click)=\"close()\">\n        <span class=\"fa fa-times\"></span>\n        Close\n      </button>\n    </div>\n\n    <modal-confirm #confirm\n      [level]=\"'warning'\"\n      (confirmed)=\"onCancelConfirmed($event)\">\n      <div title>Warning</div>\n      <div message>The recipient has been modified. Are you sure you want to cancel the changes?</div>\n    </modal-confirm>\n\n    <!-- Closure will lead to: {{prevNavState}} -->\n  ",
             styles: ["\n    .doc {\n      border:1px solid Gainsboro;\n      border-radius:5px;\n      background-color: #fffae6;\n      padding:6px;\n      margin-bottom:12px;\n    }\n    .label {\n      margin:2px;\n      cursor:pointer;\n    }\n    .cats {\n      margin-top:6px;\n    }\n    .searchcats {\n      font-size:0.8em;\n    }\n  "]
         }), 
-        __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, forms_1.FormBuilder])
+        __metadata('design:paramtypes', [recipient_service_1.RecipientService, error_service_1.ErrorService, fields_service_1.FieldsService, auth_service_1.AuthService, forms_1.FormBuilder, http_1.Http])
     ], EditRecipient);
     return EditRecipient;
 }());

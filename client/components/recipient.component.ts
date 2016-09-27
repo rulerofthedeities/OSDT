@@ -1,9 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Http} from '@angular/http';
 import {Recipient} from '../models/recipient.model';
 import {Field} from '../models/fields/field.model';
 import {FieldsService} from '../services/fields.service';
 import {RecipientService} from '../services/recipient.service';
+import {ValidationService} from '../services/validation.service';
+import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
 import {ModalConfirm} from '../components/common/modal-confirm.component';
 
@@ -162,7 +165,9 @@ export class EditRecipient implements OnInit {
     private recipientService: RecipientService,
     private errorService: ErrorService,
     private fieldsService: FieldsService,
-    private formBuilder: FormBuilder
+    private authService: AuthService,
+    private formBuilder: FormBuilder,
+    private http: Http
   ) {}
 
   ngOnInit() {
@@ -186,7 +191,7 @@ export class EditRecipient implements OnInit {
 
   buildForm() {
     this.recipientForm = this.formBuilder.group({
-      'name': [this.recipient.name, Validators.required],
+      'name': [this.recipient.name, Validators.required, ValidationService.checkUniqueRecipient(this.http, this.authService)],
       'description': [this.recipient.description],
       'categories': [this.recipient.categories],
       'isActive': [this.recipient.isActive]

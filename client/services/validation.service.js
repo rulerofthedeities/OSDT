@@ -12,7 +12,8 @@ var ValidationService = (function () {
             'invalidPassword': ("Invalid password. Password must be at least " + validatorValue.requiredLength)
                 + " characters long, and contain a number.",
             'usernameTaken': "This username is not available. Please choose another username.",
-            'emailTaken': "This email address is not available. Please choose another email."
+            'emailTaken': "This email address is not available. Please choose another email.",
+            'recipientTaken': "This recipient already exists."
         };
         return config[validatorName];
     };
@@ -68,6 +69,21 @@ var ValidationService = (function () {
                 .map(function (response) {
                 if (response.json().obj === true) {
                     return { 'emailTaken': true };
+                }
+                else {
+                    return null;
+                }
+            })
+                .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
+        };
+    };
+    ValidationService.checkUniqueRecipient = function (http, authService) {
+        return function (control) {
+            var token = authService.getToken();
+            return http.get('/api/recipients/check' + token + '&name=' + control.value)
+                .map(function (response) {
+                if (response.json().obj === true) {
+                    return { 'recipientTaken': true };
                 }
                 else {
                     return null;

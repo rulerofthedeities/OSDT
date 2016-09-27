@@ -44,6 +44,7 @@ module.exports.initialize = function(app, router) {
   router.delete('/donations/:donationId/:recipientId', donations.remove);
 
   router.get('/recipients', recipients.load);
+  router.get('/recipients/check', recipients.check);
   router.get('/recipients/:id', recipients.loadOne);
   router.post('/recipients', recipients.add);
   router.put('/recipients', recipients.update);
