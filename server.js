@@ -7,7 +7,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     routes = require('./server/routes'),
-    xchange = require('./server/controllers/xchange');
+    xchange = require('./server/controllers/xchange'),
+    db_url = process.env.MONGODB_URI || "mongodb://localhost:27017/km-osdt";
 
 //config
 app.set('port', process.env.PORT || 5000);
@@ -41,9 +42,9 @@ var options = {
   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
 };
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/km-osdt', options, function(err) {
+mongoose.connect(db_url, options, function(err) {
   app.listen(app.get('port'), function() { 
-    console.log('Server up: http://localhost:' + app.get('port'));
+    console.log('Server up on port ' + app.get('port'));
 
   });
 });
