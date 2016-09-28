@@ -81,10 +81,12 @@ export class ValidationService {
     };
   }
 
-  static checkUniqueRecipient(http: Http, authService: AuthService) {
+  static checkUniqueRecipient(http: Http, authService: AuthService, recipientId: string) {
     return function(control: AbstractControl) {
-      const token = authService.getToken();
-      return http.get('/api/recipients/check' + token + '&name=' + control.value)
+      const token = authService.getToken(),
+            name = '&name=' + control.value,
+            recipient = recipientId ? '&id=' + recipientId : '';
+      return http.get('/api/recipients/check' + token + name + recipient)
         .map(response => {
           if (response.json().obj === true) {
             return {'recipientTaken': true};

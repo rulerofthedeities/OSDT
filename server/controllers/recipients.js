@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     response = require("../response");
 
 var isUniqueRecipient = function(req, res, options, callback) {
-  Recipient.findOne({userId:options.userId, name: options.name}, function(err, doc) {
+  Recipient.findOne({userId:options.userId, name: options.name, _id:{$ne:options.recipientId}}, function(err, doc) {
     callback(err, doc !== null);
   });
 }
@@ -75,9 +75,10 @@ module.exports = {
   },
   check: function(req, res) {
     var name = req.query.name,
-        userId = mongoose.Types.ObjectId(req.decoded.user._id);
+        userId = mongoose.Types.ObjectId(req.decoded.user._id),
+        recipientId = req.query.id ? mongoose.Types.ObjectId(req.query.id) : null;
     if (name) {
-      isUniqueRecipient(req, res, {name:name, userId: userId}, function(err, exists){
+      isUniqueRecipient(req, res, {name:name, userId: userId, recipientId: recipientId}, function(err, exists){
         response.handleError(err, res, 500, 'Error validating Recipient name', function(){
           response.handleSuccess(res, exists, 200, 'Validated Recipient name');
         });

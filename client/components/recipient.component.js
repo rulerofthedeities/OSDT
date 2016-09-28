@@ -47,7 +47,11 @@ var EditRecipient = (function () {
     };
     EditRecipient.prototype.buildForm = function () {
         this.recipientForm = this.formBuilder.group({
-            'name': [this.recipient.name, forms_1.Validators.required, validation_service_1.ValidationService.checkUniqueRecipient(this.http, this.authService)],
+            'name': [
+                this.recipient.name,
+                forms_1.Validators.required,
+                validation_service_1.ValidationService.checkUniqueRecipient(this.http, this.authService, this.recipient._id)
+            ],
             'description': [this.recipient.description],
             'categories': [this.recipient.categories],
             'isActive': [this.recipient.isActive]

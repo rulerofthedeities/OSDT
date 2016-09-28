@@ -191,7 +191,11 @@ export class EditRecipient implements OnInit {
 
   buildForm() {
     this.recipientForm = this.formBuilder.group({
-      'name': [this.recipient.name, Validators.required, ValidationService.checkUniqueRecipient(this.http, this.authService)],
+      'name': [
+        this.recipient.name,
+        Validators.required,
+        ValidationService.checkUniqueRecipient(this.http, this.authService, this.recipient._id)
+      ],
       'description': [this.recipient.description],
       'categories': [this.recipient.categories],
       'isActive': [this.recipient.isActive]

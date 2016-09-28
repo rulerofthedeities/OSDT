@@ -23652,7 +23652,7 @@ $__System.registerDynamic("79", ["3", "43", "76", "78", "7a", "77", "7b", "69", 
     };
     EditRecipient.prototype.buildForm = function() {
       this.recipientForm = this.formBuilder.group({
-        'name': [this.recipient.name, forms_1.Validators.required, validation_service_1.ValidationService.checkUniqueRecipient(this.http, this.authService)],
+        'name': [this.recipient.name, forms_1.Validators.required, validation_service_1.ValidationService.checkUniqueRecipient(this.http, this.authService, this.recipient._id)],
         'description': [this.recipient.description],
         'categories': [this.recipient.categories],
         'isActive': [this.recipient.isActive]
@@ -56136,10 +56136,12 @@ $__System.registerDynamic("7b", ["54"], true, function($__require, exports, modu
         });
       };
     };
-    ValidationService.checkUniqueRecipient = function(http, authService) {
+    ValidationService.checkUniqueRecipient = function(http, authService, recipientId) {
       return function(control) {
-        var token = authService.getToken();
-        return http.get('/api/recipients/check' + token + '&name=' + control.value).map(function(response) {
+        var token = authService.getToken(),
+            name = '&name=' + control.value,
+            recipient = recipientId ? '&id=' + recipientId : '';
+        return http.get('/api/recipients/check' + token + name + recipient).map(function(response) {
           if (response.json().obj === true) {
             return {'recipientTaken': true};
           } else {

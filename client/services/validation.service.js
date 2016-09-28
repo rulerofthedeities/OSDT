@@ -77,10 +77,10 @@ var ValidationService = (function () {
                 .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
         };
     };
-    ValidationService.checkUniqueRecipient = function (http, authService) {
+    ValidationService.checkUniqueRecipient = function (http, authService, recipientId) {
         return function (control) {
-            var token = authService.getToken();
-            return http.get('/api/recipients/check' + token + '&name=' + control.value)
+            var token = authService.getToken(), name = '&name=' + control.value, recipient = recipientId ? '&id=' + recipientId : '';
+            return http.get('/api/recipients/check' + token + name + recipient)
                 .map(function (response) {
                 if (response.json().obj === true) {
                     return { 'recipientTaken': true };
