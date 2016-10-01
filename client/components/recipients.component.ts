@@ -8,7 +8,7 @@ import {Subscription}   from 'rxjs/Subscription';
 
 @Component({
   template: `
-  <section protected>
+  <section>
     <div *ngIf="!currentRecipient">
       <alert type="info">
         <button
@@ -161,18 +161,16 @@ export class Recipients implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    if (this.authService.isLoggedIn()) {
-      this.getRecipients();
+    this.getRecipients();
 
-      this.recipientService.closeToView.subscribe(
-        closedRecipient => {
-          if (closedRecipient) {
-            this.getRecipients();
-          }
-          this.currentRecipient = null;
+    this.recipientService.closeToView.subscribe(
+      closedRecipient => {
+        if (closedRecipient) {
+          this.getRecipients();
         }
-      );
-    }
+        this.currentRecipient = null;
+      }
+    );
   }
 
   getRecipients() {

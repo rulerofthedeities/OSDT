@@ -58,6 +58,7 @@ module.exports = {
     });
   },
   signin: function(req, res) {
+    console.log('signin');
     findUser(req, res, function(err, result, errno, errmsg) {
       response.handleError(err, res, errno, errmsg, function(){
         response.handleSuccess(res, result, 200, 'Signed in successfully');
@@ -84,7 +85,6 @@ module.exports = {
   getUserName: function(req, res) {
     var userId = req.decoded.user._id;
     User.findById(userId, function (err, user) {
-    console.log('user name', user.userName);
       response.handleError(err, res, 500, 'Error fetching user name', function(){
         response.handleSuccess(res, user.userName, 200, 'Fetched user name');
       });

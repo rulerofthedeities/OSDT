@@ -8,6 +8,7 @@ import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
 import {routes} from './routes';
 
 import {AuthService} from './services/auth.service';
+import {AuthGuard} from './services/auth-guard.service';
 import {CurrencyService} from './services/currency.service';
 import {RecipientService} from './services/recipient.service';
 import {DonationService} from './services/donation.service';
@@ -17,8 +18,6 @@ import {FieldsService} from './services/fields.service';
 import {ValidationService} from './services/validation.service';
 import {XchangeService} from './services/xchange.service';
 import {SettingsService} from './services/settings.service';
-
-import {ProtectedDirective} from './directives/protected.directive';
 
 import {CurrenciesResolver} from './resolves/currencies.resolver';
 
@@ -62,6 +61,7 @@ import {ModalConfirm} from './components/common/modal-confirm.component';
     DashboardService,
     ErrorService,
     AuthService,
+    AuthGuard,
     FieldsService,
     XchangeService,
     ValidationService,
@@ -88,7 +88,6 @@ import {ModalConfirm} from './components/common/modal-confirm.component';
     AutoFormField,
     AutoFormRead,
     AutoForm,
-    ProtectedDirective,
     FormatFieldPipe,
     KmDatepicker,
     ModalConfirm

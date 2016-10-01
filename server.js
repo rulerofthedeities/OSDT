@@ -50,5 +50,4 @@ mongoose.connect(db_url, options, function(err) {
 });
 
 //Schedule Currency Exchange Rate fetch
-
 xchange.scheduleRates();

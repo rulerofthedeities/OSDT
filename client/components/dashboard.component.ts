@@ -6,7 +6,7 @@ import {ErrorService} from '../services/error.service';
 
 @Component({
   template: `
-  <section protected>
+  <section>
     <div class="row" id="top">
       <div class="col-xs-6">
         <div class="panel panel-primary">
@@ -65,18 +65,18 @@ import {ErrorService} from '../services/error.service';
           </div>
           <div class="panel-body bg-info">
             <div class="row">
-              <label class="control-label col-xs-3 text-right">
+              <label class="control-label col-xs-4 text-right">
                 # donations:
               </label>
-              <div class="col-xs-9">
+              <div class="col-xs-8">
                 {{totals?.countDonations}}
               </div>
             </div>
             <div class="row">
-              <label class="control-label col-xs-3 text-right">
+              <label class="control-label col-xs-4 text-right">
                 Donation avg:
               </label>
-              <div class="col-xs-9">
+              <div class="col-xs-8">
                 {{avgDonation | currency:totals?.totalAmount?.currency:true:'1.2-2'}}
               </div>
             </div>
@@ -115,18 +115,18 @@ import {ErrorService} from '../services/error.service';
           </div>
           <div class="panel-body bg-info">
             <div class="row">
-              <label class="control-label col-xs-3 text-right">
-                # recipients:
+              <label class="control-label col-xs-4 text-right">
+                # recipientstest:
               </label>
-              <div class="col-xs-9">
+              <div class="col-xs-8">
                 {{totals?.countRecipients}}
               </div>
             </div>
             <div class="row">
-              <label class="control-label col-xs-3 text-right">
+              <label class="control-label col-xs-4 text-right">
                 Recipient avg:
               </label>
-              <div class="col-xs-9">
+              <div class="col-xs-8">
                 {{avgRecipient | currency:totals?.totalAmount?.currency:true:'1.2-2'}}
               </div>
             </div>
@@ -180,24 +180,22 @@ export class Dashboard implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.authService.isLoggedIn()) {
-      this.settingsService.getDefaultCurrency().subscribe(
-        currency => {
-          this.dashboardService.getTotals(currency).subscribe(
-            totals => {
-              this.totals = totals;
-              this.calcTotals();
-            },
-            error => this.errorService.handleError(error)
-          );
-          this.dashboardService.getLists(currency).subscribe(
-            lists => {this.lists = lists;},
-            error => this.errorService.handleError(error)
-          );
-        },
-        error => this.errorService.handleError(error)
-      );
-    }
+    this.settingsService.getDefaultCurrency().subscribe(
+      currency => {
+        this.dashboardService.getTotals(currency).subscribe(
+          totals => {
+            this.totals = totals;
+            this.calcTotals();
+          },
+          error => this.errorService.handleError(error)
+        );
+        this.dashboardService.getLists(currency).subscribe(
+          lists => {this.lists = lists;},
+          error => this.errorService.handleError(error)
+        );
+      },
+      error => this.errorService.handleError(error)
+    );
   }
 
   calcTotals() {

@@ -5,18 +5,36 @@ import {Donations} from './components/donations.component';
 import {Dashboard} from './components/dashboard.component';
 import {SignUp} from './components/auth/sign-up.component';
 import {SignIn} from './components/auth/sign-in.component';
-import {LogOut} from './components/auth/log-out.component';
 import {AuthMenu} from './components/auth/auth-menu.component';
 import {CurrenciesResolver} from './resolves/currencies.resolver';
+import {AuthGuard} from './services/auth-guard.service';
 
 export const routes: Routes = [
   {path: '', component: Dashboard},
-  {path: 'dashboard', component: Dashboard},
-  {path: 'recipients', component: Recipients},
-  {path: 'recipients/donations/:id', component: Recipients},
-  {path: 'donations', component: Donations, resolve: {currencies:CurrenciesResolver}},
-  {path: 'donations/:id', component: Donations, resolve: {currencies:CurrenciesResolver}},
-  {path: 'currencies', component: Currencies},
+  {path: 'dashboard', component: Dashboard, canActivate: [AuthGuard]},
+  {path: 'recipients', component: Recipients, canActivate: [AuthGuard]},
+  {
+    path: 'recipients/donations/:id',
+    component: Recipients,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'donations',
+    component: Donations,
+    resolve: {currencies:CurrenciesResolver},
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'donations/:id',
+    component: Donations,
+    resolve: {currencies:CurrenciesResolver},
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'currencies',
+    component: Currencies,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'auth',
     component: AuthMenu,
@@ -28,8 +46,7 @@ export const routes: Routes = [
         component: AuthMenu
       },
       {path: 'signup', component: SignUp},
-      {path: 'signin', component: SignIn},
-      {path: 'logout', component: LogOut}
+      {path: 'signin', component: SignIn}
     ]
   }
 ];

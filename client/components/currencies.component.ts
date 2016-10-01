@@ -7,7 +7,7 @@ import {Currency} from '../models/currency.model';
 
 @Component({
   template: `
-  <section protected>
+  <section>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -72,9 +72,7 @@ export class Currencies implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.authService.isLoggedIn()) {
-      this.getCurrencies();
-    }
+    this.getCurrencies();
   }
 
   getCurrencies() {

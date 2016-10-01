@@ -23,9 +23,7 @@ var Currencies = (function () {
         this.selectedCurrency = null;
     }
     Currencies.prototype.ngOnInit = function () {
-        if (this.authService.isLoggedIn()) {
-            this.getCurrencies();
-        }
+        this.getCurrencies();
     };
     Currencies.prototype.getCurrencies = function () {
         var _this = this;
@@ -44,7 +42,7 @@ var Currencies = (function () {
     };
     Currencies = __decorate([
         core_1.Component({
-            template: "\n  <section protected>\n    <table class=\"table table-striped\">\n      <thead>\n        <tr>\n          <th class=\"text-center\">Default</th>\n          <th>Name</th>\n          <th>Code</th>\n          <th>Symbol</th>\n          <th></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let currency of currencies; let i=index\"\n          on-mouseover=\"selectCurrencyIndex(i)\">\n          <td class=\"text-center\">\n            <span [ngClass]=\"{'fa fa-check':defaultCurrency == currency.code}\"></span>\n          </td>\n          <td>{{currency.name}}</td>\n          <td>{{currency.code}}</td>\n          <td>{{currency.symbol}}</td>\n          <td>\n            <button \n              class=\"btn btn-default btn-sm\"\n              type=\"button\" \n              [disabled]=\"currency.isDefault\" \n              (click)=\"setDefault(currency.code)\">\n              Set as default\n            </button>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </section>\n  ",
+            template: "\n  <section>\n    <table class=\"table table-striped\">\n      <thead>\n        <tr>\n          <th class=\"text-center\">Default</th>\n          <th>Name</th>\n          <th>Code</th>\n          <th>Symbol</th>\n          <th></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let currency of currencies; let i=index\"\n          on-mouseover=\"selectCurrencyIndex(i)\">\n          <td class=\"text-center\">\n            <span [ngClass]=\"{'fa fa-check':defaultCurrency == currency.code}\"></span>\n          </td>\n          <td>{{currency.name}}</td>\n          <td>{{currency.code}}</td>\n          <td>{{currency.symbol}}</td>\n          <td>\n            <button \n              class=\"btn btn-default btn-sm\"\n              type=\"button\" \n              [disabled]=\"currency.isDefault\" \n              (click)=\"setDefault(currency.code)\">\n              Set as default\n            </button>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n  </section>\n  ",
             styles: ["\n    .hover:hover {cursor:pointer;}\n    tr:nth-child(odd) >td {\n      background-color:#faebeb;\n    }\n    tr:nth-child(even) >td {\n      background-color:#fdfdff;\n    }\n    tr:hover >td{\n     background-color:#ccffcc;\n    }\n    .fa{\n      font-size:1.2em;\n      color:green;\n    }\n  "]
         }), 
         __metadata('design:paramtypes', [currency_service_1.CurrencyService, settings_service_1.SettingsService, auth_service_1.AuthService, error_service_1.ErrorService])

@@ -8,7 +8,7 @@ import {Subscription}   from 'rxjs/Subscription';
 
 @Component({
   template: `
-  <section protected>
+  <section>
     <div *ngIf="!currentDonation">
       <donations
         (addNewDonation)="createDonation($event)">
@@ -61,36 +61,34 @@ export class Donations implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.authService.isLoggedIn()) {
-      this.paramSubscription = this.route.params.subscribe(params => {
-        if (params['id']) {
-          this.getDonation(params['id']);
-        }
-      });
-      this.querySubscription = this.route.queryParams.subscribe(params => {
-        if (params['edit']) {
-          this.isEdit = params['edit'] === '1' ? true : false;
-        }
-        if (params['sub']) {
-          this.isSubView = params['sub'] === '1' ? true : false;
-        }
-        if (params['new']) {
-          console.log('new', params['new']);
-          this.isSubView = true;
-          this.recipientId = params['new'];
-          this.addDonation();
-        }
-      });
+    this.paramSubscription = this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.getDonation(params['id']);
+      }
+    });
+    this.querySubscription = this.route.queryParams.subscribe(params => {
+      if (params['edit']) {
+        this.isEdit = params['edit'] === '1' ? true : false;
+      }
+      if (params['sub']) {
+        this.isSubView = params['sub'] === '1' ? true : false;
+      }
+      if (params['new']) {
+        console.log('new', params['new']);
+        this.isSubView = true;
+        this.recipientId = params['new'];
+        this.addDonation();
+      }
+    });
 
-      this.donationService.closeToView.subscribe(
-        closedDonation => {
-          this.currentDonation = null; //in case of new
-          if (this.router.url !== '/donations') {
-            this.router.navigate(['/donations']);
-          }
+    this.donationService.closeToView.subscribe(
+      closedDonation => {
+        this.currentDonation = null; //in case of new
+        if (this.router.url !== '/donations') {
+          this.router.navigate(['/donations']);
         }
-      );
-    }
+      }
+    );
   }
 
   getDonation(donationId: string) {

@@ -28,33 +28,31 @@ var Donations = (function () {
     }
     Donations.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.authService.isLoggedIn()) {
-            this.paramSubscription = this.route.params.subscribe(function (params) {
-                if (params['id']) {
-                    _this.getDonation(params['id']);
-                }
-            });
-            this.querySubscription = this.route.queryParams.subscribe(function (params) {
-                if (params['edit']) {
-                    _this.isEdit = params['edit'] === '1' ? true : false;
-                }
-                if (params['sub']) {
-                    _this.isSubView = params['sub'] === '1' ? true : false;
-                }
-                if (params['new']) {
-                    console.log('new', params['new']);
-                    _this.isSubView = true;
-                    _this.recipientId = params['new'];
-                    _this.addDonation();
-                }
-            });
-            this.donationService.closeToView.subscribe(function (closedDonation) {
-                _this.currentDonation = null; //in case of new
-                if (_this.router.url !== '/donations') {
-                    _this.router.navigate(['/donations']);
-                }
-            });
-        }
+        this.paramSubscription = this.route.params.subscribe(function (params) {
+            if (params['id']) {
+                _this.getDonation(params['id']);
+            }
+        });
+        this.querySubscription = this.route.queryParams.subscribe(function (params) {
+            if (params['edit']) {
+                _this.isEdit = params['edit'] === '1' ? true : false;
+            }
+            if (params['sub']) {
+                _this.isSubView = params['sub'] === '1' ? true : false;
+            }
+            if (params['new']) {
+                console.log('new', params['new']);
+                _this.isSubView = true;
+                _this.recipientId = params['new'];
+                _this.addDonation();
+            }
+        });
+        this.donationService.closeToView.subscribe(function (closedDonation) {
+            _this.currentDonation = null; //in case of new
+            if (_this.router.url !== '/donations') {
+                _this.router.navigate(['/donations']);
+            }
+        });
     };
     Donations.prototype.getDonation = function (donationId) {
         var _this = this;
@@ -100,7 +98,7 @@ var Donations = (function () {
     };
     Donations = __decorate([
         core_1.Component({
-            template: "\n  <section protected>\n    <div *ngIf=\"!currentDonation\">\n      <donations\n        (addNewDonation)=\"createDonation($event)\">\n      </donations>\n    </div>\n\n    <div *ngIf=\"currentDonation\">\n      <div *ngIf=\"isNew && !recipientId\">\n        <new-recipient\n          (selectedRecipientId)=\"onSelectedRecipientId($event)\">\n        </new-recipient>\n\n        <button\n          class=\"btn btn-warning\" \n          type=\"button\"\n          (click)=\"cancelNewDonation()\">\n          <span class=\"fa fa-times\"></span>\n          Cancel\n        </button>\n      </div>\n\n      <div *ngIf=\"!isNew || recipientId\">\n        <donation\n          [donation]=\"currentDonation\"\n          [recipientId]=\"recipientId\"\n          [editMode]=\"isEdit\"\n          [subView]=\"isSubView\">\n        </donation>\n      </div>\n    </div>\n  </section>\n  "
+            template: "\n  <section>\n    <div *ngIf=\"!currentDonation\">\n      <donations\n        (addNewDonation)=\"createDonation($event)\">\n      </donations>\n    </div>\n\n    <div *ngIf=\"currentDonation\">\n      <div *ngIf=\"isNew && !recipientId\">\n        <new-recipient\n          (selectedRecipientId)=\"onSelectedRecipientId($event)\">\n        </new-recipient>\n\n        <button\n          class=\"btn btn-warning\" \n          type=\"button\"\n          (click)=\"cancelNewDonation()\">\n          <span class=\"fa fa-times\"></span>\n          Cancel\n        </button>\n      </div>\n\n      <div *ngIf=\"!isNew || recipientId\">\n        <donation\n          [donation]=\"currentDonation\"\n          [recipientId]=\"recipientId\"\n          [editMode]=\"isEdit\"\n          [subView]=\"isSubView\">\n        </donation>\n      </div>\n    </div>\n  </section>\n  "
         }), 
         __metadata('design:paramtypes', [donation_service_1.DonationService, auth_service_1.AuthService, error_service_1.ErrorService, router_1.ActivatedRoute, router_1.Router])
     ], Donations);
