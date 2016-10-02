@@ -15,13 +15,21 @@ import * as moment from 'moment';
 @Component({
   selector: 'donation',
   template: `
-    <alert type="info" *ngIf="!editMode">
+    <alert type="info" *ngIf="!editMode" class="hidden-print">
       <button
         class="btn btn-primary" 
         type="button"
         (click)="toggleEditMode()">
         <span class="fa fa-pencil"></span>
         Edit Mode
+      </button>
+
+      <button *ngIf="!editMode"
+        class="btn btn-primary" 
+        type="button"
+        (click)="print()">
+        <span class="fa fa-print"></span>
+        Print
       </button>
     </alert>
 
@@ -138,21 +146,28 @@ import * as moment from 'moment';
         </auto-form-read>
       </div>
 
-      <button
-        class="btn btn-warning" 
-        type="button"
-        (click)="close()">
-        <span class="fa fa-times"></span>
-        Close
-      </button>
+      <div class="read-buttons hidden-print">
+        <button
+          class="btn btn-warning" 
+          type="button"
+          (click)="close()">
+          <span class="fa fa-times"></span>
+          Close
+        </button>
+      </div>
     </div>
     
     <modal-confirm #confirm
       [level]="'warning'"
-      (confirmed)="onCancelConfirmed($event)">
+      (confirmed)="onCancelConfirmed($event)"
+      class="hidden-print">
       <div title>Warning</div>
       <div message>The donation has been modified. Are you sure you want to cancel the changes?</div>
     </modal-confirm>
+
+    <div class="visible-print-block small">
+      <em>Printed on {{getCurrentDate()|date:'medium'}}</em>
+    </div>
 
     <!--
     Closure will lead to: {{prevNavState}}
@@ -332,5 +347,13 @@ export class EditDonation implements OnInit {
     } else {
       this.donationService.closeDonation(targetPage, donation || this.donation);
     }
+  }
+
+  print() {
+    window.print();
+  }
+
+  getCurrentDate() {
+    return new Date();
   }
 }

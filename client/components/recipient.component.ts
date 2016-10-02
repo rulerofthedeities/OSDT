@@ -13,7 +13,7 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
 @Component({
   selector:'recipient',
   template: `
-    <alert type="info">
+    <alert type="info" class="hidden-print">
       <button *ngIf="!editMode"
         class="btn btn-primary" 
         type="button"
@@ -21,6 +21,15 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
         <span class="fa fa-pencil"></span>
         Edit Mode
       </button>
+
+      <button *ngIf="!editMode"
+        class="btn btn-primary" 
+        type="button"
+        (click)="print()">
+        <span class="fa fa-print"></span>
+        Print
+      </button>
+
     </alert>
     
     <div class="doc" *ngIf="editMode && recipientForm">
@@ -113,21 +122,28 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
         </auto-form-read>
       </div>
 
-      <button
-        class="btn btn-warning" 
-        type="button"
-        (click)="close()">
-        <span class="fa fa-times"></span>
-        Close
-      </button>
+      <div class="read-buttons hidden-print">
+        <button
+          class="btn btn-warning" 
+          type="button"
+          (click)="close()">
+          <span class="fa fa-times"></span>
+          Close
+        </button>
+      </div>
     </div>
 
     <modal-confirm #confirm
       [level]="'warning'"
-      (confirmed)="onCancelConfirmed($event)">
+      (confirmed)="onCancelConfirmed($event)"
+      class="hidden-print">
       <div title>Warning</div>
       <div message>The recipient has been modified. Are you sure you want to cancel the changes?</div>
     </modal-confirm>
+
+    <div class="visible-print-block small">
+      <em>Printed on {{getCurrentDate()|date:'medium'}}</em>
+    </div>
 
     <!-- Closure will lead to: {{prevNavState}} -->
   `,
@@ -283,6 +299,14 @@ export class EditRecipient implements OnInit {
     if (cancelOk) {
       this.close();
     }
+  }
+
+  print() {
+    window.print();
+  }
+
+  getCurrentDate() {
+    return new Date();
   }
 
   close() {

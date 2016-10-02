@@ -58,7 +58,6 @@ module.exports = {
     });
   },
   signin: function(req, res) {
-    console.log('signin');
     findUser(req, res, function(err, result, errno, errmsg) {
       response.handleError(err, res, errno, errmsg, function(){
         response.handleSuccess(res, result, 200, 'Signed in successfully');
