@@ -211,7 +211,7 @@ export class Recipients implements OnInit, OnDestroy {
       let newActiveState = !recipient.isActive;
       recipient.isActive = newActiveState;
       this.recipientService.setActiveState(recipient._id, newActiveState).subscribe(
-        active => {console.log(active);recipient.isActive = active;},
+        active => {recipient.isActive = active;},
         error => this.errorService.handleError(error)
       );
     }

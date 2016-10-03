@@ -13,18 +13,26 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
 @Component({
   selector:'recipient',
   template: `
-    <alert type="info" class="hidden-print">
+    <alert type="info" *ngIf="!editMode" class="hidden-print">
       <button *ngIf="!editMode"
-        class="btn btn-primary" 
         type="button"
+        class="btn btn-primary" 
         (click)="toggleEditMode()">
         <span class="fa fa-pencil"></span>
         Edit Mode
       </button>
 
+      <button 
+        type="button" 
+        class="btn btn-primary"
+        (click)="isCollapsedLog = !isCollapsedLog">
+        <span class="fa fa-th-list"></span>
+        {{isCollapsedLog ? 'Show Update Log' : 'Hide Update Log'}}
+      </button>
+
       <button *ngIf="!editMode"
-        class="btn btn-primary" 
         type="button"
+        class="btn btn-primary" 
         (click)="print()">
         <span class="fa fa-print"></span>
         Print
@@ -114,12 +122,32 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
     </div>
     
     <div *ngIf="!editMode">
+    
       <div class="doc">
         <auto-form-read
           [fields]="recipientFieldsOrder"
           [data]="recipient"
           >
         </auto-form-read>
+      </div>
+
+      <div class="log" [collapse]="isCollapsedLog">
+        <table class="table small">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Action</th>
+              <th>User</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let update of recipient.updateLog">
+              <td class="date">{{update.dt | date:'medium'}}</td>
+              <td>{{update.action}}</td>
+              <td>{{update.user}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="read-buttons hidden-print">
@@ -141,9 +169,11 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
       <div message>The recipient has been modified. Are you sure you want to cancel the changes?</div>
     </modal-confirm>
 
+
     <div class="visible-print-block small">
       <em>Printed on {{getCurrentDate()|date:'medium'}}</em>
     </div>
+
 
     <!-- Closure will lead to: {{prevNavState}} -->
   `,
@@ -165,6 +195,15 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
     .searchcats {
       font-size:0.8em;
     }
+    .log{
+      max-width:400px;
+    }
+    .log .date {
+      width: 160px;
+    }
+    .log tr>th, .log tr>td {
+      line-height:0.5;
+    }
   `]
 })
 
@@ -176,6 +215,7 @@ export class EditRecipient implements OnInit {
   recipientFieldsAssoc: {[fieldname: string]:Field<any>;} = {};
   recipientFieldsOrder: Field<any>[];
   recipientForm: FormGroup;
+  isCollapsedLog:boolean = true;
 
   constructor (
     private recipientService: RecipientService,

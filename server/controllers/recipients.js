@@ -1,7 +1,8 @@
 'use strict';
 var mongoose = require('mongoose'),
     Recipient = require("../models/recipient"),
-    response = require("../response");
+    response = require("../response"),
+    history = require("./history");
 
 var isUniqueRecipient = function(req, res, options, callback) {
   Recipient.findOne({userId:options.userId, name: options.name, _id:{$ne:options.recipientId}}, function(err, doc) {
@@ -39,8 +40,10 @@ module.exports = {
     });
   },
   add: function(req, res) {
-    var recipient = new Recipient(req.body);
+    var recipient = new Recipient(req.body),
+        updateHistory = history.setHistory('Created recipient', req.decoded.user);
     recipient.userId = mongoose.Types.ObjectId(req.decoded.user._id);
+    recipient.updateLog = updateHistory;
     recipient.save(function(err, result) {
       response.handleError(err, res, 500, 'Error adding recipient', function(){
         response.handleSuccess(res, result, 200, 'Added recipient');
@@ -49,14 +52,17 @@ module.exports = {
   },
   update: function(req, res) {
     var doc = req.body,
-        userId = mongoose.Types.ObjectId(req.decoded.user._id);
+        userId = mongoose.Types.ObjectId(req.decoded.user._id),
+        updateHistory = history.setHistory('Updated recipient', req.decoded.user);
+
     Recipient.update({_id:doc._id, userId: userId}, {$set: {
       name: doc.name, 
       description: doc.description, 
       isActive: doc.isActive, 
       categories: doc.categories
-    }}, function (err, recipient) {
-      response.handleError(err, res, 500, 'Error updating recipient', function(){
+    }, 
+      $push: {'updateLog':{$each:[updateHistory], $slice:-history.recipientCutOff}}}, function (err, recipient) {
+        response.handleError(err, res, 500, 'Error updating recipient', function(){
           response.handleSuccess(res, recipient, 200, 'Updated recipient');
         });
       }
@@ -65,9 +71,13 @@ module.exports = {
   updateActive: function(req, res) {
     var recipientId = mongoose.Types.ObjectId(req.body.recipientId),
         userId = mongoose.Types.ObjectId(req.decoded.user._id),
-        active = req.body.active;
-    Recipient.update({ _id: recipientId, userId: userId}, {$set: {isActive: active }}, function(err, doc){
-      response.handleError(err, res, 500, 'Error updating recipient', function(){
+        active = req.body.active,
+        updateHistory = history.setHistory('Set ' + (active ? 'Active' : 'Inactive'), req.decoded.user);
+  
+    Recipient.update(
+      {_id: recipientId, userId: userId}, 
+      {$set: {isActive: active}, $push: {'updateLog':{$each:[updateHistory], $slice:-history.recipientCutOff}}}, function(err, doc){
+        response.handleError(err, res, 500, 'Error updating recipient', function(){
           response.handleSuccess(res, active, 200, 'Updated recipient');
         });
       }

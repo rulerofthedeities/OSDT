@@ -1,7 +1,8 @@
 'use strict';
 var mongoose = require('mongoose'),
     Recipient = require("../models/recipient"),
-    response = require("../response");
+    response = require("../response"),
+    history = require("./history");
 
 module.exports = {
   load: function(req, res) {
@@ -37,10 +38,15 @@ module.exports = {
   },
   add: function(req, res) {
     var userId = mongoose.Types.ObjectId(req.decoded.user._id),
-        recipientId =  mongoose.Types.ObjectId(req.body.recipientId);
+        recipientId =  mongoose.Types.ObjectId(req.body.recipientId),
+        updateHistory = history.setHistory('Added Donation', req.decoded.user);
     Recipient.findOne({userId: userId, _id: recipientId}, function(err, doc) {
       response.handleError(err, res, 500, 'Error finding recipient "' + req.body.recipientId + '"', function(){
         doc.donations.push(req.body.donation);
+        doc.updateLog.push(updateHistory);
+        if (doc.updateLog.length > history.recipientCutOff) {
+          doc.updateLog.shift();
+        }
         doc.save(function(err, result) {
           response.handleError(err, res, 500, 'Error saving donation', function(){
             response.handleSuccess(res, doc.donations[doc.donations.length -1], 200, 'Saved donation');

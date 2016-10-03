@@ -71,7 +71,7 @@ var Recipients = (function () {
             var recipient_1 = this.recipients[this.activeRecipient];
             var newActiveState = !recipient_1.isActive;
             recipient_1.isActive = newActiveState;
-            this.recipientService.setActiveState(recipient_1._id, newActiveState).subscribe(function (active) { console.log(active); recipient_1.isActive = active; }, function (error) { return _this.errorService.handleError(error); });
+            this.recipientService.setActiveState(recipient_1._id, newActiveState).subscribe(function (active) { recipient_1.isActive = active; }, function (error) { return _this.errorService.handleError(error); });
         }
     };
     Recipients.prototype.addRecipient = function () {

@@ -13,6 +13,15 @@ var donationSchema = new Schema(
   }
 );
 
+var updateSchema = new Schema(
+  {
+    action: String,
+    user: String,
+    dt: Date
+  },
+  { _id : false }
+);
+
 var recipientSchema = new Schema(
   { 
     userId: {type: Schema.Types.ObjectId, required: true},
@@ -20,7 +29,8 @@ var recipientSchema = new Schema(
     description: {type: String, required: false},
     categories: [String],
     isActive: Boolean,
-    donations: [donationSchema]
+    donations: [donationSchema],
+    updateLog: [updateSchema]
     //reminders: [{type: Schema.Types.ObjectId, ref: 'Reminder'}]
   },
   {
