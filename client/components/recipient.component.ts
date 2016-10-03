@@ -26,7 +26,7 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
         type="button" 
         class="btn btn-primary"
         (click)="isCollapsedLog = !isCollapsedLog">
-        <span class="fa fa-th-list"></span>
+        <span class="fa fa-th-list" [style.color]="isCollapsedLog ? 'white': 'lightgrey'"></span>
         {{isCollapsedLog ? 'Show Update Log' : 'Hide Update Log'}}
       </button>
 
@@ -129,25 +129,30 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
           [data]="recipient"
           >
         </auto-form-read>
-      </div>
-
-      <div class="log" [collapse]="isCollapsedLog">
-        <table class="table small">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Action</th>
-              <th>User</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let update of recipient.updateLog">
-              <td class="date">{{update.dt | date:'medium'}}</td>
-              <td>{{update.action}}</td>
-              <td>{{update.user}}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div [collapse]="isCollapsedLog" class="row">
+          <label 
+            class="control-label col-xs-2 text-right">
+            Update history
+          </label>
+          <div class="log col-xs-10">
+            <table class="table table-hover small">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Action</th>
+                  <th>User</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let update of recipient.updateLog">
+                  <td class="date">{{update.dt | date:'medium'}}</td>
+                  <td>{{update.action}}</td>
+                  <td>{{update.user}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <div class="read-buttons hidden-print">
@@ -203,6 +208,9 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
     }
     .log tr>th, .log tr>td {
       line-height:0.5;
+    }
+    .log tr>td {
+      cursor: default;
     }
   `]
 })
