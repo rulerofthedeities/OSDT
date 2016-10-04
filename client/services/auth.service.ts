@@ -9,13 +9,13 @@ export class AuthService {
   constructor (private http: Http) {}
 
   getToken(): string {
-    return localStorage.getItem('km-osdt.token') ? '?token=' + localStorage.getItem('km-osdt.token') : '';
+    return localStorage.getItem('km-osdt.token');
   }
 
   signup(user: User) {
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post('/api/user/signup', body, {headers: headers})
+    return this.http.post('/api/user/signup', body, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error.json()));
   }
@@ -23,7 +23,7 @@ export class AuthService {
   signin(user: User) {
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
-    return this.http.post('/api/user/signin', body, {headers: headers})
+    return this.http.post('/api/user/signin', body, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error.json()));
   }

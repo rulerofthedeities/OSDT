@@ -20,38 +20,51 @@ var DonationService = (function () {
         this.closeToDoc = new core_1.EventEmitter();
     }
     DonationService.prototype.getDonations = function (recipientId) {
+        var url = '/api/donations' + (recipientId ? '/recipients/' + recipientId : '');
         var token = this.authService.getToken();
-        var url = '/api/donations' + (recipientId ? '/recipients/' + recipientId : '') + token;
-        return this._http.get(url)
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.get(url, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService.prototype.getDonation = function (donationId) {
+        var url = '/api/donations' + (donationId ? '/' + donationId : '');
         var token = this.authService.getToken();
-        var url = '/api/donations' + (donationId ? '/' + donationId : '') + token;
-        return this._http.get(url)
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.get(url, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService.prototype.addDonation = function (donation, recipientId) {
         var token = this.authService.getToken();
         var body = JSON.stringify({ donation: donation, recipientId: recipientId });
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.post('/api/donations' + token, body, { headers: headers })
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.post('/api/donations', body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService.prototype.updateDonation = function (donation) {
         var token = this.authService.getToken();
         var body = JSON.stringify(donation);
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.put('/api/donations' + token, body, { headers: headers })
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.put('/api/donations', body, { headers: headers })
             .map(function (response) { return donation; }) //server does not return latest state!
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     DonationService.prototype.removeDonation = function (donationId, recipientId) {
         var token = this.authService.getToken();
-        return this._http.delete('/api/donations/' + donationId + '/' + recipientId + token)
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.delete('/api/donations/' + donationId + '/' + recipientId, { headers: headers })
             .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };

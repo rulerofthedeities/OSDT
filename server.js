@@ -6,6 +6,7 @@ var express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
+    bearerToken  = require('express-bearer-token'),
     routes = require('./server/routes'),
     xchange = require('./server/controllers/xchange'),
     db_url = process.env.MONGODB_URI || "mongodb://localhost:27017/km-osdt";
@@ -24,6 +25,7 @@ app.set('view engine', 'hbs');
 
 //middleware
 app.use(compression());
+app.use(bearerToken());
 if (app.get('env') === 'development') {
   console.log('Server running in development mode');
   app.use('/node', express.static(path.join(__dirname, '/node_modules')));

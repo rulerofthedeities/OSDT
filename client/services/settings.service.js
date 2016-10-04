@@ -19,13 +19,18 @@ var SettingsService = (function () {
     }
     SettingsService.prototype.getDefaultCurrency = function () {
         var token = this.authService.getToken();
-        return this._http.get('/api/settings' + token)
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.get('/api/settings', { headers: headers })
             .map(function (settings) { return settings.json().obj['defaultCurrency']; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     SettingsService.prototype.setDefaultCurrency = function (currencyCode) {
         var token = this.authService.getToken();
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
         return this._http.patch('/api/currencies/' + currencyCode + token, null, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });

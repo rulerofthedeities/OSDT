@@ -16,26 +16,34 @@ export class RecipientService {
 
   getRecipients(activeOnly: boolean) {
     let url = '/api/recipients';
-    const token = this.authService.getToken(),
-          active = activeOnly ? '&active=1': '';
-    return this._http.get(url + token + active)
+    const active = activeOnly ? '?active=1': '',
+          token = this.authService.getToken();
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.get(url + active, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
   getRecipient(recipientId: string) {
     const token = this.authService.getToken();
-    return this._http.get('/api/recipients/' + recipientId + token)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.get('/api/recipients/' + recipientId, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
   addRecipient(recipient: Recipient) {
     recipient.name = this.toProperCase(recipient.name);//for sorting
-    const token = this.authService.getToken(),
-          body = JSON.stringify(recipient),
-          headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.post('/api/recipients' + token, body, {headers:headers})
+    const body = JSON.stringify(recipient),
+          token = this.authService.getToken();
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.post('/api/recipients', body, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
@@ -43,18 +51,22 @@ export class RecipientService {
   updateRecipient(recipient: Recipient) {
     recipient.name = this.toProperCase(recipient.name);//for sorting
     const token = this.authService.getToken(),
-          body = JSON.stringify(recipient),
-          headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.put('/api/recipients' + token, body, {headers:headers})
+          body = JSON.stringify(recipient);
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.put('/api/recipients', body, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
   setActiveState(recipientId, active) {
-    const token = this.authService.getToken(),
-          body = JSON.stringify({recipientId, active}),
-          headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.patch('/api/recipients' + token, body, {headers:headers})
+    const body = JSON.stringify({recipientId, active}),
+          token = this.authService.getToken();
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.patch('/api/recipients', body, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
@@ -77,7 +89,10 @@ export class RecipientService {
 
   searchCategories(search: string) {
     const token = this.authService.getToken();
-    return this._http.get('/api/cats' + token + '&search=' + search)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.get('/api/cats?search=' + search, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }

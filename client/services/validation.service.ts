@@ -1,5 +1,5 @@
 import {FormControl, FormGroup, AbstractControl} from '@angular/forms';
-import {Http} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../services/auth.service';
 
@@ -83,10 +83,13 @@ export class ValidationService {
 
   static checkUniqueRecipient(http: Http, authService: AuthService, recipientId: string) {
     return function(control: AbstractControl) {
-      const token = authService.getToken(),
-            name = '&name=' + control.value,
-            recipient = recipientId ? '&id=' + recipientId : '';
-      return http.get('/api/recipients/check' + token + name + recipient)
+      const name = '?name=' + control.value,
+            recipient = recipientId ? '&id=' + recipientId : '',
+            token = authService.getToken();
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', 'Bearer ' + token);
+      return http.get('/api/recipients/check' + name + recipient, {headers})
         .map(response => {
           if (response.json().obj === true) {
             return {'recipientTaken': true};

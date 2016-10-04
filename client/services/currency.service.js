@@ -19,7 +19,10 @@ var CurrencyService = (function () {
     }
     CurrencyService.prototype.getCurrencies = function () {
         var token = this.authService.getToken();
-        return this._http.get('/api/currencies' + token)
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.get('/api/currencies', { headers: headers, body: '' })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };

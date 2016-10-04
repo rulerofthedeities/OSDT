@@ -1,4 +1,5 @@
 "use strict";
+var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var ValidationService = (function () {
     function ValidationService() {
@@ -79,8 +80,11 @@ var ValidationService = (function () {
     };
     ValidationService.checkUniqueRecipient = function (http, authService, recipientId) {
         return function (control) {
-            var token = authService.getToken(), name = '&name=' + control.value, recipient = recipientId ? '&id=' + recipientId : '';
-            return http.get('/api/recipients/check' + token + name + recipient)
+            var name = '?name=' + control.value, recipient = recipientId ? '&id=' + recipientId : '', token = authService.getToken();
+            var headers = new http_1.Headers();
+            headers.append('Content-Type', 'application/json');
+            headers.append('Authorization', 'Bearer ' + token);
+            return http.get('/api/recipients/check' + name + recipient, { headers: headers })
                 .map(function (response) {
                 if (response.json().obj === true) {
                     return { 'recipientTaken': true };

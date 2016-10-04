@@ -15,17 +15,23 @@ export class DonationService {
   ) {}
 
   getDonations(recipientId: string) {
+    const url = '/api/donations' + (recipientId ? '/recipients/' + recipientId : '');
     const token = this.authService.getToken();
-    const url = '/api/donations' + (recipientId ? '/recipients/' + recipientId : '') + token;
-    return this._http.get(url)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.get(url, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
 
   getDonation(donationId: string) {
+    const url = '/api/donations' + (donationId ? '/' + donationId : '');
     const token = this.authService.getToken();
-    const url = '/api/donations' + (donationId ? '/' + donationId : '') + token;
-    return this._http.get(url)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.get(url, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
@@ -33,8 +39,10 @@ export class DonationService {
   addDonation(donation: Donation, recipientId: string) {
     const token = this.authService.getToken();
     const body = JSON.stringify({donation, recipientId});
-    const headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.post('/api/donations' + token, body, {headers:headers})
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.post('/api/donations', body, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
@@ -42,15 +50,20 @@ export class DonationService {
   updateDonation(donation: Donation) {
     const token = this.authService.getToken();
     const body = JSON.stringify(donation);
-    const headers = new Headers({'Content-Type': 'application/json'});
-    return this._http.put('/api/donations' + token, body, {headers:headers})
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.put('/api/donations', body, {headers})
       .map(response => donation) //server does not return latest state!
       .catch(error => Observable.throw(error));
   }
 
   removeDonation(donationId: string, recipientId: string) {
     const token = this.authService.getToken();
-    return this._http.delete('/api/donations/' + donationId + '/' + recipientId + token)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.delete('/api/donations/' + donationId + '/' + recipientId, {headers})
       .map(response => response.json())
       .catch(error => Observable.throw(error));
   }

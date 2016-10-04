@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {AuthService} from './auth.service';
 
@@ -13,7 +13,10 @@ export class CurrencyService {
 
   getCurrencies() {
     const token = this.authService.getToken();
-    return this._http.get('/api/currencies' + token)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this._http.get('/api/currencies', {headers, body: ''})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }

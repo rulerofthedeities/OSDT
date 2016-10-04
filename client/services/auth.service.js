@@ -17,7 +17,7 @@ var AuthService = (function () {
         this.http = http;
     }
     AuthService.prototype.getToken = function () {
-        return localStorage.getItem('km-osdt.token') ? '?token=' + localStorage.getItem('km-osdt.token') : '';
+        return localStorage.getItem('km-osdt.token');
     };
     AuthService.prototype.signup = function (user) {
         var body = JSON.stringify(user);

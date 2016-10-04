@@ -21,34 +21,49 @@ var RecipientService = (function () {
     }
     RecipientService.prototype.getRecipients = function (activeOnly) {
         var url = '/api/recipients';
-        var token = this.authService.getToken(), active = activeOnly ? '&active=1' : '';
-        return this._http.get(url + token + active)
+        var active = activeOnly ? '?active=1' : '', token = this.authService.getToken();
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.get(url + active, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.getRecipient = function (recipientId) {
         var token = this.authService.getToken();
-        return this._http.get('/api/recipients/' + recipientId + token)
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.get('/api/recipients/' + recipientId, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.addRecipient = function (recipient) {
         recipient.name = this.toProperCase(recipient.name); //for sorting
-        var token = this.authService.getToken(), body = JSON.stringify(recipient), headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.post('/api/recipients' + token, body, { headers: headers })
+        var body = JSON.stringify(recipient), token = this.authService.getToken();
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.post('/api/recipients', body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.updateRecipient = function (recipient) {
         recipient.name = this.toProperCase(recipient.name); //for sorting
-        var token = this.authService.getToken(), body = JSON.stringify(recipient), headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.put('/api/recipients' + token, body, { headers: headers })
+        var token = this.authService.getToken(), body = JSON.stringify(recipient);
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.put('/api/recipients', body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
     RecipientService.prototype.setActiveState = function (recipientId, active) {
-        var token = this.authService.getToken(), body = JSON.stringify({ recipientId: recipientId, active: active }), headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        return this._http.patch('/api/recipients' + token, body, { headers: headers })
+        var body = JSON.stringify({ recipientId: recipientId, active: active }), token = this.authService.getToken();
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.patch('/api/recipients', body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
@@ -69,7 +84,10 @@ var RecipientService = (function () {
     };
     RecipientService.prototype.searchCategories = function (search) {
         var token = this.authService.getToken();
-        return this._http.get('/api/cats' + token + '&search=' + search)
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this._http.get('/api/cats?search=' + search, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
