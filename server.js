@@ -14,6 +14,10 @@ var express = require('express'),
 app.set('port', process.env.PORT || 5000);
 app.set('env', process.env.NODE_ENV || 'development');
 
+//Check if required config vars are present
+if (!process.env.JWT_TOKEN_SECRET) { console.log('WARNING: no config var JWT_TOKEN_SECRET set!!');}
+if (!process.env.OPENEXCHANGERATES_API) { console.log('WARNING: no config var OPENEXCHANGERATES_API set!!');}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'server/views'));
 app.set('view engine', 'hbs');

@@ -67,16 +67,13 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
             (click)="i===activeDonation || recipientId ? openDonation($event, donation, false) : setActiveDonationIndex(i)"
             [ngClass]="{'info':i===selectedDonation,'active':i===activeDonation && !recipientId, hover:i===activeDonation || recipientId}">
             <td>{{i+1}}</td>
-            <td *ngIf="isSubview">
-              {{recipientIds ? recipientIds[i].name : ''}}
-            </td>
             <td>
               {{donation.amount}} {{donation.currency}}
             </td>
             <td>
               {{donation.dtPaid|date:'shortDate'}}
             </td>
-            <td>
+            <td *ngIf="!isSubview">
               {{recipients[i].name}}
             </td>
             <td>

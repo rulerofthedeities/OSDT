@@ -113,6 +113,7 @@ export class SignIn implements OnInit {
     this.authService.signin(user)
       .subscribe(
         data => {
+          console.log('data', data);
           this.authService.storeUserData(data);
           this.router.navigateByUrl('/');
         },

@@ -26,6 +26,7 @@ var SignIn = (function () {
         var _this = this;
         this.authService.signin(user)
             .subscribe(function (data) {
+            console.log('data', data);
             _this.authService.storeUserData(data);
             _this.router.navigateByUrl('/');
         }, function (error) { return _this.errorService.handleError(error); });
