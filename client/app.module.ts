@@ -19,8 +19,10 @@ import {ValidationService} from './services/validation.service';
 import {XchangeService} from './services/xchange.service';
 import {SettingsService} from './services/settings.service';
 
+import {AccessResolver} from './resolves/access.resolver';
 import {CurrenciesResolver} from './resolves/currencies.resolver';
 
+import {LevelNamePipe} from './pipes/level-name.pipe';
 import {FormatFieldPipe} from './pipes/format-field.pipe';
 
 import {AppComponent} from './components/app.component';
@@ -66,6 +68,7 @@ import {ModalConfirm} from './components/common/modal-confirm.component';
     XchangeService,
     ValidationService,
     SettingsService,
+    AccessResolver,
     CurrenciesResolver
     ],
   declarations: [
@@ -88,6 +91,7 @@ import {ModalConfirm} from './components/common/modal-confirm.component';
     AutoFormField,
     AutoFormRead,
     AutoForm,
+    LevelNamePipe,
     FormatFieldPipe,
     KmDatepicker,
     ModalConfirm

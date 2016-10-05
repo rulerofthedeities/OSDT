@@ -26,7 +26,9 @@ var fields_service_1 = require('./services/fields.service');
 var validation_service_1 = require('./services/validation.service');
 var xchange_service_1 = require('./services/xchange.service');
 var settings_service_1 = require('./services/settings.service');
+var access_resolver_1 = require('./resolves/access.resolver');
 var currencies_resolver_1 = require('./resolves/currencies.resolver');
+var level_name_pipe_1 = require('./pipes/level-name.pipe');
 var format_field_pipe_1 = require('./pipes/format-field.pipe');
 var app_component_1 = require('./components/app.component');
 var navbar_component_1 = require('./components/navbar.component');
@@ -74,6 +76,7 @@ var AppModule = (function () {
                 xchange_service_1.XchangeService,
                 validation_service_1.ValidationService,
                 settings_service_1.SettingsService,
+                access_resolver_1.AccessResolver,
                 currencies_resolver_1.CurrenciesResolver
             ],
             declarations: [
@@ -96,6 +99,7 @@ var AppModule = (function () {
                 auto_form_field_component_1.AutoFormField,
                 auto_form_read_component_1.AutoFormRead,
                 auto_form_component_1.AutoForm,
+                level_name_pipe_1.LevelNamePipe,
                 format_field_pipe_1.FormatFieldPipe,
                 km_datepicker_component_1.KmDatepicker,
                 modal_confirm_component_1.ModalConfirm

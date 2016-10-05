@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var angular2_jwt_1 = require('angular2-jwt');
 var auth_service_1 = require('../../services/auth.service');
 var error_service_1 = require('../../services/error.service');
 var user_model_1 = require('../../models/user.model');
@@ -18,16 +19,30 @@ var SignIn = (function () {
         this.authService = authService;
         this.router = router;
         this.errorService = errorService;
+        this.jwtHelper = new angular2_jwt_1.JwtHelper();
     }
     SignIn.prototype.ngOnInit = function () {
         this.user = new user_model_1.User('', '');
     };
     SignIn.prototype.onSubmit = function (user, isValid) {
         var _this = this;
+        var userData;
+        var userAccess = { level: 1, roles: [] };
         this.authService.signin(user)
             .subscribe(function (data) {
-            console.log('data', data);
-            _this.authService.storeUserData(data);
+            var decoded = _this.jwtHelper.decodeToken(data.token);
+            console.log('decoded', decoded);
+            userData = {
+                token: data.token,
+                userId: decoded.user._id,
+                userName: decoded.user.userName
+            };
+            userAccess = {
+                level: decoded.user.access.level,
+                roles: decoded.user.access.roles
+            };
+            _this.authService.storeUserData(userData);
+            _this.authService.setUserAccess(userAccess);
             _this.router.navigateByUrl('/');
         }, function (error) { return _this.errorService.handleError(error); });
     };

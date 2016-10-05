@@ -8,11 +8,20 @@ var settingsSchema = new Schema(
   }
 );
 
+var accessSchema = new Schema(
+  { 
+    level: {type: Number},
+    roles: {type: [String]}
+  },
+  { _id: false}
+);
+
 var userSchema = new Schema({
     userName: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     email: {type: String, required: true, unique: true},
-    settings: {type: settingsSchema}
+    settings: {type: settingsSchema},
+    access: {type: accessSchema}
 });
 
 userSchema.plugin(mongooseUniqueValidator);

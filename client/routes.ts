@@ -6,6 +6,7 @@ import {Dashboard} from './components/dashboard.component';
 import {SignUp} from './components/auth/sign-up.component';
 import {SignIn} from './components/auth/sign-in.component';
 import {AuthMenu} from './components/auth/auth-menu.component';
+import {AccessResolver} from './resolves/access.resolver';
 import {CurrenciesResolver} from './resolves/currencies.resolver';
 import {AuthGuard} from './services/auth-guard.service';
 
@@ -21,7 +22,7 @@ export const routes: Routes = [
   {
     path: 'donations',
     component: Donations,
-    resolve: {currencies:CurrenciesResolver},
+    resolve: {currencies:CurrenciesResolver, access:AccessResolver},
     canActivate: [AuthGuard]
   },
   {

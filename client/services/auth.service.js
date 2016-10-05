@@ -10,11 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var router_1 = require('@angular/router');
 var Observable_1 = require('rxjs/Observable');
 require('rxjs/Rx');
 var AuthService = (function () {
-    function AuthService(http) {
+    function AuthService(http, router) {
         this.http = http;
+        this.router = router;
+        this.accessLocal = null;
     }
     AuthService.prototype.getToken = function () {
         return localStorage.getItem('km-osdt.token');
@@ -34,7 +37,8 @@ var AuthService = (function () {
             .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
     };
     AuthService.prototype.logout = function () {
-        localStorage.clear();
+        this.clearStorage();
+        this.router.navigate(['/auth/signin']);
     };
     AuthService.prototype.isLoggedIn = function () {
         return localStorage.getItem('km-osdt.token') !== null;
@@ -42,14 +46,34 @@ var AuthService = (function () {
     AuthService.prototype.getUserName = function () {
         return localStorage.getItem('km-osdt.userName');
     };
+    AuthService.prototype.setUserAccess = function (data) {
+        this.accessLocal = data;
+    };
+    AuthService.prototype.getUserAccess = function () {
+        return this.accessLocal;
+    };
+    AuthService.prototype.fetchUserAccess = function () {
+        var token = this.getToken();
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this.http.get('/api/user/access', { headers: headers, body: '' })
+            .map(function (response) { return response.json().obj; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
     AuthService.prototype.storeUserData = function (data) {
         localStorage.setItem('km-osdt.token', data.token);
         localStorage.setItem('km-osdt.userId', data.userId);
         localStorage.setItem('km-osdt.userName', data.userName);
     };
+    AuthService.prototype.clearStorage = function () {
+        localStorage.removeItem('km-osdt.token');
+        localStorage.removeItem('km-osdt.userId');
+        localStorage.removeItem('km-osdt.userName');
+    };
     AuthService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, router_1.Router])
     ], AuthService);
     return AuthService;
 }());

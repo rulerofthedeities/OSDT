@@ -9,27 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var auth_service_1 = require('./auth.service');
-var router_1 = require('@angular/router');
-var AuthGuard = (function () {
-    function AuthGuard(router, authService) {
-        this.router = router;
-        this.authService = authService;
+var LevelNamePipe = (function () {
+    function LevelNamePipe() {
     }
-    AuthGuard.prototype.canActivate = function (route, state) {
-        if (state.url !== '/auth/signin' && !this.authService.isLoggedIn()) {
-            this.router.navigate(['/auth/signin']);
-            return false;
+    LevelNamePipe.prototype.transform = function (value) {
+        var level = '';
+        switch (value) {
+            case 0:
+                level = 'Read';
+                break;
+            case 1:
+                level = 'Write';
+                break;
+            default: level = 'Unknown';
         }
-        else {
-            return true;
-        }
+        return level;
     };
-    AuthGuard = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [router_1.Router, auth_service_1.AuthService])
-    ], AuthGuard);
-    return AuthGuard;
+    LevelNamePipe = __decorate([
+        core_1.Pipe({ name: 'levelName' }), 
+        __metadata('design:paramtypes', [])
+    ], LevelNamePipe);
+    return LevelNamePipe;
 }());
-exports.AuthGuard = AuthGuard;
-//# sourceMappingURL=auth-guard.service.js.map
+exports.LevelNamePipe = LevelNamePipe;
+//# sourceMappingURL=level-name.pipe.js.map

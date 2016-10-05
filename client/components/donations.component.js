@@ -28,6 +28,9 @@ var Donations = (function () {
     }
     Donations.prototype.ngOnInit = function () {
         var _this = this;
+        if (!this.authService.getUserAccess()) {
+            this.authService.setUserAccess(this.route.snapshot.data['access']);
+        }
         this.paramSubscription = this.route.params.subscribe(function (params) {
             if (params['id']) {
                 _this.getDonation(params['id']);

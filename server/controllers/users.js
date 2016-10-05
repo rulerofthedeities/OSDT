@@ -30,8 +30,9 @@ var findUser = function(req, res, callback) {
       if (result !== true) {
         callback({error:'Invalid password'}, doc, 401, 'Could not sign you in');
       } else {
+        doc.password = null;
         var token = jwt.sign({user: doc}, process.env.JWT_TOKEN_SECRET, {expiresIn: 86400});
-        callback(null, {message: 'Success', token: token, userId: doc._id, userName:doc.userName});
+        callback(null, {message: 'Success', token: token});
       }
     });
   })
@@ -86,6 +87,17 @@ module.exports = {
     User.findById(userId, function (err, user) {
       response.handleError(err, res, 500, 'Error fetching user name', function(){
         response.handleSuccess(res, user.userName, 200, 'Fetched user name');
+      });
+    });
+  },
+  getUserAccess: function(req, res) {
+    console.log('getting access');
+    var userId = req.decoded.user._id;
+    User.findById(userId, function (err, user) {
+      response.handleError(err, res, 500, 'Error fetching user access', function(){
+        console.log('user', user);
+        console.log('user access', user.access);
+        response.handleSuccess(res, user.access, 200, 'Fetched user access');
       });
     });
   },

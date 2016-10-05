@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -12,12 +11,10 @@ import {AuthService} from '../../services/auth.service';
 export class LogOut {
 
   constructor(
-    private authService: AuthService,
-    private router: Router
+    private authService: AuthService
   ) {}
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/auth/signin']);
   }
 }

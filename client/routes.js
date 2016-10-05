@@ -6,6 +6,7 @@ var dashboard_component_1 = require('./components/dashboard.component');
 var sign_up_component_1 = require('./components/auth/sign-up.component');
 var sign_in_component_1 = require('./components/auth/sign-in.component');
 var auth_menu_component_1 = require('./components/auth/auth-menu.component');
+var access_resolver_1 = require('./resolves/access.resolver');
 var currencies_resolver_1 = require('./resolves/currencies.resolver');
 var auth_guard_service_1 = require('./services/auth-guard.service');
 exports.routes = [
@@ -20,7 +21,7 @@ exports.routes = [
     {
         path: 'donations',
         component: donations_component_1.Donations,
-        resolve: { currencies: currencies_resolver_1.CurrenciesResolver },
+        resolve: { currencies: currencies_resolver_1.CurrenciesResolver, access: access_resolver_1.AccessResolver },
         canActivate: [auth_guard_service_1.AuthGuard]
     },
     {

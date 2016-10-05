@@ -9,23 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var router_1 = require('@angular/router');
 var auth_service_1 = require('../../services/auth.service');
 var LogOut = (function () {
-    function LogOut(authService, router) {
+    function LogOut(authService) {
         this.authService = authService;
-        this.router = router;
     }
     LogOut.prototype.onLogout = function () {
         this.authService.logout();
-        this.router.navigate(['/auth/signin']);
     };
     LogOut = __decorate([
         core_1.Component({
             selector: 'logout',
             template: "\n    <a (click)=\"onLogout()\" class=\"item\">Logout</a>\n  "
         }), 
-        __metadata('design:paramtypes', [auth_service_1.AuthService, router_1.Router])
+        __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], LogOut);
     return LogOut;
 }());

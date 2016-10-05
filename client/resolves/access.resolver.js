@@ -9,27 +9,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var auth_service_1 = require('./auth.service');
-var router_1 = require('@angular/router');
-var AuthGuard = (function () {
-    function AuthGuard(router, authService) {
-        this.router = router;
+var auth_service_1 = require('../services/auth.service');
+var AccessResolver = (function () {
+    function AccessResolver(authService) {
         this.authService = authService;
     }
-    AuthGuard.prototype.canActivate = function (route, state) {
-        if (state.url !== '/auth/signin' && !this.authService.isLoggedIn()) {
-            this.router.navigate(['/auth/signin']);
-            return false;
+    AccessResolver.prototype.resolve = function (route, state) {
+        if (this.authService.isLoggedIn()) {
+            return this.authService.fetchUserAccess();
         }
         else {
-            return true;
+            return null;
         }
     };
-    AuthGuard = __decorate([
+    AccessResolver = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [router_1.Router, auth_service_1.AuthService])
-    ], AuthGuard);
-    return AuthGuard;
+        __metadata('design:paramtypes', [auth_service_1.AuthService])
+    ], AccessResolver);
+    return AccessResolver;
 }());
-exports.AuthGuard = AuthGuard;
-//# sourceMappingURL=auth-guard.service.js.map
+exports.AccessResolver = AccessResolver;
+//# sourceMappingURL=access.resolver.js.map

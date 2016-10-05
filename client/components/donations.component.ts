@@ -61,6 +61,11 @@ export class Donations implements OnInit {
   ) {}
 
   ngOnInit() {
+
+    if (!this.authService.getUserAccess()) {
+      this.authService.setUserAccess(this.route.snapshot.data['access']);
+    }
+
     this.paramSubscription = this.route.params.subscribe(params => {
       if (params['id']) {
         this.getDonation(params['id']);
