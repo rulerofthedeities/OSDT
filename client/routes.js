@@ -12,10 +12,16 @@ var auth_guard_service_1 = require('./services/auth-guard.service');
 exports.routes = [
     { path: '', component: dashboard_component_1.Dashboard },
     { path: 'dashboard', component: dashboard_component_1.Dashboard, canActivate: [auth_guard_service_1.AuthGuard] },
-    { path: 'recipients', component: recipients_component_1.Recipients, canActivate: [auth_guard_service_1.AuthGuard] },
+    {
+        path: 'recipients',
+        component: recipients_component_1.Recipients,
+        resolve: { access: access_resolver_1.AccessResolver },
+        canActivate: [auth_guard_service_1.AuthGuard]
+    },
     {
         path: 'recipients/donations/:id',
         component: recipients_component_1.Recipients,
+        resolve: { access: access_resolver_1.AccessResolver },
         canActivate: [auth_guard_service_1.AuthGuard]
     },
     {

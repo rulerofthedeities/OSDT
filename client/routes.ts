@@ -13,10 +13,16 @@ import {AuthGuard} from './services/auth-guard.service';
 export const routes: Routes = [
   {path: '', component: Dashboard},
   {path: 'dashboard', component: Dashboard, canActivate: [AuthGuard]},
-  {path: 'recipients', component: Recipients, canActivate: [AuthGuard]},
+  {
+    path: 'recipients',
+    component: Recipients,
+    resolve: {access:AccessResolver},
+    canActivate: [AuthGuard]
+  },
   {
     path: 'recipients/donations/:id',
     component: Recipients,
+    resolve: {access:AccessResolver},
     canActivate: [AuthGuard]
   },
   {

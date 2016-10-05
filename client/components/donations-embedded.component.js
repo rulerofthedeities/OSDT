@@ -71,7 +71,7 @@ var EmbeddedDonations = (function () {
     };
     EmbeddedDonations.prototype.deleteDonation = function (donationIndex) {
         var _this = this;
-        this.donationService.removeDonation(this.donations[donationIndex]._id, this.recipients[donationIndex]._id).subscribe(function (data) { ; }, function (error) { return _this.errorService.handleError(error); });
+        this.donationService.removeDonation(this.donations[donationIndex]._id, this.recipients[donationIndex]._id).subscribe(function () { ; }, function (error) { return _this.errorService.handleError(error); });
         this.donations.splice(donationIndex, 1);
     };
     EmbeddedDonations.prototype.openDonation = function (event, donation, editMode) {

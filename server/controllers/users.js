@@ -91,12 +91,9 @@ module.exports = {
     });
   },
   getUserAccess: function(req, res) {
-    console.log('getting access');
     var userId = req.decoded.user._id;
     User.findById(userId, function (err, user) {
       response.handleError(err, res, 500, 'Error fetching user access', function(){
-        console.log('user', user);
-        console.log('user access', user.access);
         response.handleSuccess(res, user.access, 200, 'Fetched user access');
       });
     });

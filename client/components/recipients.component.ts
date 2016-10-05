@@ -13,6 +13,7 @@ import {Subscription}   from 'rxjs/Subscription';
       <alert type="info">
         <button
           type="button"
+          *ngIf="mayCreateRecipient"
           (click)="addRecipient()"
           class="btn btn-primary">
           <span class="fa fa-plus"></span>
@@ -151,6 +152,7 @@ export class Recipients implements OnInit, OnDestroy {
   isEdit = false;
   isNew = false;
   prevNavState = 'viewRecipient'; //view if closing/canceling must lead back to view
+  mayCreateRecipient = false;
 
   constructor(
     private recipientService: RecipientService,
@@ -161,6 +163,8 @@ export class Recipients implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.getRoles();
+
     this.getRecipients();
 
     this.recipientService.closeToView.subscribe(
@@ -243,6 +247,13 @@ export class Recipients implements OnInit, OnDestroy {
       };
       i++;
     });
+  }
+
+  getRoles() {
+    if (!this.authService.getUserAccess()) {
+      this.authService.setUserAccess(this.route.snapshot.data['access']);
+    }
+    this.mayCreateRecipient = this.authService.hasRole('CreateRecipient');
   }
 
   ngOnDestroy() {

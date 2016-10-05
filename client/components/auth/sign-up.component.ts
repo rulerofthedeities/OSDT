@@ -148,7 +148,7 @@ export class SignUp implements OnInit {
   onSubmitForm(user: User) {
     if (this.userForm.valid) {
       this.authService.signup(user).subscribe(
-        data => {
+        () => {
           this.authService.signin(user).subscribe(
             data => {
               this.authService.storeUserData(data);

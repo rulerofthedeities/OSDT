@@ -61,6 +61,19 @@ var AuthService = (function () {
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };
+    AuthService.prototype.hasRole = function (role) {
+        var access = this.getUserAccess();
+        var hasRole = false;
+        console.log(access);
+        if (access && access.roles) {
+            for (var i = 0; i < access.roles.length; i++) {
+                if (access.roles[i] === role) {
+                    hasRole = true;
+                }
+            }
+        }
+        return hasRole;
+    };
     AuthService.prototype.storeUserData = function (data) {
         localStorage.setItem('km-osdt.token', data.token);
         localStorage.setItem('km-osdt.userId', data.userId);

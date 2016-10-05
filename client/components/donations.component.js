@@ -50,7 +50,7 @@ var Donations = (function () {
                 _this.addDonation();
             }
         });
-        this.donationService.closeToView.subscribe(function (closedDonation) {
+        this.donationService.closeToView.subscribe(function () {
             _this.currentDonation = null; //in case of new
             if (_this.router.url !== '/donations') {
                 _this.router.navigate(['/donations']);

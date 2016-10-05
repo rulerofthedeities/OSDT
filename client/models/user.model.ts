@@ -10,13 +10,13 @@ export class User {
   ) {}
 }
 
-export interface UserLocal {
+export type UserLocal = {
   token: string;
   userId: string;
   userName: string;
 }
 
-export interface UserAccess {
+export type UserAccess =  {
   level: number;
   roles: string[];
 }

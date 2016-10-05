@@ -110,7 +110,7 @@ export class SignIn implements OnInit {
     this.user = new User('', '');
   }
 
-  onSubmit(user: User, isValid: boolean) {
+  onSubmit(user: User) {
     let userData: UserLocal;
     let userAccess: UserAccess = {level: 1, roles: []};
     this.authService.signin(user)

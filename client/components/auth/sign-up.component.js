@@ -37,7 +37,7 @@ var SignUp = (function () {
     SignUp.prototype.onSubmitForm = function (user) {
         var _this = this;
         if (this.userForm.valid) {
-            this.authService.signup(user).subscribe(function (data) {
+            this.authService.signup(user).subscribe(function () {
                 _this.authService.signin(user).subscribe(function (data) {
                     _this.authService.storeUserData(data);
                     _this.router.navigateByUrl('/recipients');

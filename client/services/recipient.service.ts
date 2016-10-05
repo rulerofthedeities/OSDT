@@ -60,7 +60,7 @@ export class RecipientService {
       .catch(error => Observable.throw(error));
   }
 
-  setActiveState(recipientId, active) {
+  setActiveState(recipientId: string, active: boolean) {
     const body = JSON.stringify({recipientId, active}),
           token = this.authService.getToken();
     let headers = new Headers();

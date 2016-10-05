@@ -24,7 +24,7 @@ var SignIn = (function () {
     SignIn.prototype.ngOnInit = function () {
         this.user = new user_model_1.User('', '');
     };
-    SignIn.prototype.onSubmit = function (user, isValid) {
+    SignIn.prototype.onSubmit = function (user) {
         var _this = this;
         var userData;
         var userAccess = { level: 1, roles: [] };

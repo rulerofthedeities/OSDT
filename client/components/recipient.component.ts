@@ -284,7 +284,7 @@ export class EditRecipient implements OnInit {
       recipient._id = this.recipient._id;
       recipient.categories = this.formatCategories(recipient.categories);
       this.recipientService.updateRecipient(recipient).subscribe(
-        update => {
+        () => {
           this.recipient = recipient;
           this.recipientService.closeRecipient(target, recipient);
         },

@@ -73,7 +73,7 @@ var EditRecipient = (function () {
             //Update recipient
             recipient._id = this.recipient._id;
             recipient.categories = this.formatCategories(recipient.categories);
-            this.recipientService.updateRecipient(recipient).subscribe(function (update) {
+            this.recipientService.updateRecipient(recipient).subscribe(function () {
                 _this.recipient = recipient;
                 _this.recipientService.closeRecipient(target, recipient);
             }, function (error) { return _this.errorService.handleError(error); });

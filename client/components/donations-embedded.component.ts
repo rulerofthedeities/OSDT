@@ -191,7 +191,7 @@ export class EmbeddedDonations implements OnInit {
 
   deleteDonation(donationIndex: number) {
     this.donationService.removeDonation(this.donations[donationIndex]._id, this.recipients[donationIndex]._id).subscribe(
-      data => {;},
+      () => {;},
       error => this.errorService.handleError(error)
     );
     this.donations.splice(donationIndex, 1);

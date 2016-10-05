@@ -87,7 +87,7 @@ export class Donations implements OnInit {
     });
 
     this.donationService.closeToView.subscribe(
-      closedDonation => {
+      () => {
         this.currentDonation = null; //in case of new
         if (this.router.url !== '/donations') {
           this.router.navigate(['/donations']);

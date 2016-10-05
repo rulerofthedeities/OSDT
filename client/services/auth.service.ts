@@ -65,6 +65,20 @@ export class AuthService {
       .catch(error => Observable.throw(error));
   }
 
+  hasRole(role: string) {
+    const access = this.getUserAccess();
+    let hasRole = false;
+    console.log(access);
+    if (access && access.roles) {
+      for(let i = 0; i < access.roles.length; i++) {
+        if (access.roles[i] === role) {
+          hasRole = true;
+        }
+      }
+    }
+    return hasRole;
+  }
+
   storeUserData(data: UserLocal) {
     localStorage.setItem('km-osdt.token', data.token);
     localStorage.setItem('km-osdt.userId', data.userId);
