@@ -18,7 +18,11 @@ var AppComponent = (function () {
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
         var timer = Observable_1.Observable.timer(30000, 3600000); //Start after 30 secs, then check every hour
-        timer.subscribe(function (t) { _this.authService.keepTokenFresh(); });
+        timer.subscribe(function (t) {
+            if (_this.authService.isLoggedIn()) {
+                _this.authService.keepTokenFresh();
+            }
+        });
     };
     AppComponent = __decorate([
         core_1.Component({

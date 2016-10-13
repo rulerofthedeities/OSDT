@@ -13,13 +13,14 @@ var http_1 = require('@angular/http');
 var router_1 = require('@angular/router');
 var Observable_1 = require('rxjs/Observable');
 var angular2_jwt_1 = require('angular2-jwt');
+var angular2_jwt_2 = require('angular2-jwt');
 require('rxjs/Rx');
 var AuthService = (function () {
     function AuthService(http, router) {
         this.http = http;
         this.router = router;
         this.accessLocal = null;
-        this.jwtHelper = new angular2_jwt_1.JwtHelper();
+        this.jwtHelper = new angular2_jwt_2.JwtHelper();
     }
     AuthService.prototype.getToken = function () {
         return localStorage.getItem('km-osdt.token');
@@ -58,7 +59,7 @@ var AuthService = (function () {
         this.router.navigate(['/auth/signin']);
     };
     AuthService.prototype.isLoggedIn = function () {
-        return localStorage.getItem('km-osdt.token') !== null;
+        return angular2_jwt_1.tokenNotExpired('km-osdt.token');
     };
     AuthService.prototype.getUserName = function () {
         return localStorage.getItem('km-osdt.userName');

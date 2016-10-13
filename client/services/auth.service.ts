@@ -61,7 +61,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return localStorage.getItem('km-osdt.token') !== null;
+    return tokenNotExpired('km-osdt.token');
   }
 
   getUserName() {

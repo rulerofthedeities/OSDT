@@ -8,7 +8,7 @@ var ValidationService = (function () {
         var config = {
             'required': label + ' is required',
             'invalidCreditCard': 'Is invalid credit card number',
-            'invalidEmailAddress': 'Invalid email address. Format should be <i>john@doe.com</i>.',
+            'invalidEmailAddress': 'Invalid email address. Format should be john@doe.com.',
             'minlength': label + " must be at least " + validatorValue.requiredLength + " characters long.",
             'invalidPassword': ("Invalid password. Password must be at least " + validatorValue.requiredLength)
                 + " characters long, and contain a number.",
