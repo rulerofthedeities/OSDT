@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ErrorService} from '../services/error.service';
 import {AuthService} from '../services/auth.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'osdt',
@@ -15,22 +15,12 @@ import {AuthService} from '../services/auth.service';
 
 export class AppComponent implements OnInit {
 
-  constructor(
-    private errorService: ErrorService,
-    private authService: AuthService
-  ) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.getExpiredToken();
-  }
-
-  getExpiredToken() {
-    this.errorService.errorOccurred.subscribe(
-      errorData => {
-        if (errorData.message === 'jwt expired') {
-          this.authService.logout();
-        }
-      }
+    let timer = Observable.timer(30000, 3600000); //Start after 30 secs, then check every hour
+    timer.subscribe(
+      t => {this.authService.keepTokenFresh();}
     );
   }
 

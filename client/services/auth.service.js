@@ -69,12 +69,32 @@ var AuthService = (function () {
     AuthService.prototype.getUserAccess = function () {
         return this.accessLocal;
     };
+    AuthService.prototype.keepTokenFresh = function () {
+        var token = this.getToken(), decoded = this.jwtHelper.decodeToken(token), initialSecs = decoded.exp - decoded.iat, currentSecs = decoded.exp - Math.floor(Date.now() / 1000);
+        console.log('Secs since token created', initialSecs - currentSecs);
+        if (initialSecs - currentSecs >= 3600) {
+            //renew token if it is older than an hour
+            this.refreshToken().subscribe(function (token) {
+                localStorage.setItem('km-osdt.token', token);
+            });
+        }
+    };
     AuthService.prototype.fetchUserAccess = function () {
         var token = this.getToken();
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', 'Bearer ' + token);
         return this.http.get('/api/user/access', { headers: headers, body: '' })
+            .map(function (response) { return response.json().obj; })
+            .catch(function (error) { return Observable_1.Observable.throw(error); });
+    };
+    AuthService.prototype.refreshToken = function () {
+        var token = this.getToken();
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+        return this.http
+            .patch('/api/user/refresh', {}, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error); });
     };

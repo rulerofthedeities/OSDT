@@ -76,12 +76,40 @@ export class AuthService {
     return this.accessLocal;
   }
 
+  keepTokenFresh() {
+    const token = this.getToken(),
+          decoded = this.jwtHelper.decodeToken(token),
+          initialSecs = decoded.exp - decoded.iat,
+          currentSecs = decoded.exp - Math.floor(Date.now() / 1000);
+
+    console.log('Secs since token created', initialSecs - currentSecs);
+    if (initialSecs - currentSecs >= 3600) {
+      //renew token if it is older than an hour
+      this.refreshToken().subscribe(
+        token => {
+          localStorage.setItem('km-osdt.token', token);
+        }
+      );
+    }
+  }
+
   fetchUserAccess() {
     const token = this.getToken();
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', 'Bearer ' + token);
     return this.http.get('/api/user/access', {headers, body: ''})
+      .map(response => response.json().obj)
+      .catch(error => Observable.throw(error));
+  }
+
+  refreshToken() {
+    const token = this.getToken();
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', 'Bearer ' + token);
+    return this.http
+      .patch('/api/user/refresh', {}, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }

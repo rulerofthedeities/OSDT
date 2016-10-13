@@ -9,30 +9,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var error_service_1 = require('../services/error.service');
 var auth_service_1 = require('../services/auth.service');
+var Observable_1 = require('rxjs/Observable');
 var AppComponent = (function () {
-    function AppComponent(errorService, authService) {
-        this.errorService = errorService;
+    function AppComponent(authService) {
         this.authService = authService;
     }
     AppComponent.prototype.ngOnInit = function () {
-        this.getExpiredToken();
-    };
-    AppComponent.prototype.getExpiredToken = function () {
         var _this = this;
-        this.errorService.errorOccurred.subscribe(function (errorData) {
-            if (errorData.message === 'jwt expired') {
-                _this.authService.logout();
-            }
-        });
+        var timer = Observable_1.Observable.timer(30000, 3600000); //Start after 30 secs, then check every hour
+        timer.subscribe(function (t) { _this.authService.keepTokenFresh(); });
     };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'osdt',
             template: "\n    <div class=\"container\">\n      <navbar></navbar>\n      <router-outlet></router-outlet>\n      <error-msg></error-msg>\n    </div>\n  "
         }), 
-        __metadata('design:paramtypes', [error_service_1.ErrorService, auth_service_1.AuthService])
+        __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], AppComponent);
     return AppComponent;
 }());
