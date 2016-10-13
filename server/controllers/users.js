@@ -31,7 +31,7 @@ var findUser = function(req, res, callback) {
         callback({error:'Invalid password'}, doc, 401, 'Could not sign you in');
       } else {
         doc.password = null;
-        var token = jwt.sign({user: doc}, process.env.JWT_TOKEN_SECRET, {expiresIn: 86400});
+        var token = jwt.sign({user: doc}, process.env.JWT_TOKEN_SECRET, {expiresIn: req.expiresIn});
         callback(null, {message: 'Success', token: token});
       }
     });
@@ -114,5 +114,12 @@ module.exports = {
         response.handleSuccess(res, currency, 200, 'Updated default currency');
       })
     })
+  },
+  refreshToken: function(req, res) {
+    var payload = req.decoded;
+    delete payload.iat;
+    delete payload.exp;
+    var token = jwt.sign(payload, process.env.JWT_TOKEN_SECRET, {expiresIn: req.expiresIn});
+    response.handleSuccess(res, token, 200, 'Refreshed token');
   }
 }

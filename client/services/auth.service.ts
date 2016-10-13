@@ -2,12 +2,15 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
+import {tokenNotExpired} from 'angular2-jwt';
+import {JwtHelper} from 'angular2-jwt';
 import 'rxjs/Rx';
 import {User, UserLocal, UserAccess} from '../models/user.model';
 
 @Injectable()
 export class AuthService {
   private accessLocal: UserAccess = null;
+  private jwtHelper: JwtHelper = new JwtHelper();
 
   constructor (
     private http: Http,
@@ -32,6 +35,24 @@ export class AuthService {
     return this.http.post('/api/user/signin', body, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error.json()));
+  }
+
+  signedIn(data: any) {
+    let userData: UserLocal,
+        userAccess: UserAccess = {level: 1, roles: []},
+        decoded = this.jwtHelper.decodeToken(data.token);
+    userData = {
+      token: data.token,
+      userId: decoded.user._id,
+      userName: decoded.user.userName
+    };
+    userAccess = {
+      level: decoded.user.access.level,
+      roles: decoded.user.access.roles
+    };
+    this.storeUserData(userData);
+    this.setUserAccess(userAccess);
+    this.router.navigateByUrl('/');
   }
 
   logout() {
@@ -68,7 +89,6 @@ export class AuthService {
   hasRole(role: string) {
     const access = this.getUserAccess();
     let hasRole = false;
-    console.log(access);
     if (access && access.roles) {
       for(let i = 0; i < access.roles.length; i++) {
         if (access.roles[i] === role) {

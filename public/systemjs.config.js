@@ -8,7 +8,9 @@ var isPublic = typeof window != "undefined";
       'rxjs':                   (isPublic) ? 'node/rxjs' : 'node_modules/rxjs',
       'ng2-bootstrap':          (isPublic) ? 'node/ng2-bootstrap' : 'node_modules/ng2-bootstrap',
       'moment':                 (isPublic) ? 'node/moment/moment.js' : 'node_modules/moment/moment.js',
-      'angular2-jwt':           (isPublic) ? 'node/angular2-jwt/angular2-jwt.js' : 'node_modules/angular2-jwt/angular2-jwt.js'
+      'angular2-jwt':           (isPublic) ? 'node/angular2-jwt/angular2-jwt.js' : 'node_modules/angular2-jwt/angular2-jwt.js',
+      'js-base64':              (isPublic) ? 'node/js-base64/base64.js' : 'node_modules/js-base64/base64.js',
+      'buffer':                 '@empty' //jwt buffer
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {

@@ -12,12 +12,14 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var router_1 = require('@angular/router');
 var Observable_1 = require('rxjs/Observable');
+var angular2_jwt_1 = require('angular2-jwt');
 require('rxjs/Rx');
 var AuthService = (function () {
     function AuthService(http, router) {
         this.http = http;
         this.router = router;
         this.accessLocal = null;
+        this.jwtHelper = new angular2_jwt_1.JwtHelper();
     }
     AuthService.prototype.getToken = function () {
         return localStorage.getItem('km-osdt.token');
@@ -35,6 +37,21 @@ var AuthService = (function () {
         return this.http.post('/api/user/signin', body, { headers: headers })
             .map(function (response) { return response.json().obj; })
             .catch(function (error) { return Observable_1.Observable.throw(error.json()); });
+    };
+    AuthService.prototype.signedIn = function (data) {
+        var userData, userAccess = { level: 1, roles: [] }, decoded = this.jwtHelper.decodeToken(data.token);
+        userData = {
+            token: data.token,
+            userId: decoded.user._id,
+            userName: decoded.user.userName
+        };
+        userAccess = {
+            level: decoded.user.access.level,
+            roles: decoded.user.access.roles
+        };
+        this.storeUserData(userData);
+        this.setUserAccess(userAccess);
+        this.router.navigateByUrl('/');
     };
     AuthService.prototype.logout = function () {
         this.clearStorage();
@@ -64,7 +81,6 @@ var AuthService = (function () {
     AuthService.prototype.hasRole = function (role) {
         var access = this.getUserAccess();
         var hasRole = false;
-        console.log(access);
         if (access && access.roles) {
             for (var i = 0; i < access.roles.length; i++) {
                 if (access.roles[i] === role) {
