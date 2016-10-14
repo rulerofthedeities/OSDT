@@ -10,7 +10,7 @@ var access_resolver_1 = require('./resolves/access.resolver');
 var currencies_resolver_1 = require('./resolves/currencies.resolver');
 var auth_guard_service_1 = require('./services/auth-guard.service');
 exports.routes = [
-    { path: '', component: dashboard_component_1.Dashboard },
+    { path: '', component: dashboard_component_1.Dashboard, canActivate: [auth_guard_service_1.AuthGuard] },
     { path: 'dashboard', component: dashboard_component_1.Dashboard, canActivate: [auth_guard_service_1.AuthGuard] },
     {
         path: 'recipients',

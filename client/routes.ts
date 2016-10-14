@@ -11,7 +11,7 @@ import {CurrenciesResolver} from './resolves/currencies.resolver';
 import {AuthGuard} from './services/auth-guard.service';
 
 export const routes: Routes = [
-  {path: '', component: Dashboard},
+  {path: '', component: Dashboard, canActivate: [AuthGuard]},
   {path: 'dashboard', component: Dashboard, canActivate: [AuthGuard]},
   {
     path: 'recipients',
