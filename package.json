@@ -23,14 +23,14 @@
     "node": "6.2.2"
   },
   "dependencies": {
-    "@angular/common": "2.0.0",
-    "@angular/compiler": "2.0.0",
-    "@angular/core": "2.0.0",
-    "@angular/forms": "2.0.0",
-    "@angular/http": "2.0.0",
-    "@angular/platform-browser": "2.0.0",
-    "@angular/platform-browser-dynamic": "2.0.0",
-    "@angular/router": "3.0.0",
+    "@angular/common": "2.1.0",
+    "@angular/compiler": "2.1.0",
+    "@angular/core": "2.1.0",
+    "@angular/forms": "2.1.0",
+    "@angular/http": "2.1.0",
+    "@angular/platform-browser": "2.1.0",
+    "@angular/platform-browser-dynamic": "2.1.0",
+    "@angular/router": "3.1.0",
     "angular2-jwt": "^0.1.24",
     "async": "^2.0.1",
     "bcrypt": "^0.8.7",
@@ -48,12 +48,12 @@
     "mongoose": "^4.5.9",
     "mongoose-unique-validator": "^1.0.2",
     "ng2-bootstrap": "^1.1.2",
-    "reflect-metadata": "^0.1.3",
+    "reflect-metadata": "^0.1.8",
     "request": "^2.74.0",
     "rxjs": "5.0.0-beta.12",
-    "systemjs": "0.19.27",
-    "typings": "^1.3.2",
-    "zone.js": "^0.6.23"
+    "systemjs": "0.19.39",
+    "typings": "^1.4.0",
+    "zone.js": "^0.6.25"
   },
   "devDependencies": {
     "browser-sync": "^2.13.0",
@@ -65,7 +65,7 @@
     "gulp-nodemon": "^2.1.0",
     "lite-server": "^2.2.2",
     "systemjs-builder": "^0.15.25",
-    "typescript": "^2.0.2",
-    "typings": "^1.3.2"
+    "typescript": "^2.0.3",
+    "typings": "^1.4.0"
   }
 }

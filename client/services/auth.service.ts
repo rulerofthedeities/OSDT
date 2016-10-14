@@ -82,11 +82,11 @@ export class AuthService {
           initialSecs = decoded.exp - decoded.iat,
           currentSecs = decoded.exp - Math.floor(Date.now() / 1000);
 
-    console.log('Secs since token created', initialSecs - currentSecs);
     if (initialSecs - currentSecs >= 3600) {
       //renew token if it is older than an hour
       this.refreshToken().subscribe(
         token => {
+          console.log('received new token');
           localStorage.setItem('km-osdt.token', token);
         }
       );
