@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
     request = require("request");
 
 function scheduleExchangeRates() {
-  var daily = '00 35 10 * * *';
+  var daily = '00 35 11 * * *';
   var hourly = '00 55 * * * *';
   var job = new CronJob(daily, function() {
       loadExchangeRates();

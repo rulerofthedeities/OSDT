@@ -8,7 +8,6 @@ import {Observable} from 'rxjs/Observable';
     <div class="container">
       <navbar></navbar>
       <router-outlet></router-outlet>
-      <error-msg></error-msg>
     </div>
   `
 })

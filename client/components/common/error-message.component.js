@@ -28,7 +28,7 @@ var ErrorMessage = (function () {
     ErrorMessage = __decorate([
         core_1.Component({
             selector: 'error-msg',
-            template: "\n      <div *ngIf=\"false\">\n        <h4 class=\"modal-title\">{{errorData?.title}}</h4>\n        <p>{{errorData?.message}}</p>\n      </div>\n    "
+            template: "\n      <div *ngIf=\"showError\" class=\"text-danger\">\n        <h4 class=\"modal-title\">{{errorData?.title}}</h4>\n        <p>Error: {{errorData?.message}}</p>\n      </div>\n    "
         }), 
         __metadata('design:paramtypes', [error_service_1.ErrorService])
     ], ErrorMessage);

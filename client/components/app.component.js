@@ -27,7 +27,7 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'osdt',
-            template: "\n    <div class=\"container\">\n      <navbar></navbar>\n      <router-outlet></router-outlet>\n      <error-msg></error-msg>\n    </div>\n  "
+            template: "\n    <div class=\"container\">\n      <navbar></navbar>\n      <router-outlet></router-outlet>\n    </div>\n  "
         }), 
         __metadata('design:paramtypes', [auth_service_1.AuthService])
     ], AppComponent);
