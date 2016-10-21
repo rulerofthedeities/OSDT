@@ -64,8 +64,8 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
         <tbody>
           <tr *ngFor="let donation of donations; let i=index"
             on-mouseover="selectDonationIndex(i)"
-            (click)="i===activeDonation || recipientId ? openDonation($event, donation, false) : setActiveDonationIndex(i)"
-            [ngClass]="{'info':i===selectedDonation,'active':i===activeDonation && !recipientId, hover:i===activeDonation || recipientId}">
+            (click)="i===activeDonation ? openDonation($event, donation, false) : setActiveDonationIndex(i)"
+            [ngClass]="{'info':i===selectedDonation,'active':i===activeDonation, hover:i===activeDonation}">
             <td>{{i+1}}</td>
             <td>
               {{donation.amount}} {{donation.currency}}
