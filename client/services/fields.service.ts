@@ -85,11 +85,19 @@ export class FieldsService {
         order: 3
       }),
 
+      new TextboxField({
+        key: 'url',
+        label: 'Url',
+        placeholder: 'Enter the url of the donations page',
+        type: 'string',
+        order: 4
+      }),
+
       new CheckboxField({
         key: 'isActive',
         label: 'Active',
         display: 'Recipient is active',
-        order: 4
+        order: 5
       })
     ];
 

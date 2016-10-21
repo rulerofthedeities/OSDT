@@ -80,11 +80,18 @@ var FieldsService = (function () {
                 type: 'text',
                 order: 3
             }),
+            new field_textbox_model_1.TextboxField({
+                key: 'url',
+                label: 'Url',
+                placeholder: 'Enter the url of the donations page',
+                type: 'string',
+                order: 4
+            }),
             new field_checkbox_model_1.CheckboxField({
                 key: 'isActive',
                 label: 'Active',
                 display: 'Recipient is active',
-                order: 4
+                order: 5
             })
         ];
         return {

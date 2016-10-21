@@ -223,7 +223,7 @@ export class Recipients implements OnInit, OnDestroy {
 
   addRecipient() {
     this.isNew = true;
-    this.currentRecipient = new Recipient('demoUser', '', '', [], true);
+    this.currentRecipient = new Recipient('demoUser', '', '', [], '', true);
   }
 
   toggleDonations(event: MouseEvent, i: number) {

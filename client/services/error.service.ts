@@ -5,7 +5,7 @@ export class ErrorService {
   errorOccurred = new EventEmitter<Error>();
 
   handleError(error: any) {
-    console.log('error', error);
+    console.log('Error:', error);
     var msg = 'unknown error message';
     var title = 'error';
     if (error && error.error) {

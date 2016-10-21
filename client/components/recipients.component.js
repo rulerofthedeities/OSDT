@@ -78,7 +78,7 @@ var Recipients = (function () {
     };
     Recipients.prototype.addRecipient = function () {
         this.isNew = true;
-        this.currentRecipient = new recipient_model_1.Recipient('demoUser', '', '', [], true);
+        this.currentRecipient = new recipient_model_1.Recipient('demoUser', '', '', [], '', true);
     };
     Recipients.prototype.toggleDonations = function (event, i) {
         if (event) {

@@ -6,7 +6,7 @@ var ErrorService = (function () {
         this.errorOccurred = new core_1.EventEmitter();
     }
     ErrorService.prototype.handleError = function (error) {
-        console.log('error', error);
+        console.log('Error:', error);
         var msg = 'unknown error message';
         var title = 'error';
         if (error && error.error) {

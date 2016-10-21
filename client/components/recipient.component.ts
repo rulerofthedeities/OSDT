@@ -87,6 +87,14 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
 
         <div class="form-group">
           <auto-field 
+            [field]="recipientFieldsAssoc['url']"
+            [data]="recipient"
+            [form]="recipientForm">
+          </auto-field>
+        </div>
+
+        <div class="form-group">
+          <auto-field 
             [field]="recipientFieldsAssoc['isActive']"
             [data]="recipient"
             [form]="recipientForm">
@@ -262,6 +270,7 @@ export class EditRecipient implements OnInit {
       ],
       'description': [this.recipient.description],
       'categories': [this.recipient.categories],
+      'url': [this.recipient.url],
       'isActive': [this.recipient.isActive]
     });
   }

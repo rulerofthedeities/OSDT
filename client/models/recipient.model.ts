@@ -12,6 +12,7 @@ export class Recipient {
     public name: string,
     public description: string,
     public categories: string[],
+    public url: string,
     public isActive = true,
     public _id?: string
   ) {}

@@ -54,12 +54,12 @@ module.exports = {
     var doc = req.body,
         userId = mongoose.Types.ObjectId(req.decoded.user._id),
         updateHistory = history.setHistory('Updated recipient', req.decoded.user);
-
     Recipient.update({_id:doc._id, userId: userId}, {$set: {
       name: doc.name, 
       description: doc.description, 
       isActive: doc.isActive, 
-      categories: doc.categories
+      categories: doc.categories,
+      url: doc.url
     }, 
       $push: {'updateLog':{$each:[updateHistory], $slice:-history.recipientCutOff}}}, function (err, recipient) {
         response.handleError(err, res, 500, 'Error updating recipient', function(){

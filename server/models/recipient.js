@@ -28,6 +28,7 @@ var recipientSchema = new Schema(
     name: {type: String, required: true},
     description: {type: String, required: false},
     categories: [String],
+    url: String,
     isActive: Boolean,
     donations: [donationSchema],
     updateLog: [updateSchema]
