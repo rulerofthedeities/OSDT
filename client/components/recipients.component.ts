@@ -39,7 +39,7 @@ import {Subscription}   from 'rxjs/Subscription';
           {{recipients[activeRecipient].isActive ? 'Set Inactive' : 'Set Active'}}
         </button>
 
-        <button *ngIf="activeRecipient !== null && recipients[activeRecipient].isActive"
+        <button *ngIf="mayCreateDonation && activeRecipient !== null && recipients[activeRecipient].isActive"
           type="button"
           (click)="addDonation()"
           class="btn btn-primary">
@@ -153,6 +153,7 @@ export class Recipients implements OnInit, OnDestroy {
   isNew = false;
   prevNavState = 'viewRecipient'; //view if closing/canceling must lead back to view
   mayCreateRecipient = false;
+  mayCreateDonation = false;
 
   constructor(
     private recipientService: RecipientService,
@@ -254,6 +255,7 @@ export class Recipients implements OnInit, OnDestroy {
       this.authService.setUserAccess(this.route.snapshot.data['access']);
     }
     this.mayCreateRecipient = this.authService.hasRole('CreateRecipient');
+    this.mayCreateDonation = this.authService.hasRole('CreateDonation');
   }
 
   ngOnDestroy() {

@@ -15,11 +15,12 @@ var currency_service_1 = require('../services/currency.service');
 var auth_service_1 = require('../services/auth.service');
 var error_service_1 = require('../services/error.service');
 var EmbeddedDonations = (function () {
-    function EmbeddedDonations(donationService, currencyService, authService, errorService, router) {
+    function EmbeddedDonations(donationService, currencyService, authService, errorService, route, router) {
         this.donationService = donationService;
         this.currencyService = currencyService;
         this.authService = authService;
         this.errorService = errorService;
+        this.route = route;
         this.router = router;
         this.recipientId = '';
         this.isSubview = false;
@@ -28,9 +29,11 @@ var EmbeddedDonations = (function () {
         this.selectedDonation = null;
         this.activeDonation = null;
         this.isEdit = false;
+        this.mayCreateDonation = false;
     }
     EmbeddedDonations.prototype.ngOnInit = function () {
         var _this = this;
+        this.getRoles();
         if (this.authService.isLoggedIn()) {
             this.getDonations(this.recipientId);
             this.donationService.closeToView.subscribe(function (closedDonation) {
@@ -87,6 +90,12 @@ var EmbeddedDonations = (function () {
         }
         this.router.navigate(['/donations', donation._id], { queryParams: params });
     };
+    EmbeddedDonations.prototype.getRoles = function () {
+        if (!this.authService.getUserAccess()) {
+            this.authService.setUserAccess(this.route.snapshot.data['access']);
+        }
+        this.mayCreateDonation = this.authService.hasRole('CreateDonation');
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)
@@ -102,10 +111,10 @@ var EmbeddedDonations = (function () {
     EmbeddedDonations = __decorate([
         core_1.Component({
             selector: 'donations',
-            template: "\n    <div *ngIf=\"!currentDonation\">\n\n      <alert type=\"info\" *ngIf=\"!recipientId\">\n        <button \n          type=\"button\"\n          (click)=\"addDonation()\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-plus\"></span>\n          Add Donation\n        </button>\n\n        <button *ngIf=\"activeDonation !== null\"\n          type=\"button\"\n          (click)=\"openDonation(null, donations[activeDonation], true)\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-pencil\"></span>\n          Edit\n        </button>\n\n        <button *ngIf=\"activeDonation !== null\"\n          type=\"button\"\n          (click)=\"copyDonation(donations[activeDonation])\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-files-o\"></span>\n          Copy\n        </button>\n\n        <button *ngIf=\"activeDonation !== null\"\n          type=\"button\"\n          (click)=\"confirmDeletion(confirm)\"\n          class=\"btn btn-danger\">\n          <span class=\"fa fa-trash-o\"></span>\n          Delete\n        </button>\n\n      </alert>\n\n\n      <table class=\"table table-striped\" [ngClass]=\"{'small': isSubview}\">\n        <thead *ngIf=\"!isSubview\">\n          <tr>\n            <th></th>\n            <th>Amount</th>\n            <th>Date</th>\n            <th>Recipient</th>\n            <th>Note</th>\n            <th></th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let donation of donations; let i=index\"\n            on-mouseover=\"selectDonationIndex(i)\"\n            (click)=\"i===activeDonation ? openDonation($event, donation, false) : setActiveDonationIndex(i)\"\n            [ngClass]=\"{'info':i===selectedDonation,'active':i===activeDonation, hover:i===activeDonation}\">\n            <td>{{i+1}}</td>\n            <td>\n              {{donation.amount}} {{donation.currency}}\n            </td>\n            <td>\n              {{donation.dtPaid|date:'shortDate'}}\n            </td>\n            <td *ngIf=\"!isSubview\">\n              {{recipients[i].name}}\n            </td>\n            <td>\n              {{donation.note}}\n            </td>\n            <td>\n              <button class=\"btn btn-default btn-sm\"\n                (click)=\"openDonation($event, donation, true)\">\n                <span class=\"fa fa-pencil\"></span> Edit\n              </button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <modal-confirm #confirm\n      (confirmed)=\"onDeletionConfirmed($event)\">\n      <div title>Warning</div>\n      <div message>Are you sure you want to delete the selected donation?</div>\n    </modal-confirm>\n  ",
+            template: "\n    <div *ngIf=\"!currentDonation\">\n\n      <alert type=\"info\" *ngIf=\"!recipientId\">\n        <button \n          type=\"button\"\n          *ngIf=\"mayCreateDonation\"\n          (click)=\"addDonation()\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-plus\"></span>\n          Add Donation\n        </button>\n\n        <button *ngIf=\"activeDonation !== null\"\n          type=\"button\"\n          (click)=\"openDonation(null, donations[activeDonation], true)\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-pencil\"></span>\n          Edit\n        </button>\n\n        <button *ngIf=\"mayCreateDonation && activeDonation !== null\"\n          type=\"button\"\n          (click)=\"copyDonation(donations[activeDonation])\"\n          class=\"btn btn-primary\">\n          <span class=\"fa fa-files-o\"></span>\n          Copy\n        </button>\n\n        <button *ngIf=\"activeDonation !== null\"\n          type=\"button\"\n          (click)=\"confirmDeletion(confirm)\"\n          class=\"btn btn-danger\">\n          <span class=\"fa fa-trash-o\"></span>\n          Delete\n        </button>\n\n      </alert>\n\n\n      <table class=\"table table-striped\" [ngClass]=\"{'small': isSubview}\">\n        <thead *ngIf=\"!isSubview\">\n          <tr>\n            <th></th>\n            <th>Amount</th>\n            <th>Date</th>\n            <th>Recipient</th>\n            <th>Note</th>\n            <th></th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let donation of donations; let i=index\"\n            on-mouseover=\"selectDonationIndex(i)\"\n            (click)=\"i===activeDonation ? openDonation($event, donation, false) : setActiveDonationIndex(i)\"\n            [ngClass]=\"{'info':i===selectedDonation,'active':i===activeDonation, hover:i===activeDonation}\">\n            <td>{{i+1}}</td>\n            <td>\n              {{donation.amount}} {{donation.currency}}\n            </td>\n            <td>\n              {{donation.dtPaid|date:'shortDate'}}\n            </td>\n            <td *ngIf=\"!isSubview\">\n              {{recipients[i].name}}\n            </td>\n            <td>\n              {{donation.note}}\n            </td>\n            <td>\n              <button class=\"btn btn-default btn-sm\"\n                (click)=\"openDonation($event, donation, true)\">\n                <span class=\"fa fa-pencil\"></span> Edit\n              </button>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n\n    <modal-confirm #confirm\n      (confirmed)=\"onDeletionConfirmed($event)\">\n      <div title>Warning</div>\n      <div message>Are you sure you want to delete the selected donation?</div>\n    </modal-confirm>\n  ",
             styles: ["\n    tr {\n      cursor:default;\n    }\n    .hover:hover {cursor:pointer;}\n    tr:nth-child(odd) >td {\n      background-color:#eff5f5;\n    }\n    tr:nth-child(even) >td {\n      background-color:#fdfdff;\n    }\n    tr:hover >td{\n     background-color:#ccffcc;\n    }\n    tr.active {\n      outline: thin solid green;\n      cursor: pointer;\n    }\n  "]
         }), 
-        __metadata('design:paramtypes', [donation_service_1.DonationService, currency_service_1.CurrencyService, auth_service_1.AuthService, error_service_1.ErrorService, router_1.Router])
+        __metadata('design:paramtypes', [donation_service_1.DonationService, currency_service_1.CurrencyService, auth_service_1.AuthService, error_service_1.ErrorService, router_1.ActivatedRoute, router_1.Router])
     ], EmbeddedDonations);
     return EmbeddedDonations;
 }());

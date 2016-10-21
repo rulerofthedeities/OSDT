@@ -1,5 +1,5 @@
 import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {Donation} from '../models/donation.model';
 import {Recipient} from '../models/recipient.model';
 import {Currency} from '../models/currency.model';
@@ -17,6 +17,7 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
       <alert type="info" *ngIf="!recipientId">
         <button 
           type="button"
+          *ngIf="mayCreateDonation"
           (click)="addDonation()"
           class="btn btn-primary">
           <span class="fa fa-plus"></span>
@@ -31,7 +32,7 @@ import {ModalConfirm} from '../components/common/modal-confirm.component';
           Edit
         </button>
 
-        <button *ngIf="activeDonation !== null"
+        <button *ngIf="mayCreateDonation && activeDonation !== null"
           type="button"
           (click)="copyDonation(donations[activeDonation])"
           class="btn btn-primary">
@@ -128,16 +129,20 @@ export class EmbeddedDonations implements OnInit {
   selectedDonation: number = null;
   activeDonation: number = null;
   isEdit = false;
+  mayCreateDonation = false;
 
   constructor(
     private donationService: DonationService,
     private currencyService: CurrencyService,
     private authService: AuthService,
     private errorService: ErrorService,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit() {
+    this.getRoles();
+    
     if (this.authService.isLoggedIn()) {
       this.getDonations(this.recipientId);
 
@@ -209,6 +214,13 @@ export class EmbeddedDonations implements OnInit {
       params['sub'] = 1;
     }
     this.router.navigate(['/donations', donation._id], {queryParams: params});
+  }
+
+  getRoles() {
+    if (!this.authService.getUserAccess()) {
+      this.authService.setUserAccess(this.route.snapshot.data['access']);
+    }
+    this.mayCreateDonation = this.authService.hasRole('CreateDonation');
   }
 
 }
