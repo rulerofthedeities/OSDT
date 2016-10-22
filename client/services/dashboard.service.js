@@ -17,18 +17,8 @@ var DashboardService = (function () {
         this._http = _http;
         this.authService = authService;
     }
-    DashboardService.prototype.getTotals = function (currency) {
-        var url = '/api/stats/totals/' + currency;
-        var token = this.authService.getToken();
-        var headers = new http_1.Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', 'Bearer ' + token);
-        return this._http.get(url, { headers: headers })
-            .map(function (response) { return response.json().obj; })
-            .catch(function (error) { return Observable_1.Observable.throw(error); });
-    };
-    DashboardService.prototype.getLists = function (currency) {
-        var url = '/api/stats/lists/' + currency;
+    DashboardService.prototype.getData = function (tpe, currency) {
+        var url = '/api/stats/' + tpe + '/' + currency;
         var token = this.authService.getToken();
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');

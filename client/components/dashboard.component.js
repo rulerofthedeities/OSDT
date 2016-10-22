@@ -23,11 +23,11 @@ var Dashboard = (function () {
     Dashboard.prototype.ngOnInit = function () {
         var _this = this;
         this.settingsService.getDefaultCurrency().subscribe(function (currency) {
-            _this.dashboardService.getTotals(currency).subscribe(function (totals) {
+            _this.dashboardService.getData('totals', currency).subscribe(function (totals) {
                 _this.totals = totals;
                 _this.calcTotals();
             }, function (error) { return _this.errorService.handleError(error); });
-            _this.dashboardService.getLists(currency).subscribe(function (lists) { _this.lists = lists; }, function (error) { return _this.errorService.handleError(error); });
+            _this.dashboardService.getData('lists', currency).subscribe(function (lists) { _this.lists = lists; }, function (error) { return _this.errorService.handleError(error); });
         }, function (error) { return _this.errorService.handleError(error); });
     };
     Dashboard.prototype.calcTotals = function () {

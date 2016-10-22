@@ -142,7 +142,7 @@ export class EmbeddedDonations implements OnInit {
 
   ngOnInit() {
     this.getRoles();
-    
+
     if (this.authService.isLoggedIn()) {
       this.getDonations(this.recipientId);
 

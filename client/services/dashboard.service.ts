@@ -11,8 +11,8 @@ export class DashboardService {
     private authService: AuthService
   ) {}
 
-  getTotals(currency: string) {
-    const url = '/api/stats/totals/' + currency;
+  getData(tpe: string, currency: string) {
+    const url = '/api/stats/' + tpe + '/' + currency;
     const token = this.authService.getToken();
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -21,16 +21,4 @@ export class DashboardService {
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
-
-  getLists(currency: string) {
-    const url = '/api/stats/lists/' + currency;
-    const token = this.authService.getToken();
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', 'Bearer ' + token);
-    return this._http.get(url, {headers})
-      .map(response => response.json().obj)
-      .catch(error => Observable.throw(error));
-  }
-
 }
