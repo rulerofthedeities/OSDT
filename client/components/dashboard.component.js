@@ -28,6 +28,7 @@ var Dashboard = (function () {
                 _this.calcTotals();
             }, function (error) { return _this.errorService.handleError(error); });
             _this.dashboardService.getData('lists', currency).subscribe(function (lists) { _this.lists = lists; }, function (error) { return _this.errorService.handleError(error); });
+            _this.dashboardService.getData('charts', currency).subscribe(function (charts) { _this.charts = charts; console.log('charts', charts); }, function (error) { return _this.errorService.handleError(error); });
         }, function (error) { return _this.errorService.handleError(error); });
     };
     Dashboard.prototype.calcTotals = function () {

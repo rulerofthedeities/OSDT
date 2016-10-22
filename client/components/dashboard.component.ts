@@ -169,6 +169,7 @@ import {ErrorService} from '../services/error.service';
 export class Dashboard implements OnInit {
   lists: Object;
   totals: Object;
+  charts: Object;
   avgDonation: number;
   avgRecipient: number;
 
@@ -191,6 +192,10 @@ export class Dashboard implements OnInit {
         );
         this.dashboardService.getData('lists', currency).subscribe(
           lists => {this.lists = lists;},
+          error => this.errorService.handleError(error)
+        );
+        this.dashboardService.getData('charts', currency).subscribe(
+          charts => {this.charts = charts;console.log('charts', charts);},
           error => this.errorService.handleError(error)
         );
       },

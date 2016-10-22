@@ -85,6 +85,19 @@ var getTotalAmountLastYear = function(callback) {
   });
 }
 
+var getTotalPerMonth = function(callback) {
+  var pipeline = [
+        {$match:{userId: userId}},
+        {$unwind:'$donations'},
+        {$group: {_id: {$dateToString: {format: '%Y%m', date:'$donations.dtPaid'}}, numberofDonations: {$sum: 1}, donationAmount: {$sum:'$donations.values.' + defaultCurrency}}},
+        {$sort: {_id:1}},
+        {$project: {month:'$_id', _id:0, numberofDonations:1, donationAmount:1}}
+      ];
+  Recipient.aggregate(pipeline, function(err, totals) {
+    callback(err, {totals:totals, currency:defaultCurrency});
+  });
+}
+
 var getRecentDonations = function(callback) {
   var pipeline = [
         {$match:{userId: userId}},
@@ -158,6 +171,18 @@ module.exports = {
     }, function(err, lists) {
       response.handleError(err, res, 500, 'Error fetching lists', function(){
         response.handleSuccess(res, lists, 200, 'Received lists');
+      });
+    })
+  },
+  getCharts: function(req, res) {
+    defaultCurrency = req.params.currency || defaultCurrency;
+    defaultCurrency = defaultCurrency.toUpperCase();
+    userId = mongoose.Types.ObjectId(req.decoded.user._id);
+    async.parallel({
+      totalPerMonth: getTotalPerMonth
+    }, function(err, data) {
+      response.handleError(err, res, 500, 'Error fetching chart data', function(){
+        response.handleSuccess(res, data, 200, 'Received chart data');
       });
     })
   }

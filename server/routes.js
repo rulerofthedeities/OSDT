@@ -62,6 +62,8 @@ module.exports.initialize = function(app, router) {
   router.get('/stats/totals/:currency', stats.getTotals);
   router.get('/stats/lists', stats.getLists);
   router.get('/stats/lists/:currency', stats.getLists);
+  router.get('/stats/charts', stats.getCharts);
+  router.get('/stats/charts/:currency', stats.getCharts);
 
   app.use('/api/', router);
 
