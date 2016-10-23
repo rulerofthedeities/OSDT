@@ -10,13 +10,24 @@ var isPublic = typeof window != "undefined";
       'moment':                 (isPublic) ? 'node/moment/moment.js' : 'node_modules/moment/moment.js',
       'angular2-jwt':           (isPublic) ? 'node/angular2-jwt/angular2-jwt.js' : 'node_modules/angular2-jwt/angular2-jwt.js',
       'js-base64':              (isPublic) ? 'node/js-base64/base64.js' : 'node_modules/js-base64/base64.js',
-      'buffer':                 '@empty' //jwt buffer
+      'buffer':                 '@empty', //jwt buffer
+      '@progress':              (isPublic) ? 'node/@progress' : 'node_modules/@progress',
+      '@telerik':               (isPublic) ? 'node/@telerik' : 'node_modules/@telerik',
+      'chroma-js':              (isPublic) ? 'node/chroma-js/chroma.js' : 'node_modules/chroma-js/chroma.js'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
-      'app':                    { main: 'main.js',  defaultExtension: 'js' },
-      'rxjs':                   { defaultExtension: 'js' },
-      'ng2-bootstrap':          { defaultExtension: 'js' }
+      'app':                            { main: 'main.js',  defaultExtension: 'js' },
+      'rxjs':                           { defaultExtension: 'js' },
+      'ng2-bootstrap':                  { defaultExtension: 'js' },
+      '@telerik/kendo-draggable':       { main: './dist/npm/js/main.js', defaultExtension: 'js' },
+      '@telerik/kendo-intl':            { main: './dist/npm/js/main.js', defaultExtension: 'js' },
+      '@progress/kendo-angular-charts': { main: './dist/npm/js/main.js', defaultExtension: 'js' },
+      '@progress/kendo-angular-intl':   { main: './dist/npm/js/main.js', defaultExtension: 'js' },
+      '@progress/kendo-angular-popup':  { main: './dist/npm/js/main.js', defaultExtension: 'js' },
+      '@progress/kendo-charts':         { main: './dist/npm/js/main.js', defaultExtension: 'js' },
+      '@progress/kendo-popup-common':   { main: './dist/npm/js/main.js', defaultExtension: 'js' },
+      '@progress/kendo-drawing':        { main: './dist/npm/js/main.js', defaultExtension: 'js' }
     };
     var ngPackageNames = [
       'common',

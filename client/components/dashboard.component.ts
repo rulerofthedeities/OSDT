@@ -3,6 +3,7 @@ import {DashboardService} from '../services/dashboard.service';
 import {SettingsService} from '../services/settings.service';
 import {AuthService} from '../services/auth.service';
 import {ErrorService} from '../services/error.service';
+import * as moment from 'moment';
 
 @Component({
   template: `
@@ -52,6 +53,52 @@ import {ErrorService} from '../services/error.service';
                     | currency:lists?.topDonations?.donations[0]?.donation.currency:true:'1.2-2'}}
                 </span>
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12" *ngIf="chartDataLoaded">
+        <div class="panel panel-primary">
+          <div class="panel-body bg-info">
+            <kendo-chart
+              [categoryAxis]="{ categories: monthlyChartData.xLabels }"
+              [seriesColors]="['#428bca', '#d9534f', '#5cb85c']">
+              <kendo-chart-title [text]="getChartTitle()">
+              </kendo-chart-title>
+              <kendo-chart-y-axis>
+                <kendo-chart-y-axis-item>
+                </kendo-chart-y-axis-item>
+              </kendo-chart-y-axis>
+              <kendo-chart-series>
+                <kendo-chart-series-item 
+                  *ngIf="monthlyChartData.series === 'amount'"
+                  type="column"
+                  [data]="monthlyChartData.amounts">
+                </kendo-chart-series-item>
+                <kendo-chart-series-item 
+                  *ngIf="monthlyChartData.series === 'number'"
+                  type="line"
+                  [data]="monthlyChartData.numbers">
+                </kendo-chart-series-item>
+              </kendo-chart-series>
+            </kendo-chart>
+            <div class="chartSelection">
+              <label class="radio-inline">
+                <input 
+                  type="radio"
+                  [value]="'amount'" 
+                  [(ngModel)]="monthlyChartData.series">
+                  Donation amount
+              </label>
+              <label class="radio-inline">
+                <input 
+                  type="radio"
+                  [value]="'number'" 
+                  [(ngModel)]="monthlyChartData.series">
+                  Number of donations
+              </label>
             </div>
           </div>
         </div>
@@ -163,13 +210,17 @@ import {ErrorService} from '../services/error.service';
     #top .main span.badge {font-size:26px;}
     #top .sub {font-size:18px;}
     #top .sub span.badge {font-size:18px;}
+    .chartSelection {
+      margin-top: 10px;
+    }
   `]
 })
 
 export class Dashboard implements OnInit {
   lists: Object;
   totals: Object;
-  charts: Object;
+  monthlyChartData: Object;
+  chartDataLoaded = false;
   avgDonation: number;
   avgRecipient: number;
 
@@ -195,7 +246,7 @@ export class Dashboard implements OnInit {
           error => this.errorService.handleError(error)
         );
         this.dashboardService.getData('charts', currency).subscribe(
-          charts => {this.charts = charts;console.log('charts', charts);},
+          charts => this.calcChartMonthData(charts['totalPerMonth']),
           error => this.errorService.handleError(error)
         );
       },
@@ -214,5 +265,42 @@ export class Dashboard implements OnInit {
       avg = this.totals['totalAmount']['total'] / this.totals['countRecipients'];
     }
     this.avgRecipient = avg;
+  }
+
+  calcChartMonthData(chart: Object) {
+    let dt = moment().date(1),
+        month: string,
+        months: string[] = [],
+        amounts: number[] = [],
+        numbers: number[] = [];
+
+    for (let i = 0; i < 12; i++) {
+      months[11-i] = dt.format('MMM') + ' ' + dt.year();
+      month = dt.format('YYYYMM');
+      chart['totals'].forEach(t => {
+        if (t.month === month) {
+          amounts[11-i] = t.donationAmount;
+          numbers[11-i] = t.numberofDonations;
+        }
+      });
+      dt = moment(dt).subtract(1, 'M');
+    }
+
+    this.monthlyChartData = {
+      series: 'amount',
+      currency: chart['currency'],
+      xLabels: months,
+      amounts,
+      numbers
+    };
+    this.chartDataLoaded = true;
+  }
+
+  getChartTitle() {
+    if (this.monthlyChartData && this.monthlyChartData['series'] === 'number') {
+      return 'Number of donations per month';
+    } else {
+      return 'Donations total in ' + this.monthlyChartData['currency'] + ' per month';
+    }
   }
 }

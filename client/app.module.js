@@ -14,6 +14,7 @@ var forms_1 = require('@angular/forms');
 var router_1 = require('@angular/router');
 var http_1 = require('@angular/http');
 var ng2_bootstrap_1 = require('ng2-bootstrap/ng2-bootstrap');
+var kendo_angular_charts_1 = require('@progress/kendo-angular-charts');
 var routes_1 = require('./routes');
 var auth_service_1 = require('./services/auth.service');
 var auth_guard_service_1 = require('./services/auth-guard.service');
@@ -61,6 +62,7 @@ var AppModule = (function () {
                 forms_1.FormsModule,
                 forms_1.ReactiveFormsModule,
                 http_1.HttpModule,
+                kendo_angular_charts_1.ChartsModule,
                 ng2_bootstrap_1.Ng2BootstrapModule,
                 router_1.RouterModule.forRoot(routes_1.routes)
             ],

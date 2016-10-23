@@ -11,6 +11,7 @@ var gulp = require('gulp'),
 
   vendorCSS   = [
     config.dir + 'bootstrap/dist/css/bootstrap.min.css',
+    config.dir + '@telerik/kendo-theme-default/dist/all.css',
     config.dir + 'font-awesome/css/font-awesome.min.css',
     ],
 

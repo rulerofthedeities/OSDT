@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {HttpModule} from '@angular/http';
 import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
+import {ChartsModule} from '@progress/kendo-angular-charts';
 
 import {routes} from './routes';
 
@@ -53,6 +54,7 @@ import {ModalConfirm} from './components/common/modal-confirm.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    ChartsModule,
     Ng2BootstrapModule,
     RouterModule.forRoot(routes)
   ],
