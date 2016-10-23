@@ -50,4 +50,3 @@ var Currencies = (function () {
     return Currencies;
 }());
 exports.Currencies = Currencies;
-//# sourceMappingURL=currencies.component.js.map

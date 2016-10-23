@@ -31,4 +31,3 @@ var AutoFormRead = (function () {
     return AutoFormRead;
 }());
 exports.AutoFormRead = AutoFormRead;
-//# sourceMappingURL=auto-form-read.component.js.map

@@ -13,4 +13,3 @@ var Recipient = (function () {
     return Recipient;
 }());
 exports.Recipient = Recipient;
-//# sourceMappingURL=recipient.model.js.map

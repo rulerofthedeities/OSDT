@@ -41,4 +41,3 @@ var ModalConfirm = (function () {
     return ModalConfirm;
 }());
 exports.ModalConfirm = ModalConfirm;
-//# sourceMappingURL=modal-confirm.component.js.map

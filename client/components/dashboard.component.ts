@@ -272,7 +272,7 @@ export class Dashboard implements OnInit {
         month: string,
         months: string[] = [],
         amounts: number[] = [],
-        numbers: number[] = [];
+        numbers: number[] = [0,0,0,0,0,0,0,0,0,0,0,0];
 
     for (let i = 0; i < 12; i++) {
       months[11-i] = dt.format('MMM') + ' ' + dt.year();

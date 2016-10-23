@@ -31,4 +31,3 @@ var CurrenciesResolver = (function () {
     return CurrenciesResolver;
 }());
 exports.CurrenciesResolver = CurrenciesResolver;
-//# sourceMappingURL=currencies.resolver.js.map

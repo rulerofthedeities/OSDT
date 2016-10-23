@@ -26,4 +26,3 @@ var AuthMenu = (function () {
     return AuthMenu;
 }());
 exports.AuthMenu = AuthMenu;
-//# sourceMappingURL=auth-menu.component.js.map

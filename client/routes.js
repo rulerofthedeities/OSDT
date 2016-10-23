@@ -56,4 +56,3 @@ exports.routes = [
         ]
     }
 ];
-//# sourceMappingURL=routes.js.map

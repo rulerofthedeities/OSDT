@@ -11,4 +11,3 @@ var Donation = (function () {
     return Donation;
 }());
 exports.Donation = Donation;
-//# sourceMappingURL=donation.model.js.map

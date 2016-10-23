@@ -119,4 +119,3 @@ var EmbeddedDonations = (function () {
     return EmbeddedDonations;
 }());
 exports.EmbeddedDonations = EmbeddedDonations;
-//# sourceMappingURL=donations-embedded.component.js.map

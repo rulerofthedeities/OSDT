@@ -27,4 +27,3 @@ var LogOut = (function () {
     return LogOut;
 }());
 exports.LogOut = LogOut;
-//# sourceMappingURL=log-out.component.js.map

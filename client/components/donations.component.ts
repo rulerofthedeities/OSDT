@@ -79,7 +79,6 @@ export class Donations implements OnInit {
         this.isSubView = params['sub'] === '1' ? true : false;
       }
       if (params['new']) {
-        console.log('new', params['new']);
         this.isSubView = true;
         this.recipientId = params['new'];
         this.addDonation();
@@ -107,7 +106,6 @@ export class Donations implements OnInit {
   }
 
   createDonation(donation: Donation) {
-    console.log('creating donation', donation);
     if (donation) {
       //Copy existing donation
       this.isNew = true;

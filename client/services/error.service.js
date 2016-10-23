@@ -18,4 +18,3 @@ var ErrorService = (function () {
     return ErrorService;
 }());
 exports.ErrorService = ErrorService;
-//# sourceMappingURL=error.service.js.map

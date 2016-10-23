@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
 var settingsSchema = new Schema(
   { 
     defaultCurrency: {type: String, required: true, default: false}
-  }
+  },
+  { _id: false}
 );
 
 var accessSchema = new Schema(

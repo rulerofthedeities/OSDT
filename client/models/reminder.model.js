@@ -5,4 +5,3 @@ var Reminder = (function () {
     return Reminder;
 }());
 exports.Reminder = Reminder;
-//# sourceMappingURL=reminder.model.js.map

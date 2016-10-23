@@ -38,4 +38,3 @@ var DonationNewRecipient = (function () {
     return DonationNewRecipient;
 }());
 exports.DonationNewRecipient = DonationNewRecipient;
-//# sourceMappingURL=donation-new-recipient.component.js.map

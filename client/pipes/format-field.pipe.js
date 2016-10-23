@@ -41,4 +41,3 @@ var FormatFieldPipe = (function () {
     return FormatFieldPipe;
 }());
 exports.FormatFieldPipe = FormatFieldPipe;
-//# sourceMappingURL=format-field.pipe.js.map

@@ -32,4 +32,3 @@ var LevelNamePipe = (function () {
     return LevelNamePipe;
 }());
 exports.LevelNamePipe = LevelNamePipe;
-//# sourceMappingURL=level-name.pipe.js.map

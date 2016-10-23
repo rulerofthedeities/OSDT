@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'km-datepicker',
@@ -10,13 +11,12 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
       <div class="form-control">{{dateModel | date:'longDate'}}</div>
     </div>
 
-    
     <datepicker 
       *ngIf="showDatepicker"
       class="popup"
       [(ngModel)]="dateModel" 
       showWeeks="true" 
-      (ngModelChange)="hidePopup($event)" >
+      (ngModelChange)="dataChange($event)" >
     </datepicker>
 `,
   styles: [`
@@ -35,13 +35,18 @@ export class KmDatepicker {
   @Input() dateModel: Date;
   @Output() dateModelChange = new EventEmitter<string>();
   private showDatepicker: boolean = false;
+  private init = true;
 
   togglePopup() {
+    this.init = true;
     this.showDatepicker = !this.showDatepicker;
   }
 
-  hidePopup(event) {
-    this.showDatepicker = false;
+  dataChange(event) {
+    if (!this.init) {
+      this.showDatepicker = false;
+    }
+    this.init = false;
     this.dateModel = event;
     this.dateModelChange.emit(event);
   }

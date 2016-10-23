@@ -8,4 +8,3 @@ var Error = (function () {
     return Error;
 }());
 exports.Error = Error;
-//# sourceMappingURL=error.model.js.map

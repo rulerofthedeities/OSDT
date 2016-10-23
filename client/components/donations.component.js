@@ -44,7 +44,6 @@ var Donations = (function () {
                 _this.isSubView = params['sub'] === '1' ? true : false;
             }
             if (params['new']) {
-                console.log('new', params['new']);
                 _this.isSubView = true;
                 _this.recipientId = params['new'];
                 _this.addDonation();
@@ -65,7 +64,6 @@ var Donations = (function () {
         }, function (error) { return _this.errorService.handleError(error); });
     };
     Donations.prototype.createDonation = function (donation) {
-        console.log('creating donation', donation);
         if (donation) {
             //Copy existing donation
             this.isNew = true;
@@ -108,4 +106,3 @@ var Donations = (function () {
     return Donations;
 }());
 exports.Donations = Donations;
-//# sourceMappingURL=donations.component.js.map

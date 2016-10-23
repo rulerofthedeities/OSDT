@@ -29,4 +29,3 @@ var XchangeService = (function () {
     return XchangeService;
 }());
 exports.XchangeService = XchangeService;
-//# sourceMappingURL=xchange.service.js.map

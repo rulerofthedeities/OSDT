@@ -13,12 +13,17 @@ var KmDatepicker = (function () {
     function KmDatepicker() {
         this.dateModelChange = new core_1.EventEmitter();
         this.showDatepicker = false;
+        this.init = true;
     }
     KmDatepicker.prototype.togglePopup = function () {
+        this.init = true;
         this.showDatepicker = !this.showDatepicker;
     };
-    KmDatepicker.prototype.hidePopup = function (event) {
-        this.showDatepicker = false;
+    KmDatepicker.prototype.dataChange = function (event) {
+        if (!this.init) {
+            this.showDatepicker = false;
+        }
+        this.init = false;
         this.dateModel = event;
         this.dateModelChange.emit(event);
     };
@@ -33,7 +38,7 @@ var KmDatepicker = (function () {
     KmDatepicker = __decorate([
         core_1.Component({
             selector: 'km-datepicker',
-            template: "\n    <div class=\"input-group\" (click)=\"togglePopup()\">\n      <span class=\"input-group-addon\">\n        <span class=\"glyphicon glyphicon-calendar\"></span>\n      </span>\n      <div class=\"form-control\">{{dateModel | date:'longDate'}}</div>\n    </div>\n\n    \n    <datepicker \n      *ngIf=\"showDatepicker\"\n      class=\"popup\"\n      [(ngModel)]=\"dateModel\" \n      showWeeks=\"true\" \n      (ngModelChange)=\"hidePopup($event)\" >\n    </datepicker>\n",
+            template: "\n    <div class=\"input-group\" (click)=\"togglePopup()\">\n      <span class=\"input-group-addon\">\n        <span class=\"glyphicon glyphicon-calendar\"></span>\n      </span>\n      <div class=\"form-control\">{{dateModel | date:'longDate'}}</div>\n    </div>\n\n    <datepicker \n      *ngIf=\"showDatepicker\"\n      class=\"popup\"\n      [(ngModel)]=\"dateModel\" \n      showWeeks=\"true\" \n      (ngModelChange)=\"dataChange($event)\" >\n    </datepicker>\n",
             styles: ["\n  .popup {\n    position: absolute;\n    background-color: #fff;\n    border-radius: 3px;\n    border: 1px solid #ddd;\n    height: 251px;\n    z-index:2;\n  }\n"]
         }), 
         __metadata('design:paramtypes', [])
@@ -41,4 +46,3 @@ var KmDatepicker = (function () {
     return KmDatepicker;
 }());
 exports.KmDatepicker = KmDatepicker;
-//# sourceMappingURL=km-datepicker.component.js.map

@@ -16,4 +16,3 @@ var CheckboxField = (function (_super) {
     return CheckboxField;
 }(field_model_1.Field));
 exports.CheckboxField = CheckboxField;
-//# sourceMappingURL=field-checkbox.model.js.map

@@ -15,4 +15,3 @@ var Field = (function () {
     return Field;
 }());
 exports.Field = Field;
-//# sourceMappingURL=field.model.js.map

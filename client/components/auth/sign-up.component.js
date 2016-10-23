@@ -50,4 +50,3 @@ var SignUp = (function () {
     return SignUp;
 }());
 exports.SignUp = SignUp;
-//# sourceMappingURL=sign-up.component.js.map

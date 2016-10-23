@@ -46,7 +46,7 @@ var Dashboard = (function () {
         this.avgRecipient = avg;
     };
     Dashboard.prototype.calcChartMonthData = function (chart) {
-        var dt = moment().date(1), month, months = [], amounts = [], numbers = [];
+        var dt = moment().date(1), month, months = [], amounts = [], numbers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         var _loop_1 = function(i) {
             months[11 - i] = dt.format('MMM') + ' ' + dt.year();
             month = dt.format('YYYYMM');
@@ -88,4 +88,3 @@ var Dashboard = (function () {
     return Dashboard;
 }());
 exports.Dashboard = Dashboard;
-//# sourceMappingURL=dashboard.component.js.map

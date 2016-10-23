@@ -165,7 +165,7 @@ import * as moment from 'moment';
       <div message>The donation has been modified. Are you sure you want to cancel the changes?</div>
     </modal-confirm>
 
-    <div class="visible-print-block small">
+    <div class="visible-print-block small" *ngIf="!editMode">
       <em>Printed on {{getCurrentDate()|date:'medium'}}</em>
     </div>
 

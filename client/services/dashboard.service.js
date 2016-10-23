@@ -34,4 +34,3 @@ var DashboardService = (function () {
     return DashboardService;
 }());
 exports.DashboardService = DashboardService;
-//# sourceMappingURL=dashboard.service.js.map

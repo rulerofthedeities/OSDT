@@ -33,4 +33,3 @@ var CurrencyService = (function () {
     return CurrencyService;
 }());
 exports.CurrencyService = CurrencyService;
-//# sourceMappingURL=currency.service.js.map

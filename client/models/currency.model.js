@@ -9,4 +9,3 @@ var Currency = (function () {
     return Currency;
 }());
 exports.Currency = Currency;
-//# sourceMappingURL=currency.model.js.map

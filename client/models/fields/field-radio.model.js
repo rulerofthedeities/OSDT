@@ -17,4 +17,3 @@ var RadioField = (function (_super) {
     return RadioField;
 }(field_model_1.Field));
 exports.RadioField = RadioField;
-//# sourceMappingURL=field-radio.model.js.map
