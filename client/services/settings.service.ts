@@ -26,7 +26,7 @@ export class SettingsService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', 'Bearer ' + token);
-    return this._http.patch('/api/currencies/' + currencyCode + token, null, {headers})
+    return this._http.patch('/api/currencies/' + currencyCode, null, {headers})
       .map(response => response.json().obj)
       .catch(error => Observable.throw(error));
   }
